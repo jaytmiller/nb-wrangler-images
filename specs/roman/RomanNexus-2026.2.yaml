@@ -23,7 +23,7 @@ repositories:
 system:
   spec_version: '2.1'
   archive_format: .tar
-  # The primary repo 
+  # The primary repo
   primary_repo: spacetelescope/roman_notebooks
   nb-wrangler:
     repo: https://github.com/spacetelescope/nb-wrangler.git
@@ -31,8 +31,8 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: dev
-  date_updated: '2026-07-23T09:59:18.259369'
-  spec_sha256: 78911729b5f553430dfccba6a4de6574e0ba39f2dea243ff9a6a220c1c1dfce0
+  date_updated: '2026-07-23T11:45:15.291327'
+  spec_sha256: 3ab5e16c1bd8a50de333e8c508505ea5d9dcac825d3ce89796d56cfe95e47aec
 
 # Files that are downloaded and/or copied to the specified locations in images
 assets:
@@ -42,7 +42,7 @@ assets:
     destination: /etc/jupyter/jupyter_server_config.d
   - repo: https://github.com/spacetelescope/nb-wrangler-images.git
     ref: main
-    source: assets/roman/stop_server_ext.json
+    source: assets/generic/stop_server_ext.json
     destination: /srv/jupyter
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
@@ -85,7 +85,7 @@ dev_overrides:
       destination: /etc/jupyter/jupyter_server_config.d
     - repo: https://github.com/jaytmiller/nb-wrangler-images.git
       ref: dev
-      source: assets/roman/stop_server_ext.json
+      source: assets/generic/stop_server_ext.json
       destination: /srv/jupyter
 
 # Packages installed by mamba in the mission environment only.
