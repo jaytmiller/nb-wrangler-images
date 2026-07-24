@@ -8,6 +8,11 @@ on:
         required: false
         type: string
         default: 'specs/roman/nbw-wrangler-spec.yaml'
+      wrangler_owner:
+        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
+        required: false
+        type: string
+        default: spacetelescope
       wrangler_ref:
         description: 'The branch/tag/ref of nb-wrangler to use for the tool'
         required: false
@@ -20,6 +25,11 @@ on:
         required: false
         type: string
         default: 'specs/roman/nbw-wrangler-spec.yaml'
+      wrangler_owner:
+        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
+        required: false
+        type: string
+        default: spacetelescope
       wrangler_ref:
         description: 'The branch/tag/ref of nb-wrangler to use for the tool'
         required: false
@@ -61,11 +71,11 @@ jobs:
         run: |
           # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
           export NBW_DEV=1
-          curl https://raw.githubusercontent.com/spacetelescope/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
+          curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
           chmod +x nb-wrangler
 
           # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
-          export WRANGLER_URL=$(./nb-wrangler resolve-repo ${NBW_SPEC})
+          export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
           export WRANGLER_REF=$(./nb-wrangler resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
           echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
           echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
@@ -97,12 +107,12 @@ jobs:
           echo IMAGE_ROOT=$IMAGE_ROOT >> $GITHUB_ENV
 
           # Full repo path of degenerate spec-only image, including tag
-          export SPEC_TAG=$(./nb-wrangler --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          export SPEC_TAG=$(./nb-wrangler --dev --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
           echo SPEC_TAG=$SPEC_TAG >> $GITHUB_ENV
           echo SPEC_IMAGE_ID=${IMAGE_ROOT}:${SPEC_TAG} >> $GITHUB_ENV
 
           # Full repo path of executable image, including tag
-          export IMAGE_TAG=$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          export IMAGE_TAG=$(./nb-wrangler --dev --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
           echo IMAGE_TAG=$IMAGE_TAG  >> $GITHUB_ENV
           echo IMAGE_ID=${IMAGE_ROOT}:${IMAGE_TAG} >> $GITHUB_ENV
 
