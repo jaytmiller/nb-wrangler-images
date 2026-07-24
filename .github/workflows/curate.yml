@@ -180,7 +180,7 @@ jobs:
       - name: Test imports for native environment
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-            ./nb-wrangler --test-imports --test-copy-shared ../../shared
+            ./nb-wrangler --test-imports --test-copy-shared --dev ../../shared
 
       - name: Test notebooks inside image
         run: |
@@ -191,4 +191,4 @@ jobs:
           # make dirs globally writable since uid/gid inside Docker may not match outside
           chmod -R 777 ${HOME}/crds_cache
           chmod -R 777 ${NBW_PANTRY}
-          image-test --test-notebooks
+          image-test --dev --test-notebooks
