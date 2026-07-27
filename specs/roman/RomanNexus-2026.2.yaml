@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-27T15:32:45.303265'
-  spec_sha256: 4fa2401138e4660045509530992c84d7566eac6690c9e28ecf370519b1b826c4
+  date_updated: '2026-07-27T15:36:00.453857'
+  spec_sha256: 9b1d98e86c723ef3e9dce8a8384911f5bc66470ba5d43b3faf7a2625cff15629
 
 # Files that are downloaded and/or copied to the specified locations in images
 assets:
@@ -247,10 +247,10 @@ out:
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: 'ce04b24845b81736b30450647888583f634c1569'
+      ref: "96688f45e540aecc0d0da708c14e7346869218d8"
 
 # This is system config that is generally not changed by curators.
-      resolved_ref: 2026.2.x
+      resolved_ref: main
   spi:
     repo: https://github.com/jaytmiller/science-platform-images.git
     ref: efabd53e7f5738937468d0d8a1d104be1017f152
