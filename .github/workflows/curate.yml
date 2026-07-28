@@ -180,7 +180,7 @@ jobs:
       - name: Test imports for native environment
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-            ./nb-wrangler --test-imports --test-copy-shared --dev ../../shared
+            ./nb-wrangler --test-imports --test-copy-shared ../../shared --dev
 
       - name: Test notebooks inside image
         run: |
