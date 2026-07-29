@@ -34,24 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-29T08:42:50.333429'
-  spec_sha256: ec261d73c49c5a228373971126399f4a6a905edf5682282496bf04f9484bcd12
-
-# Files that are downloaded and/or copied to the specified locations in images
-assets:
-  - repo: https://github.com/spacetelescope/nb-wrangler-images.git
-    ref: main
-    items:
-      - source: assets/roman/
-        destination: /opt/environments
-      - source: assets/generic/
-        destination: /opt/environments
-      - source: assets/generic/stop_server_ext.json
-        destination: /etc/jupyter/jupyter_server_config.d/
-      - source: assets/generic/stop_server_ext.json
-        destination: /srv/jupyter/
-      - source: assets/generic/jp_app_launcher.yaml
-        destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
+  date_updated: '2026-07-29T11:14:06.288822'
+  spec_sha256: 16dff0f7fe9ca93364f1a358085974c560fa7dbf311cf72213a5b2035656c282
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -131,6 +115,25 @@ common_pip_packages:
 dockerfile_aux_sh: |
   #! /bin/bash
   set -euxo pipefail
+
+# Image-specific files that are downloaded and/or copied to the specified locations in images
+assets:
+  - repo: https://github.com/spacetelescope/nb-wrangler-images.git
+    ref: main
+    items:
+      - source: assets/roman/
+        destination: /opt/environments
+      - source: assets/generic/
+        destination: /opt/environments
+      - source: assets/generic/stop_server_ext.json
+        destination: /etc/jupyter/jupyter_server_config.d/
+      - source: assets/generic/stop_server_ext.json
+        destination: /srv/jupyter/
+      - source: assets/generic/jp_app_launcher.yaml
+        destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
+
+environment_vars:
+  PYTHONPATH: /srv/jupyter
 
 # ----------------------------------------------------------------------------------
 # Everything in this section is generated during --curate and used for documentation
