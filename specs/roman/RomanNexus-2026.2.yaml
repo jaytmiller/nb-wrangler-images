@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-29T13:37:11.341546'
-  spec_sha256: 3d8bcb37549779219e9d5fb748ee533fdf9f597d8069f635ce2dad47a37baf85
+  date_updated: '2026-07-29T17:54:17.311928'
+  spec_sha256: ea403bbde1e52ee637f7ba5cb0f5a9704bc57a15b14c8ad509d272a076bde404
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -54,37 +54,6 @@ selected_notebooks:
     tests:
       papermill: 'False'
 
-# If defined, these replace defaults while in --dev development mode.
-# --dev mode is the default for --curate and enables these
-# --prod mode is the default for --reinstall and disables these.
-dev_overrides:
-  system:
-    primary_repo: spacetelescope/roman_notebooks
-    nb-wrangler:
-      repo: https://github.com/jaytmiller/nb-wrangler.git
-      ref: dev
-    spi:
-      repo: https://github.com/jaytmiller/science-platform-images.git
-      ref: dev
-  repositories:
-    roman_notebooks:
-      url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: main
-  assets:
-    - repo: https://github.com/jaytmiller/nb-wrangler-images.git
-      ref: main
-      items:
-        - source: assets/roman/
-          destination: /opt/environments/
-        - source: assets/generic/
-          destination: /opt/environments/
-        - source: assets/generic/stop_server_ext.json
-          destination: /etc/jupyter/jupyter_server_config.d/
-        - source: assets/generic/stop_server_ext.py
-          destination: /srv/jupyter/
-        - source: assets/generic/jp_app_launcher.yaml
-          destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
-
 # Packages installed by mamba in the mission environment only.
 extra_mamba_packages:
   - pip
@@ -97,8 +66,10 @@ extra_pip_packages:
   - boto3
   - lsstdesc.coord
   - healpy>=1.20.b1
-  - mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git  # motorcycle
   - jdaviz >= 5.0 # motorcyle
+  - git+https://github.com/spacetelescope/mast-aladin.git@main
+  - git+https://github.com/spacetelescope/mast-table.git@main
+  - git+https://github.com/snbianco/astroquery.git@mast-beta-release
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
@@ -134,6 +105,38 @@ assets:
 
 environment_vars:
   PYTHONPATH: /srv/jupyter
+
+# ----------------------------------------------------------------------------------
+# If defined, these replace defaults while in --dev development mode.
+# --dev mode is the default for --curate and enables these
+# --prod mode is the default for --reinstall and disables these.
+dev_overrides:
+  system:
+    primary_repo: spacetelescope/roman_notebooks
+    nb-wrangler:
+      repo: https://github.com/jaytmiller/nb-wrangler.git
+      ref: dev
+    spi:
+      repo: https://github.com/jaytmiller/science-platform-images.git
+      ref: dev
+  repositories:
+    roman_notebooks:
+      url: https://github.com/jaytmiller/roman_notebooks.git
+      ref: dev
+  assets:
+    - repo: https://github.com/jaytmiller/nb-wrangler-images.git
+      ref: main
+      items:
+        - source: assets/roman/
+          destination: /opt/environments/
+        - source: assets/generic/
+          destination: /opt/environments/
+        - source: assets/generic/stop_server_ext.json
+          destination: /etc/jupyter/jupyter_server_config.d/
+        - source: assets/generic/stop_server_ext.py
+          destination: /srv/jupyter/
+        - source: assets/generic/jp_app_launcher.yaml
+          destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
 
 # ----------------------------------------------------------------------------------
 # Everything in this section is generated during --curate and used for documentation
@@ -255,14 +258,14 @@ out:
         sha256: b8901e54c03a185d19cd08e9590a7b959d82901d02abc7a9a3f468c8691db70b
   repositories:
     roman_notebooks:
-      url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: "96688f45e540aecc0d0da708c14e7346869218d8"
+      url: https://github.com/jaytmiller/roman_notebooks.git
+      ref: "93a520bbb45b024ba573b82f859075767d5dca1b"
 
 # This is system config that is generally not changed by curators.
-      resolved_ref: main
+      resolved_ref: dev
   spi:
     repo: https://github.com/jaytmiller/science-platform-images.git
-    ref: 0447dfdeb2316b220c46301552d872211e48ee92
+    ref: d48be762195c8d4291ea1e456ad55755b05d5118
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
@@ -301,7 +304,7 @@ out:
     references/roman_notebooks/notebooks/data_discovery_and_access/data_discovery_and_access.ipynb: 
       roman_all
     references/roman_notebooks/notebooks/data_visualization/data_visualization.ipynb: 
-      roman_all
+      roman_data_viz
     references/roman_notebooks/notebooks/data_visualization/jdaviz_data_visualization.ipynb: 
       roman_all
     references/roman_notebooks/notebooks/exposure_pipeline/exposure_pipeline.ipynb: 
@@ -966,8 +969,9 @@ out:
         # via astropy
     astropy-sphinx-theme==3.1
         # via sphinx-astropy
-    astroquery==0.4.11
+    astroquery @ git+https://github.com/snbianco/astroquery.git@3343d59dcba09d32606df21ce2de0c1a6cd2480d
         # via
+        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/catalog_database_access/requirements.txt
         #   -r references/roman_notebooks/notebooks/data_discovery_and_access/requirements.txt
         #   -r references/roman_notebooks/notebooks/romanisim/requirements.txt
@@ -1637,8 +1641,10 @@ out:
         #   werkzeug
     mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@4099ad2bb9c76a64aae3851921c0e8666fa42b92
         # via -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
-    mast-table==0.0.1
-        # via mast-aladin
+    mast-table @ git+https://github.com/spacetelescope/mast-table.git@0e0c3dbfaa47277693a8836b5ad4b2dd10897e0b
+        # via
+        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   mast-aladin
     matplotlib==3.11.1
         # via
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
@@ -2364,6 +2370,7 @@ out:
         #   -r references/science-platform-images/deployments/common/common-env/jupyter.pip
         #   jdaviz
         #   mast-aladin
+        #   mast-table
     solara-server==1.60.3
         # via solara
     solara-ui==1.60.3
