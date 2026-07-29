@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-29T11:14:06.288822'
-  spec_sha256: 16dff0f7fe9ca93364f1a358085974c560fa7dbf311cf72213a5b2035656c282
+  date_updated: '2026-07-29T13:37:11.341546'
+  spec_sha256: 3d8bcb37549779219e9d5fb748ee533fdf9f597d8069f635ce2dad47a37baf85
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -44,15 +44,15 @@ selected_notebooks:
     root_directory: notebooks/
     include_subdirs:
       - '.*'
-  # -----   exclude_subdirs:
-  # -----     - data_visualization/data_visualization.ipynb
-  # ----- roman_data_viz:
-  # -----   repo: roman_notebooks
-  # -----   root_directory: notebooks/
-  # -----   include_subdirs:
-  # -----     - data_visualization/data_visualization.ipynb
-  # -----   tests:
-  # -----     papermill: false
+    exclude_subdirs:
+      - data_visualization/data_visualization.ipynb
+  roman_data_viz:
+    repo: roman_notebooks
+    root_directory: notebooks/
+    include_subdirs:
+      - data_visualization/data_visualization.ipynb
+    tests:
+      papermill: 'False'
 
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
