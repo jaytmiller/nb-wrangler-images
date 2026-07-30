@@ -151,5 +151,5 @@ jobs:
         with:
           push: true
           tags: |
-            ${IMAGE_ROOT}:${{ inputs.input_tag }}
-            ${IMAGE_ROOT}:${{ inputs.output_tag }}
+            ${{ env.IMAGE_ROOT }}:${{ inputs.input_tag }}
+            ${{ env.IMAGE_ROOT }}:${{ inputs.output_tag }}
