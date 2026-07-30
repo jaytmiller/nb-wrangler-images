@@ -146,9 +146,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}  # or PAT with write:packages
 
-      - name: Add Alias Tag
+      - name: Pull source image
+        run: docker pull ${IMAGE_ROOT}:${{ inputs.input_tag }}
+
+      - name: Add new tag and push
         run: |
-          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          docker buildx imagetools create \
-            ${IMAGE_ROOT}:${{ inputs.input_tag }} \
-            --tag ${IMAGE_ROOT}:${{ inputs.output_tag }}
+             docker tag  ${IMAGE_ROOT}:${{ inputs.input_tag }}  ${IMAGE_ROOT}:${{ inputs.output_tag }}
+             docker push ${IMAGE_ROOT}:${{ inputs.output_tag }}
