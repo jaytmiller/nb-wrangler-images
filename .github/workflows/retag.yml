@@ -1,0 +1,143 @@
+name: Re-tag Existing Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_tag:
+        description: The GHCR image tag of an existing image
+        required: true
+        type: string
+      output_tag:
+        description: The GHCR image tag alias for the input image
+        required: true
+        type: string
+      spec_file:
+        description: 'The path to the wrangler spec file in the notebook repo'
+        required: false
+        type: string
+        default: 'specs/roman/nbw-wrangler-spec.yaml'
+      wrangler_owner:
+        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
+        required: false
+        type: string
+        default: spacetelescope
+      wrangler_ref:
+        description: 'The branch/tag/ref of nb-wrangler to use for the tool'
+        required: false
+        type: string
+        default: 'main'
+  workflow_call:
+    inputs:
+      input_tag:
+        description: The GHCR image tag of an existing image
+        required: true
+        type: string
+      output_tag:
+        description: The GHCR image tag alias for the input image
+        required: true
+        type: string
+      spec_file:
+        description: 'The path to the wrangler spec file in the notebook repo'
+        required: false
+        type: string
+        default: 'specs/roman/nbw-wrangler-spec.yaml'
+      wrangler_owner:
+        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
+        required: false
+        type: string
+        default: spacetelescope
+      wrangler_ref:
+        description: 'The branch/tag/ref of nb-wrangler to use for the tool'
+        required: false
+        type: string
+        default: 'main'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  nb-wrangler-retag:
+    name: Re-tag/Alias Existing Image
+    runs-on: 'ubuntu-24.04'
+    permissions:
+      contents: read
+      packages: write       # Allows GITHUB_TOKEN to push to GHCR
+    steps:
+      - name: Checkout "Spec/Assets/Images Repo"
+        uses: actions/checkout@v4
+
+      - name: Set up system tools
+        run: |
+          git config --global user.email "homer@stsci.edu"
+          git config --global user.name "Homer S."
+
+      - name: Download nb-wrangler bootstrap script explicitly
+        run: |
+          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
+          curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
+          chmod +x nb-wrangler
+
+          # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
+          export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
+          export WRANGLER_REF=$(nbw resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
+          echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
+          echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
+
+          # Clone and configure exact wrangler source code,  nominally a prod copy or a (personal?) dev copy
+          cd ${GITHUB_WORKSPACE}/..
+          git clone ${WRANGLER_URL} nb-wrangler-tool
+          cd nb-wrangler-tool
+          git checkout ${WRANGLER_REF}
+
+      - name: Bootstrap Wrangler
+        run: |
+          # Given the exact version of wrangler source code,  run the full bootstrap to set up a wrangler environment
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler bootstrap
+
+      - name: Validate Wrangler spec for image / environment
+        run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          source ./nb-wrangler environment
+          ./nb-wrangler $NBW_SPEC --spec-validate
+
+      - name: Set up workflow env vars
+        run: |
+
+          # Force --prod mode for wrangler
+          export NBW_OVERRIDES_MODE="--prod"
+          echo NBW_OVERRIDES_MODE=${NBW_OVERRIDES_MODE} >> $GITHUB_ENV
+
+          # Both of owner/repo, e.g. spacetelescope/roman_notebooks
+          export IMAGE_REPO=$GITHUB_REPOSITORY
+          echo IMAGE_REPO=$IMAGE_REPO >>$GITHUB_ENV
+          export IMAGE_ROOT=ghcr.io/$IMAGE_REPO
+          echo IMAGE_ROOT=$IMAGE_ROOT >> $GITHUB_ENV
+
+          # Full repo path of degenerate spec-only image, including tag
+          export SPEC_TAG=$(./nb-wrangler --dev --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          echo SPEC_TAG=$SPEC_TAG >> $GITHUB_ENV
+          echo SPEC_IMAGE_ID=${IMAGE_ROOT}:${SPEC_TAG} >> $GITHUB_ENV
+
+          # Full repo path of executable image, including tag
+          export IMAGE_TAG=$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          echo IMAGE_TAG=$IMAGE_TAG  >> $GITHUB_ENV
+          echo IMAGE_ID=${IMAGE_ROOT}:${IMAGE_TAG} >> $GITHUB_ENV
+
+          # Nominally which classic mission (roman, tike, jwebbinar) or "wrangler" for generic builds
+          # Note that generic builds have very little or no Docker-level customization, such as extra C programs
+          # built under Docker using make.  Classic deployments
+          export SPEC_DEPLOYMENT=$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})
+          echo  SPEC_DEPLOYMENT=$SPEC_DEPLOYMENT >> $GITHUB_ENV
+
+          # Root location for curated data and environment archives, also needed for notebook tests
+          source ./nb-wrangler environment
+          echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
+
+      - name: Add Alias Tag
+        run: |
+            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+            docker buildx imagetools create \
+                   ${IMAGE_ROOT}:${{ inputs.input_tag }}
+                   --tag ${IMAGE_ROOT}:${{ inputs.output_tag }}
