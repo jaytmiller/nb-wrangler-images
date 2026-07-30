@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       output_tag:
-        description: The GHCR image tag alias for the input image
+        description: The GHCR alias tag being created for the input image
         required: true
         type: string
       spec_file:
@@ -77,6 +77,10 @@ jobs:
           # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
           curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
           chmod +x nb-wrangler
+
+          # Set up the wrangler spec as implied from here on
+          export NBW_SPEC=${{ inputs.spec_file }}
+          echo NBW_SPEC=$NBW_SPEC >> $GITHUB_ENV
 
           # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
           export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
