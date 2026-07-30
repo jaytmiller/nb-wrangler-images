@@ -146,10 +146,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}  # or PAT with write:packages
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: |
-            ${{ env.IMAGE_ROOT }}:${{ inputs.input_tag }}
-            ${{ env.IMAGE_ROOT }}:${{ inputs.output_tag }}
+     - name: Add Alias Tag
+       run: |
+           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+           docker buildx imagetools create \
+             ${IMAGE_ROOT}:${{ inputs.input_tag }} \
+             --tag ${IMAGE_ROOT}:${{ inputs.output_tag }}
