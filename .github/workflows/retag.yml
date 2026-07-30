@@ -143,5 +143,5 @@ jobs:
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
             docker buildx imagetools create \
-                   ${IMAGE_ROOT}:${{ inputs.input_tag }}
+                   ${IMAGE_ROOT}:${{ inputs.input_tag }} \
                    --tag ${IMAGE_ROOT}:${{ inputs.output_tag }}
