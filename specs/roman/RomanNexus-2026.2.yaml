@@ -31,11 +31,11 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
-  commands:
-    pip: pip     # default is "uv pip"
-    favor: spec
-  date_updated: '2026-07-29T17:54:17.311928'
-  spec_sha256: ea403bbde1e52ee637f7ba5cb0f5a9704bc57a15b14c8ad509d272a076bde404
+  # commands:
+    # pip: pip     # default is "uv pip"
+    # favor: spec
+  date_updated: '2026-07-30T10:34:44.976435'
+  spec_sha256: 64917950b6c0dd42ad9302e5d6e57e5c0e9afb07194939d3a1542d99e3b51cfd
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -266,6 +266,9 @@ out:
   spi:
     repo: https://github.com/jaytmiller/science-platform-images.git
     ref: d48be762195c8d4291ea1e456ad55755b05d5118
+  # commands:
+    # pip: pip     # default is "uv pip"
+    # favor: spec
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
@@ -1492,7 +1495,7 @@ out:
         # via -r references/science-platform-images/deployments/common/common-env/jupyter.pip
     jupyter-bokeh==4.1.0
         # via -r references/science-platform-images/deployments/common/common-env/jupyter.pip
-    jupyter-builder==1.1.1
+    jupyter-builder==1.2.0
         # via
         #   jupyterlab
         #   notebook
@@ -1970,7 +1973,7 @@ out:
         #   solara-ui
         #   sphinx-astropy
         #   sphinx-gallery
-    pip==26.1.2
+    pip==26.2
         # via pip-tools
     pip-tools==7.6.0
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
