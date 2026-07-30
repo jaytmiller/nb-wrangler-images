@@ -139,9 +139,17 @@ jobs:
           source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
 
-      - name: Add Alias Tag
-        run: |
-            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-            docker buildx imagetools create \
-                   ${IMAGE_ROOT}:${{ inputs.input_tag }} \
-                   --tag ${IMAGE_ROOT}:${{ inputs.output_tag }}
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}  # or PAT with write:packages
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${IMAGE_ROOT}:${{ inputs.input_tag }} \
+            ${IMAGE_ROOT}:${{ inputs.output_tag }}
