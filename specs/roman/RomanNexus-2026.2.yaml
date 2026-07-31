@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-31T14:50:16.418883'
-  spec_sha256: c83f80213870edb9b3251b9ad5f926cdf710707004e9901437919a783900ee59
+  date_updated: '2026-07-31T17:15:11.261329'
+  spec_sha256: 7a8460f8be51eb9089ddbd4c79787b422484236d41b2799562d31d7c67d596d1
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -69,7 +69,7 @@ extra_pip_packages:
   - jdaviz >= 5.0 # motorcyle
   - git+https://github.com/spacetelescope/mast-aladin.git@main
   - git+https://github.com/spacetelescope/mast-table.git@main
-  - git+https://github.com/snbianco/astroquery.git@mast-beta-release
+  - git+https://github.com/snbianco/astroquery.git@2026.2
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
@@ -105,6 +105,9 @@ assets:
 
 environment_vars:
   PYTHONPATH: /srv/jupyter
+
+test_environment_vars:
+  CI: "true"
 
 # ----------------------------------------------------------------------------------
 # If defined, these replace defaults while in --dev development mode.
@@ -236,14 +239,14 @@ out:
         sha256: b8901e54c03a185d19cd08e9590a7b959d82901d02abc7a9a3f468c8691db70b
   repositories:
     roman_notebooks:
-      url: https://github.com/jaytmiller/roman_notebooks.git
-      ref: "93a520bbb45b024ba573b82f859075767d5dca1b"
+      url: https://github.com/spacetelescope/roman_notebooks.git
+      ref: "c941426d0ea6033687d1ad200ecc720344f64a57"
 
 # This is system config that is generally not changed by curators.
-      resolved_ref: dev
+      resolved_ref: main
   spi:
-    repo: https://github.com/jaytmiller/science-platform-images.git
-    ref: d48be762195c8d4291ea1e456ad55755b05d5118
+    repo: https://github.com/spacetelescope/science-platform-images.git
+    ref: 9f28e5aab69cec2d6dc10a034151b15db123b824
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
@@ -748,7 +751,6 @@ out:
     - references/science-platform-images/deployments/common/common-env/jupyter.pip
     - references/science-platform-images/deployments/common/common-env/common.pip
     - references/science-platform-images/deployments/common/common-env/docs.pip
-    - references/science-platform-images/deployments/wrangler/environments/common-hints.pip
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt
     - /home/ai/.nbw-live/temps/common_pip_packages.txt
   pip_compiler_output: |
@@ -886,8 +888,8 @@ out:
     Mako==1.3.12
     Markdown==3.10.3
     markdown-it-py==4.2.0
-    mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@4099ad2bb9c76a64aae3851921c0e8666fa42b92
-    mast-table @ git+https://github.com/spacetelescope/mast-table.git@0e0c3dbfaa47277693a8836b5ad4b2dd10897e0b
+    mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@d2d5daaf5d2389ba149b785603ed12c37b6c4628
+    mast-table @ git+https://github.com/spacetelescope/mast-table.git@205bd788d06899f37f858ec94e9753f3f2b18cf8
     matplotlib==3.11.1
     mccabe==0.7.0
     mdit-py-plugins==0.6.1
@@ -899,9 +901,9 @@ out:
     msgpack==1.2.1
     multidict==6.7.1
     mypy_extensions==1.1.0
-    nab-index==0.0.11
-    nab-python==0.0.11
-    nab-resolver==0.0.11
+    nab-index==0.0.12
+    nab-python==0.0.12
+    nab-resolver==0.0.12
     narwhals==2.24.0
     nbclassic==1.3.3
     nbdime==4.0.4
@@ -927,7 +929,7 @@ out:
     photutils==3.0.0
     pillow==12.3.0
     pipdeptree==4.1.0
-    playwright==1.61.0
+    playwright==1.62.0
     pluggy==1.6.0
     poppy==1.1.2
     propcache==0.5.2
