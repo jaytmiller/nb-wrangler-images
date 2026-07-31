@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-31T11:01:16.766390'
-  spec_sha256: 51ed9f0347e369d9427109bb13afe5cfcbec6f6efc3743fb91c376af0079d360
+  date_updated: '2026-07-31T14:50:16.418883'
+  spec_sha256: c83f80213870edb9b3251b9ad5f926cdf710707004e9901437919a783900ee59
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -111,32 +111,10 @@ environment_vars:
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
 dev_overrides:
-  system:
-    primary_repo: spacetelescope/roman_notebooks
-    nb-wrangler:
-      repo: https://github.com/jaytmiller/nb-wrangler.git
-      ref: dev
-    spi:
-      repo: https://github.com/jaytmiller/science-platform-images.git
-      ref: dev
   repositories:
     roman_notebooks:
-      url: https://github.com/jaytmiller/roman_notebooks.git
-      ref: dev
-  assets:
-    - repo: https://github.com/jaytmiller/nb-wrangler-images.git
-      ref: main
-      items:
-        - source: assets/roman/
-          destination: /opt/environments/
-        - source: assets/generic/
-          destination: /opt/environments/
-        - source: assets/generic/stop_server_ext.json
-          destination: /etc/jupyter/jupyter_server_config.d/
-        - source: assets/generic/stop_server_ext.py
-          destination: /srv/jupyter/
-        - source: assets/generic/jp_app_launcher.yaml
-          destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
+      url: https://github.com/spacetelescope/roman_notebooks.git
+      ref: main  # not 2026.2
 
 # ----------------------------------------------------------------------------------
 # Everything in this section is generated during --curate and used for documentation
