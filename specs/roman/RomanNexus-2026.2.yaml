@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-07-30T10:42:54.850262'
-  spec_sha256: c1d985af7db86e07a40aaa298b74e2cd24a8c1817de320b8a6fd0015fb00b592
+  date_updated: '2026-07-31T11:01:16.766390'
+  spec_sha256: 51ed9f0347e369d9427109bb13afe5cfcbec6f6efc3743fb91c376af0079d360
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -73,7 +73,7 @@ extra_pip_packages:
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
-  - bqplot>=0.12.47
+  - bqplot>=0.12.47,<0.13
   - motorcycle==0.1.2
 
 # Packages for which overall dependency constaints overridden.  May not work!
@@ -817,10 +817,10 @@ out:
     cloudpickle==3.1.2
     contourpy==1.3.3
     crds==13.2.7
-    cryptography==49.0.0
+    cryptography==50.0.0
     cycler==0.12.1
     dask==2026.7.1
-    ddtrace==4.12.0
+    ddtrace==4.12.2
     deepdiff==9.1.0
     dill==0.4.1
     distlib==0.4.3
@@ -834,13 +834,13 @@ out:
     et_xmlfile==2.0.0
     extinction==0.4.8
     fast-histogram==0.14
-    filelock==3.32.0
+    filelock==3.32.2
     flake8==7.3.0
     Flask==3.1.3
     fonttools==4.63.0
     freetype-py==2.5.1
     frozenlist==1.8.0
-    fsspec==2026.6.0
+    fsspec==2026.7.0
     future==1.0.0
     GalSim==2.8.4
     gitdb==4.0.12
@@ -890,7 +890,6 @@ out:
     jupyter-ydoc==3.5.0
     jupyter_app_launcher==0.3.2
     jupyter_bokeh==4.1.0
-    jupyter_builder==1.2.0
     jupyter_server_fileid==0.9.3
     jupyter_server_proxy==4.5.0
     jupyterhub==5.5.0
@@ -907,7 +906,7 @@ out:
     lxml==6.1.1
     lz4==4.4.5
     Mako==1.3.12
-    Markdown==3.10.2
+    Markdown==3.10.3
     markdown-it-py==4.2.0
     mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@4099ad2bb9c76a64aae3851921c0e8666fa42b92
     mast-table @ git+https://github.com/spacetelescope/mast-table.git@0e0c3dbfaa47277693a8836b5ad4b2dd10897e0b
@@ -943,7 +942,6 @@ out:
     pamela==1.2.0
     pandas==3.0.5
     pandeia.engine==2026.2
-    pandocfilters==1.5.1
     papermill==2.7.0
     Parsley==1.3
     partd==1.4.2
@@ -991,14 +989,14 @@ out:
     roman_datamodels==1.0.0
     romancal==1.0.1
     romanisim==0.14.0
-    s3fs==2026.6.0
+    s3fs==2026.7.0
     s3path==0.6.5
     s3transfer==0.19.2
     scikit-image==0.26.0
     scipy==1.18.0
     SecretStorage==3.5.0
     semantic-version==2.10.0
-    setuptools==83.0.0
+    setuptools==81.0.0
     shapely==2.1.2
     sidecar==0.8.1
     simpervisor==1.0.0
@@ -1047,7 +1045,6 @@ out:
     tblib==3.2.2
     tenacity==9.1.4
     tifffile==2026.7.14
-    tinycss2==1.5.1
     tomli_w==1.2.0
     toolz==1.1.0
     tqdm==4.70.0
@@ -1055,15 +1052,15 @@ out:
     truststore==0.10.4
     tweakwcs==0.9.2
     typing-inspection==0.4.2
-    uvicorn==0.51.0
+    uvicorn==0.52.0
     vispy==0.16.2
     voila==0.5.12
     watchdog==6.0.0
     watchfiles==1.2.0
-    websockets==16.1.1
+    websockets==17.0.1
     Werkzeug==3.1.8
     wheel==0.47.0
-    wrapt==2.2.2
+    wrapt==2.3.0
     xarray==2026.7.0
     xlrd==2.0.2
     xmltodict==1.0.4
