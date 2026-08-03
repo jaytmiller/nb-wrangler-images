@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-08-03T10:56:33.233436'
-  spec_sha256: bd937187775175d37cf8920425f71e55f2ed30bec7bd15864be3154d9b85ee3e
+  date_updated: '2026-08-03T11:19:29.970657'
+  spec_sha256: eab7826bb27979adc0edf9d99b38a1eeeab5d4821ddcd23466c248087e415cf2
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -98,6 +98,8 @@ assets:
       # -----   destination: /opt/environments
       # ----- - source: assets/generic/
       # -----   destination: /opt/environments
+      - source: assets/generic/catalog-schema-browser.ipynb
+        destination: /opt/environments
       - source: assets/roman/cost-dashboard.ipynb
         destination: /opt/environments
       - source: assets/generic/stop_server_ext.json
