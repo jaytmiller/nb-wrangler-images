@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-08-03T11:19:29.970657'
-  spec_sha256: eab7826bb27979adc0edf9d99b38a1eeeab5d4821ddcd23466c248087e415cf2
+  date_updated: '2026-08-03T11:22:22.760811'
+  spec_sha256: 965ce9add80b84c1a827801bfaf38fffb31a5cc34acb7cc1f4cef739e390e60d
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -260,8 +260,8 @@ out:
 # This is system config that is generally not changed by curators.
       resolved_ref: main
   spi:
-    repo: https://github.com/spacetelescope/science-platform-images.git
-    ref: 9f28e5aab69cec2d6dc10a034151b15db123b824
+    repo: https://github.com/jaytmiller/science-platform-images.git
+    ref: 89a98f6244da04e41bfd64fc7c127552419075d1
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
