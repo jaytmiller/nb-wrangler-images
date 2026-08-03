@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-08-03T11:22:22.760811'
-  spec_sha256: 965ce9add80b84c1a827801bfaf38fffb31a5cc34acb7cc1f4cef739e390e60d
+  date_updated: '2026-08-03T13:47:35.247737'
+  spec_sha256: 076b433868cba128f77410480cfc5d62a56f6d225fd49ccf294bd74872a57ea1
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -261,7 +261,7 @@ out:
       resolved_ref: main
   spi:
     repo: https://github.com/jaytmiller/science-platform-images.git
-    ref: 89a98f6244da04e41bfd64fc7c127552419075d1
+    ref: 2d815fd63ffe0243b11085c791642d850d6cdba9
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
@@ -766,6 +766,7 @@ out:
     - references/science-platform-images/deployments/common/common-env/jupyter.pip
     - references/science-platform-images/deployments/common/common-env/common.pip
     - references/science-platform-images/deployments/common/common-env/docs.pip
+    - references/science-platform-images/deployments/wrangler/environments/common-hints.pip
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt
     - /home/ai/.nbw-live/temps/common_pip_packages.txt
   pip_compiler_output: |
@@ -904,7 +905,7 @@ out:
     Markdown==3.10.3
     markdown-it-py==4.2.0
     mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@d2d5daaf5d2389ba149b785603ed12c37b6c4628
-    mast-table @ git+https://github.com/spacetelescope/mast-table.git@205bd788d06899f37f858ec94e9753f3f2b18cf8
+    mast-table @ git+https://github.com/spacetelescope/mast-table.git@aedcbac9ef00517d37506a0cb967e68d91438bcb
     matplotlib==3.11.1
     mccabe==0.7.0
     mdit-py-plugins==0.6.1
