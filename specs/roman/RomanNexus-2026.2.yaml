@@ -34,8 +34,8 @@ system:
   commands:
     pip: pip     # default is "uv pip"
     favor: spec
-  date_updated: '2026-08-03T13:47:35.247737'
-  spec_sha256: 076b433868cba128f77410480cfc5d62a56f6d225fd49ccf294bd74872a57ea1
+  date_updated: '2026-08-04T21:19:36.994335'
+  spec_sha256: 28d6aa0d447ea9ed332e42ab26d6b2b484cbccf37aca710147913fd5029fee2f
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -67,22 +67,23 @@ extra_pip_packages:
   - lsstdesc.coord
   - healpy>=1.20.b1
   - jdaviz >= 5.0 # motorcyle
-  - git+https://github.com/spacetelescope/mast-aladin.git@main
-  - git+https://github.com/spacetelescope/mast-table.git@main
   - git+https://github.com/snbianco/astroquery.git@2026.2
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
   - bqplot>=0.12.47,<0.13
   - motorcycle==0.1.2
+  - dotenv
 
 # Packages for which overall dependency constaints overridden. May defeat
 # overall constraint resolution since it is overriding these w/o concern
 # for conflicts.
 # override_pip_versions:
-  # - jdaviz @ git+https://github.com/spacetelescope/jdaviz@main
-  # - bqplot @ git+https://github.com/bmorris3/bqplot@pandas3
-  # - bqplot-gl @ git+https://github.com/bqplot/bqplot-gl@0.1.0a0
+# - git+https://github.com/spacetelescope/mast-aladin.git@main
+# - git+https://github.com/spacetelescope/mast-table.git@main
+# - jdaviz @ git+https://github.com/spacetelescope/jdaviz@main
+# - bqplot @ git+https://github.com/bmorris3/bqplot@pandas3
+# - bqplot-gl @ git+https://github.com/bqplot/bqplot-gl@0.1.0a0
 
 # A text file that will be injected into image builds and executed by Docker.
 dockerfile_aux_sh: |
@@ -255,13 +256,13 @@ out:
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: "c941426d0ea6033687d1ad200ecc720344f64a57"
+      ref: "9caddd9e6228acdb1ef5909c9fd7cad0f79d4fce"
 
 # This is system config that is generally not changed by curators.
       resolved_ref: main
   spi:
     repo: https://github.com/jaytmiller/science-platform-images.git
-    ref: 2d815fd63ffe0243b11085c791642d850d6cdba9
+    ref: 18bf6e2b8ae8de922da4051a45b9094813aab170
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
@@ -439,6 +440,7 @@ out:
     references/roman_notebooks/notebooks/crds_reference_files/crds_reference_files.ipynb:
       - crds
       - numpy
+      - pathlib
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/dark_reffile.ipynb:
       - astropy
@@ -778,10 +780,10 @@ out:
     aiosignal==1.4.0
     aiosqlite==0.22.1
     alabaster==1.0.0
-    alembic==1.18.5
+    alembic==1.19.0
     annotated-types==0.8.0
     anywidget==0.11.0
-    argcomplete==3.7.0
+    argcomplete==3.7.1
     asdf==5.3.1
     asdf-astropy==0.11.0
     asdf_coordinates_schemas==0.5.1
@@ -822,6 +824,7 @@ out:
     distlib==0.4.3
     distributed==2026.7.1
     docutils==0.22.4
+    dotenv==0.9.9
     drizzle==2.2.0
     echo==0.15.0
     entrypoints==0.4
@@ -840,7 +843,7 @@ out:
     future==1.0.0
     GalSim==2.8.4
     gitdb==4.0.12
-    GitPython==3.1.57
+    GitPython==3.1.58
     glue-astronomy==0.15.0
     glue-core==1.27.0
     glue-jupyter==0.29.0
@@ -878,12 +881,12 @@ out:
     jeepney==0.9.0
     jmespath==1.1.0
     joblib==1.5.3
-    jupyter-collaboration==4.4.1
-    jupyter-collaboration-ui==2.4.2
-    jupyter-docprovider==2.4.1
+    jupyter-collaboration==5.0.0
+    jupyter-collaboration-ui==3.0.0
+    jupyter-docprovider==3.0.0
     jupyter-resource-usage==1.2.1
-    jupyter-server-ydoc==2.4.1
-    jupyter-ydoc==3.5.0
+    jupyter-server-ydoc==3.0.0
+    jupyter-ydoc==4.1.1
     jupyter_app_launcher==0.3.2
     jupyter_bokeh==4.1.0
     jupyter_server_fileid==0.9.3
@@ -901,11 +904,11 @@ out:
     LSSTDESC.Coord==1.3.1
     lxml==6.1.1
     lz4==4.4.5
-    Mako==1.3.12
+    Mako==1.4.0
     Markdown==3.10.3
     markdown-it-py==4.2.0
-    mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@d2d5daaf5d2389ba149b785603ed12c37b6c4628
-    mast-table @ git+https://github.com/spacetelescope/mast-table.git@aedcbac9ef00517d37506a0cb967e68d91438bcb
+    mast-aladin==0.0.3
+    mast-table==0.0.2
     matplotlib==3.11.1
     mccabe==0.7.0
     mdit-py-plugins==0.6.1
@@ -954,9 +957,9 @@ out:
     pyarrow==25.0.0
     pybind11==3.0.4
     pycodestyle==2.14.0
-    pycrdt==0.13.1
-    pycrdt-store==0.1.4
-    pycrdt-websocket==0.16.2
+    pycrdt==0.14.2
+    pycrdt-store==0.1.5
+    pycrdt-websocket==0.16.4
     pydantic==2.13.4
     pydantic_core==2.46.4
     pydata-sphinx-theme==0.18.0
@@ -970,6 +973,7 @@ out:
     pytest==9.1.1
     pytest-doctestplus==1.7.1
     pytest-openfiles==0.6.0
+    python-dotenv==1.2.2
     pythreejs==2.4.2
     pytokens==0.4.1
     pyvo==1.9.1
