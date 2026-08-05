@@ -32,10 +32,12 @@ system:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
   commands:
-    pip: pip     # default is "uv pip"
+    # default is "uv pip".  SPI had to use pip.  pip not picky about pyproject.toml version;  uv crashes
+    pip: pip
+    # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-04T21:19:36.994335'
-  spec_sha256: 28d6aa0d447ea9ed332e42ab26d6b2b484cbccf37aca710147913fd5029fee2f
+  date_updated: '2026-08-05T16:07:10.931333'
+  spec_sha256: e8adec8ef568d0fb4612019e539dd2493c434159b29275e3741c5e073272fc3e
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -44,15 +46,15 @@ selected_notebooks:
     root_directory: notebooks/
     include_subdirs:
       - '.*'
-    exclude_subdirs:
-      - data_visualization/data_visualization.ipynb
-  roman_data_viz:
-    repo: roman_notebooks
-    root_directory: notebooks/
-    include_subdirs:
-      - data_visualization/data_visualization.ipynb
-    tests:
-      papermill: 'False'
+  # -----   exclude_subdirs:
+  # -----     - data_visualization/data_visualization.ipynb
+  # ----- roman_data_viz:
+  # -----   repo: roman_notebooks
+  # -----   root_directory: notebooks/
+  # -----   include_subdirs:
+  # -----     - data_visualization/data_visualization.ipynb
+  # -----   tests:
+  # -----     papermill: 'False'
 
 # Packages installed by mamba in the mission environment only.
 extra_mamba_packages:
@@ -74,6 +76,8 @@ common_pip_packages:
   - bqplot>=0.12.47,<0.13
   - motorcycle==0.1.2
   - dotenv
+  - jupyter-collaboration<5
+  - jupyter-server-ydoc<3
 
 # Packages for which overall dependency constaints overridden. May defeat
 # overall constraint resolution since it is overriding these w/o concern
@@ -123,6 +127,11 @@ test_environment_vars:
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
 dev_overrides:
+  commands:
+    # default is "uv pip".  SPI had to use pip.  pip not picky about pyproject.toml version;  uv crashes
+    pip: pip
+    # choose this over any env var setting but not CLI
+    favor: spec
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
@@ -132,8 +141,10 @@ dev_overrides:
       repo: https://github.com/jaytmiller/science-platform-images.git
       ref: dev
     nb-wrangler:
-      repo: https://github.com/spacetelescope/nb-wrangler.git
+      repo: https://github.com/jaytmiller/nb-wrangler.git
       ref: dev
+  common_pip:
+    - git+https://github/jaytmiller/nb-wrangler.git@dev
 
 # ----------------------------------------------------------------------------------
 # Everything in this section is generated during --curate and used for documentation
@@ -262,7 +273,7 @@ out:
       resolved_ref: main
   spi:
     repo: https://github.com/jaytmiller/science-platform-images.git
-    ref: 18bf6e2b8ae8de922da4051a45b9094813aab170
+    ref: 881f12585b115eb6d7e14cec3472d0f243235d57
   test_notebooks:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb: 
       roman_all
@@ -301,7 +312,7 @@ out:
     references/roman_notebooks/notebooks/data_discovery_and_access/data_discovery_and_access.ipynb: 
       roman_all
     references/roman_notebooks/notebooks/data_visualization/data_visualization.ipynb: 
-      roman_data_viz
+      roman_all
     references/roman_notebooks/notebooks/data_visualization/jdaviz_data_visualization.ipynb: 
       roman_all
     references/roman_notebooks/notebooks/exposure_pipeline/exposure_pipeline.ipynb: 
@@ -811,7 +822,7 @@ out:
     cachetools==7.1.7
     casa-formats-io==0.3.0
     certipy==0.2.3
-    ci_watson==0.11.0
+    ci_watson==0.12.0
     cloudpickle==3.1.2
     contourpy==1.3.3
     crds==13.2.7
@@ -841,7 +852,7 @@ out:
     frozenlist==1.8.0
     fsspec==2026.7.0
     future==1.0.0
-    GalSim==2.8.4
+    GalSim==2.8.5
     gitdb==4.0.12
     GitPython==3.1.58
     glue-astronomy==0.15.0
@@ -881,12 +892,12 @@ out:
     jeepney==0.9.0
     jmespath==1.1.0
     joblib==1.5.3
-    jupyter-collaboration==5.0.0
-    jupyter-collaboration-ui==3.0.0
-    jupyter-docprovider==3.0.0
+    jupyter-collaboration==4.4.2
+    jupyter-collaboration-ui==2.4.2
+    jupyter-docprovider==2.4.2
     jupyter-resource-usage==1.2.1
-    jupyter-server-ydoc==3.0.0
-    jupyter-ydoc==4.1.1
+    jupyter-server-ydoc==2.4.2
+    jupyter-ydoc==3.5.0
     jupyter_app_launcher==0.3.2
     jupyter_bokeh==4.1.0
     jupyter_server_fileid==0.9.3
@@ -894,7 +905,6 @@ out:
     jupyterhub==5.5.0
     jupyterlab-git-core==0.54.1
     jupyterlab_git==0.54.1
-    jupyterlab_tour==4.0.1
     jupytext==1.19.5
     keyring==25.7.0
     kiwisolver==1.5.0
@@ -904,7 +914,7 @@ out:
     LSSTDESC.Coord==1.3.1
     lxml==6.1.1
     lz4==4.4.5
-    Mako==1.4.0
+    Mako==1.4.1
     Markdown==3.10.3
     markdown-it-py==4.2.0
     mast-aladin==0.0.3
@@ -924,6 +934,7 @@ out:
     nab-python==0.0.12
     nab-resolver==0.0.12
     narwhals==2.24.0
+    nb-wrangler @ git+https://github.com/spacetelescope/nb-wrangler.git@38f40b46f786be8ef4cb93a7c73c1915c15547b9
     nbclassic==1.3.3
     nbdime==4.0.4
     nbgitpuller==1.3.0
@@ -957,9 +968,9 @@ out:
     pyarrow==25.0.0
     pybind11==3.0.4
     pycodestyle==2.14.0
-    pycrdt==0.14.2
-    pycrdt-store==0.1.5
-    pycrdt-websocket==0.16.4
+    pycrdt==0.13.1
+    pycrdt-store==0.1.4
+    pycrdt-websocket==0.16.2
     pydantic==2.13.4
     pydantic_core==2.46.4
     pydata-sphinx-theme==0.18.0
@@ -973,6 +984,7 @@ out:
     pytest==9.1.1
     pytest-doctestplus==1.7.1
     pytest-openfiles==0.6.0
+    pytest-skip-slow==1.1.0
     python-dotenv==1.2.2
     pythreejs==2.4.2
     pytokens==0.4.1
@@ -989,6 +1001,7 @@ out:
     roman_datamodels==1.0.0
     romancal==1.0.1
     romanisim==0.14.0
+    ruamel.yaml==0.19.1
     s3fs==2026.7.0
     s3path==0.6.5
     s3transfer==0.19.2
@@ -1006,9 +1019,9 @@ out:
     sncosmo==2.13.0
     snowballstemmer==3.1.1
     soc-roman-tools==0.1.0
-    solara==1.60.3
-    solara-server==1.60.3
-    solara-ui==1.60.3
+    solara==1.61.0
+    solara-server==1.61.0
+    solara-ui==1.61.0
     sortedcontainers==2.4.0
     specreduce==1.9.0
     spectral-cube==0.6.7
@@ -1029,7 +1042,7 @@ out:
     sphinxext-opengraph==0.13.0
     SQLAlchemy==2.0.51
     sqlite-anyio==0.2.10
-    starlette==1.3.1
+    starlette==1.4.1
     stcal==1.19.1
     stdatamodels==6.0.0
     stdlib-list==0.12.0
@@ -1039,6 +1052,7 @@ out:
     stsci-rtd-theme==1.0.1
     stsci.imagestats==1.8.4
     stsci.stimage==0.3.0
+    stsci_announce @ git+https://github.com/spacetelescope/stsci-announce.git@c755fc7f824d24e49c09a63f308d6cb881a9e543
     stsynphot==1.5.1
     sunpy-sphinx-theme==2.2.2
     synphot==1.7.0
@@ -1052,6 +1066,7 @@ out:
     truststore==0.10.4
     tweakwcs==0.9.2
     typing-inspection==0.4.2
+    uv==0.12.2
     uvicorn==0.52.1
     vispy==0.16.2
     voila==0.5.12
