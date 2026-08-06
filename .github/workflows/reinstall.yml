@@ -1,4 +1,7 @@
-name: Production / Re-install locked spec
+name: Reinstall (Use spec notebook, code, data locks)
+
+# This workflow rebuilds the image using a pinned mission environment in
+# in a completed spec.
 
 on:
   workflow_dispatch:
@@ -8,6 +11,11 @@ on:
         required: false
         type: string
         default: 'specs/roman/nbw-wrangler-spec.yaml'
+      wrangler_owner:
+        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
+        required: false
+        type: string
+        default: spacetelescope
       wrangler_ref:
         description: 'The branch/tag/ref of nb-wrangler to use for the tool'
         required: false
@@ -20,6 +28,11 @@ on:
         required: false
         type: string
         default: 'specs/roman/nbw-wrangler-spec.yaml'
+      wrangler_owner:
+        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
+        required: false
+        type: string
+        default: spacetelescope
       wrangler_ref:
         description: 'The branch/tag/ref of nb-wrangler to use for the tool'
         required: false
@@ -32,12 +45,13 @@ defaults:
 
 jobs:
   nb-wrangler-reinstall:
-    name: Production Reinstall
+    name: Reinstall (Prod, use spec notebook, code, data locks)
     runs-on: 'ubuntu-24.04'
     permissions:
       contents: read
       packages: write       # Allows GITHUB_TOKEN to push to GHCR
     steps:
+
       - name: Checkout "Notebook Repo"
         uses: actions/checkout@v4
 
@@ -52,36 +66,26 @@ jobs:
           export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
           echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
 
-      - name: Download nb-wrangler bootstrap script explicitly
-        run: |
-          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
-          export NBW_DEV=0
-          curl https://raw.githubusercontent.com/spacetelescope/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
-          chmod +x nb-wrangler
+          # name inside Dockerfile
+          echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
 
-          # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
-          export WRANGLER_URL=$(./nb-wrangler resolve-repo ${NBW_SPEC})
-          export WRANGLER_REF=$(./nb-wrangler resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
-          echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
-          echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
-
-          # Clone and configure exact wrangler source code,  nominally a prod copy or a (personal?) dev copy
-          cd ${GITHUB_WORKSPACE}/..
-          git clone ${WRANGLER_URL} nb-wrangler-tool
-          cd nb-wrangler-tool
-          git checkout ${WRANGLER_REF}
+       - name: Set NBW_OVERRIDES_MODE to "--prod"
+          # Lock the spec requirements to prod mode ignoring dev_overrides
+          export NBW_OVERRIDE_MODE="--prod"
+          echo NBW_OVERRIDE_MODE="--prod" >>$GITHUB_ENV
 
       - name: Bootstrap Wrangler
         run: |
           # Given the exact version of wrangler source code,  run the full bootstrap to set up a wrangler environment
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           ./nb-wrangler bootstrap
+          micromamba install --yes syft grype
 
       - name: Validate Wrangler spec for image / environment
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           source ./nb-wrangler environment
-          ./nb-wrangler --spec-validate
+          ./nb-wrangler $NBW_SPEC --spec-validate
 
       - name: Set up workflow env vars
         run: |
@@ -107,21 +111,19 @@ jobs:
           export SPEC_DEPLOYMENT=$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})
           echo  SPEC_DEPLOYMENT=$SPEC_DEPLOYMENT >> $GITHUB_ENV
 
-          # name inside Docker archive
-          echo SPEC_NAME=nbw-wrangler-spec.yaml >> $GITHUB_ENV
-
           # Root location for curated data and environment archives, also needed for notebook tests
           source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
 
-          # Flag that is true IFF the spec still has dev_overrides and can build --dev images
-          if grep dev_overrides: ${NBW_SPEC}; then
-             export NBW_DEV_MODE="--dev"
-          else
-             export NBW_DEV_MODE="--prod"
-          fi
-          echo NBW_DEV_MODE=$NBW_DEV_MODE >>$GITHUB_ENV
-
+      - name: Build Image and Push to GHCR
+        run: |
+          set -x
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler --clone-repos --spi-inject-reqs --spi-build-image --repos-dir /tmp/references ${NBW_OVERRIDES_MODE}
+          docker image ls
+          docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
+          docker push ${IMAGE_ID}
+          rm -rf /tmp/references
 
       - name: Log in to GHCR
         run: echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
@@ -132,10 +134,9 @@ jobs:
           mkdir docker-root
           cd docker-root
           cp ${NBW_SPEC} .
-          export SPEC_BNAME=$(basename ${NBW_SPEC})
           cat > Dockerfile << EOF
           FROM scratch
-          COPY ${SPEC_BNAME} ${SPEC_NAME}
+          COPY $(basename ${NBW_SPEC}) ${SPEC_NAME}
           EOF
 
       - name: Build Spec archive and push to GHCR
@@ -148,51 +149,33 @@ jobs:
         run: |
           set -x
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          case "${NBW_DEV_MODE}" in
-             "--dev")
-                echo "WARNING: Building DEV image based on spec dev_overrides repo values to define code, tools, notebooks."
-                break;;
-             "--prod")
-                echo "INFO: Building PROD image based on spec nominal repo values to define code, tools, notebooks."
-                break;;
-             *) echo "ERROR: Invalid wrangler curation / repo clone mode."
-                false
-                break;;
-          esac
-          ./nb-wrangler "${NBW_DEV_MODE}" --clone-repos --spi-inject-reqs --spi-build-image --repos-dir /tmp/references
+          ./nb-wrangler --clone-repos --spi-inject-reqs --spi-build-image --repos-dir /tmp/references ${NBW_OVERRIDES_MODE}
           docker image ls
           docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
           docker push ${IMAGE_ID}
           rm -rf /tmp/references
 
-      - name: Scan Image (disabled?)
+      - name: Test imports for native environment (adivsory)
+        run: |
+            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+            ./nb-wrangler --test-imports --test-copy-shared ../../shared ${NBW_OVERRIDES_MODE}
+
+      - name: Test notebooks inside image (advisory)
+        run: |
+          cd /tmp/references/science-platform-images
+          scripts/image-configure ${SPEC_DEPLOYMENT}
+          source setup-env
+          mkdir ${HOME}/crds_cache
+          # make dirs globally writable since uid/gid inside Docker may not match outside
+          chmod -R 777 ${HOME}/crds_cache
+          chmod -R 777 ${NBW_PANTRY}
+          image-test --test-notebooks ${NBW_OVERRIDES_MODE}
+
+      - name: Scan Image (advisory)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler "${NBW_DEV_MODE}" --clone-repos --repos-dir /tmp/references
+          ./nb-wrangler --clone-repos --repos-dir /tmp/references ${NBW_OVERRIDES_MODE}
           cd /tmp/references/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
           scripts/image-scan
-
-      - name: Test imports inside image
-        run: |
-          cd /tmp/references/science-platform-images
-          scripts/image-configure ${SPEC_DEPLOYMENT}
-          source setup-env
-          mkdir ${HOME}/crds_cache
-          # make dirs globally writable since uid/gid inside Docker may not match outside
-          chmod -R 777 ${HOME}/crds_cache
-          chmod -R 777 ${NBW_PANTRY}
-          image-test
-
-      - name: Test notebooks inside image
-        run: |
-          cd /tmp/references/science-platform-images
-          scripts/image-configure ${SPEC_DEPLOYMENT}
-          source setup-env
-          mkdir ${HOME}/crds_cache
-          # make dirs globally writable since uid/gid inside Docker may not match outside
-          chmod -R 777 ${HOME}/crds_cache
-          chmod -R 777 ${NBW_PANTRY}
-          ./nb-wrangler --data-resinstall
-          image-test --test-notebooks
