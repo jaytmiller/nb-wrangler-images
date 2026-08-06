@@ -59,20 +59,37 @@ jobs:
           git config --global user.email "homer@stsci.edu"
           git config --global user.name "Homer S."
 
+      - name: Set NBW_OVERRIDES_MODE to "--prod"
+        run: |
+          # Lock the spec requirements to dev mode (if available) during curation and
+          # use dev_overrides:
+          export NBW_OVERRIDES_MODE="--prod"
+          echo NBW_OVERRIDES_MODE="--prod" >>$GITHUB_ENV
+
       - name: Locate primary notebook repo wrangler spec
         run: |
+          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
+          curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
+          chmod +x nb-wrangler
+
+          # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
+          export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
+          ANS=$(./nb-wrangler resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
+          export WRANGLER_REF="${ANS}"
+          echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
+          echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
+
+          # Clone and configure exact wrangler source code,  nominally a prod copy or a (personal?) dev copy
+          cd ${GITHUB_WORKSPACE}/..
+          git clone ${WRANGLER_URL} nb-wrangler-tool
+          cd nb-wrangler-tool
+          git checkout ${WRANGLER_REF}
           # Primary spec from notebook repo
           export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
           echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
 
           # name inside Dockerfile
           echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
-
-      - name: Set NBW_OVERRIDES_MODE to "--prod"
-        run: |
-          # Lock the spec requirements to prod mode ignoring dev_overrides
-          export NBW_OVERRIDES_MODE="--prod"
-          echo NBW_OVERRIDES_MODE="--prod" >>$GITHUB_ENV
 
       - name: Bootstrap Wrangler
         run: |
@@ -97,12 +114,12 @@ jobs:
 
           # Full repo path of degenerate spec-only image, including tag
           ANS=$(./nb-wrangler --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
-          export SPEC_TAG=${ANS}
+          export SPEC_TAG="${ANS}"
           echo SPEC_TAG=$SPEC_TAG >> $GITHUB_ENV
           echo SPEC_IMAGE_ID=${IMAGE_ROOT}:${SPEC_TAG} >> $GITHUB_ENV
 
           # Full repo path of executable image, including tag
-          ANS="$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER"
+          ANS=$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
           export IMAGE_TAG="${ANS}"
           echo IMAGE_TAG=$IMAGE_TAG  >> $GITHUB_ENV
           echo IMAGE_ID=${IMAGE_ROOT}:${IMAGE_TAG} >> $GITHUB_ENV
@@ -110,23 +127,13 @@ jobs:
           # Nominally which classic mission (roman, tike, jwebbinar) or "wrangler" for generic builds
           # Note that generic builds have very little or no Docker-level customization, such as extra C programs
           # built under Docker using make.  Classic deployments
-          ANS="$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})"
+          ANS=$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})
           export SPEC_DEPLOYMENT="${ANS}"
           echo  SPEC_DEPLOYMENT=$SPEC_DEPLOYMENT >> $GITHUB_ENV
 
           # Root location for curated data and environment archives, also needed for notebook tests
           source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
-
-      - name: Build Image and Push to GHCR
-        run: |
-          set -x
-          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --clone-repos --spi-inject-reqs --spi-build-image --repos-dir /tmp/references ${NBW_OVERRIDES_MODE}
-          docker image ls
-          docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
-          docker push ${IMAGE_ID}
-          rm -rf /tmp/references
 
       - name: Log in to GHCR
         run: |

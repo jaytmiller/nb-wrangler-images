@@ -64,21 +64,37 @@ jobs:
           git config --global user.email "homer@stsci.edu"
           git config --global user.name "Homer S."
 
-      - name: Locate primary notebook repo wrangler spec
-        run: |
-          # Primary spec from notebook repo
-          export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
-          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
-
-          # name inside Dockerfile
-          echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
-
       - name: Set NBW_OVERRIDES_MODE to "--dev"
         run: |
           # Lock the spec requirements to dev mode (if available) during curation and
           # use dev_overrides:
           export NBW_OVERRIDES_MODE="--dev"
           echo NBW_OVERRIDES_MODE="--dev" >>$GITHUB_ENV
+
+      - name: Locate primary notebook repo wrangler spec
+        run: |
+          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
+          curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
+          chmod +x nb-wrangler
+
+          # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
+          export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
+          ANS=$(./nb-wrangler resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
+          export WRANGLER_REF="${ANS}"
+          echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
+          echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
+
+          # Clone and configure exact wrangler source code,  nominally a prod copy or a (personal?) dev copy
+          cd ${GITHUB_WORKSPACE}/..
+          git clone ${WRANGLER_URL} nb-wrangler-tool
+          cd nb-wrangler-tool
+          git checkout ${WRANGLER_REF}
+          # Primary spec from notebook repo
+          export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
+          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
+
+          # name inside Dockerfile
+          echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
 
       - name: Bootstrap Wrangler
         run: |
@@ -137,7 +153,8 @@ jobs:
             ./nb-wrangler --data-curate
 
       - name: Log in to GHCR
-        run: echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Generate Dockerfile for spec
         run: |
