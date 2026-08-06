@@ -1,7 +1,7 @@
 name: Reinstall (Use spec notebook, code, data locks)
 
-# This workflow rebuilds the image using a pinned mission environment in
-# in a completed spec.
+# -- This workflow rebuilds the image using a pinned mission environment in
+# -- in a completed spec.
 
 on:
   workflow_dispatch:
@@ -51,7 +51,6 @@ jobs:
       contents: read
       packages: write       # Allows GITHUB_TOKEN to push to GHCR
     steps:
-
       - name: Checkout "Notebook Repo"
         uses: actions/checkout@v4
 
@@ -69,10 +68,11 @@ jobs:
           # name inside Dockerfile
           echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
 
-       - name: Set NBW_OVERRIDES_MODE to "--prod"
+      - name: Set NBW_OVERRIDES_MODE to "--prod"
+        run: |
           # Lock the spec requirements to prod mode ignoring dev_overrides
-          export NBW_OVERRIDE_MODE="--prod"
-          echo NBW_OVERRIDE_MODE="--prod" >>$GITHUB_ENV
+          export NBW_OVERRIDES_MODE="--prod"
+          echo NBW_OVERRIDES_MODE="--prod" >>$GITHUB_ENV
 
       - name: Bootstrap Wrangler
         run: |
@@ -96,19 +96,22 @@ jobs:
           echo IMAGE_ROOT=$IMAGE_ROOT >> $GITHUB_ENV
 
           # Full repo path of degenerate spec-only image, including tag
-          export SPEC_TAG=$(./nb-wrangler --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          ANS=$(./nb-wrangler --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          export SPEC_TAG=${ANS}
           echo SPEC_TAG=$SPEC_TAG >> $GITHUB_ENV
           echo SPEC_IMAGE_ID=${IMAGE_ROOT}:${SPEC_TAG} >> $GITHUB_ENV
 
           # Full repo path of executable image, including tag
-          export IMAGE_TAG=$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          ANS="$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER"
+          export IMAGE_TAG="${ANS}"
           echo IMAGE_TAG=$IMAGE_TAG  >> $GITHUB_ENV
           echo IMAGE_ID=${IMAGE_ROOT}:${IMAGE_TAG} >> $GITHUB_ENV
 
           # Nominally which classic mission (roman, tike, jwebbinar) or "wrangler" for generic builds
           # Note that generic builds have very little or no Docker-level customization, such as extra C programs
           # built under Docker using make.  Classic deployments
-          export SPEC_DEPLOYMENT=$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})
+          ANS="$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})"
+          export SPEC_DEPLOYMENT="${ANS}"
           echo  SPEC_DEPLOYMENT=$SPEC_DEPLOYMENT >> $GITHUB_ENV
 
           # Root location for curated data and environment archives, also needed for notebook tests
@@ -126,7 +129,8 @@ jobs:
           rm -rf /tmp/references
 
       - name: Log in to GHCR
-        run: echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Generate Dockerfile for spec
         run: |

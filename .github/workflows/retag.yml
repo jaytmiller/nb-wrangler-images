@@ -84,7 +84,8 @@ jobs:
 
           # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
           export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
-          export WRANGLER_REF=$(nbw resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
+          ANS=$(nbw resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
+          export WRANGLER_REF="${ANS}"
           echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
           echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
 
@@ -120,19 +121,22 @@ jobs:
           echo IMAGE_ROOT=$IMAGE_ROOT >> $GITHUB_ENV
 
           # Full repo path of degenerate spec-only image, including tag
-          export SPEC_TAG=$(./nb-wrangler --dev --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          ANS=$(./nb-wrangler --dev --spec-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          export SPEC_TAG="${ANS}"
           echo SPEC_TAG=$SPEC_TAG >> $GITHUB_ENV
           echo SPEC_IMAGE_ID=${IMAGE_ROOT}:${SPEC_TAG} >> $GITHUB_ENV
 
           # Full repo path of executable image, including tag
-          export IMAGE_TAG=$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          ANS=$(./nb-wrangler --spi-image-name 2>/dev/null )_$GITHUB_RUN_NUMBER
+          export IMAGE_TAG="${ANS}"
           echo IMAGE_TAG=$IMAGE_TAG  >> $GITHUB_ENV
           echo IMAGE_ID=${IMAGE_ROOT}:${IMAGE_TAG} >> $GITHUB_ENV
 
           # Nominally which classic mission (roman, tike, jwebbinar) or "wrangler" for generic builds
           # Note that generic builds have very little or no Docker-level customization, such as extra C programs
           # built under Docker using make.  Classic deployments
-          export SPEC_DEPLOYMENT=$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})
+          ANS=$(yq -r .image_spec_header.deployment_name ${NBW_SPEC})
+          export SPEC_DEPLOYMENT="${ANS}"
           echo  SPEC_DEPLOYMENT=$SPEC_DEPLOYMENT >> $GITHUB_ENV
 
           # Root location for curated data and environment archives, also needed for notebook tests
@@ -147,7 +151,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}  # or PAT with write:packages
 
       - name: Pull source image
-        run: docker pull ${IMAGE_ROOT}:${{ inputs.input_tag }}
+        run: |
+          docker pull ${IMAGE_ROOT}:${{ inputs.input_tag }}
 
       - name: Add new tag and push
         run: |
