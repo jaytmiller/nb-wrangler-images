@@ -70,7 +70,7 @@ jobs:
       - name: Download nb-wrangler bootstrap script explicitly
         run: |
           # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
-          export NBW_DEV=1
+          export NBW_OVERRIDES_MODE="--dev"
           curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
           chmod +x nb-wrangler
 
@@ -91,6 +91,7 @@ jobs:
           # Given the exact version of wrangler source code,  run the full bootstrap to set up a wrangler environment
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           ./nb-wrangler bootstrap
+          micromamba install --yes syft grype
 
       - name: Validate Wrangler spec for image / environment
         run: |
@@ -168,21 +169,12 @@ jobs:
           docker push ${IMAGE_ID}
           rm -rf /tmp/references
 
-      - name: Scan Image with Trivy
-        run: |
-          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --dev --clone-repos --repos-dir /tmp/references
-          cd /tmp/references/science-platform-images
-          scripts/image-configure ${SPEC_DEPLOYMENT}
-          source setup-env
-          scripts/image-scan
-
-      - name: Test imports for native environment
+      - name: Test imports for native environment (adivsory)
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
             ./nb-wrangler --test-imports --test-copy-shared ../../shared --dev
 
-      - name: Test notebooks inside image
+      - name: Test notebooks inside image (advisory)
         run: |
           cd /tmp/references/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
@@ -192,3 +184,12 @@ jobs:
           chmod -R 777 ${HOME}/crds_cache
           chmod -R 777 ${NBW_PANTRY}
           image-test --dev --test-notebooks
+
+      - name: Scan Image (advisory)
+        run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler --dev --clone-repos --repos-dir /tmp/references
+          cd /tmp/references/science-platform-images
+          scripts/image-configure ${SPEC_DEPLOYMENT}
+          source setup-env
+          scripts/image-scan
