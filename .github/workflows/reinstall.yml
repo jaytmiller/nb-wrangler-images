@@ -96,6 +96,7 @@ jobs:
           # Given the exact version of wrangler source code,  run the full bootstrap to set up a wrangler environment
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           ./nb-wrangler bootstrap
+          source ./nb-wrangler environment
           micromamba install --yes syft grype
 
       - name: Validate Wrangler spec for image / environment

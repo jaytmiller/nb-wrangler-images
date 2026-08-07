@@ -21,7 +21,7 @@ repositories:
 
 # This is system config that is generally not changed by curators.
 system:
-  spec_version: '2.1'
+  spec_version: '2.3'
   archive_format: .tar
   # The primary repo
   primary_repo: spacetelescope/roman_notebooks
@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-05T16:07:10.931333'
-  spec_sha256: e8adec8ef568d0fb4612019e539dd2493c434159b29275e3741c5e073272fc3e
+  date_updated: '2026-08-06T21:43:24.376321'
+  spec_sha256: 42d73d05edc1f51cf9764a909f181b52b109588525a4f51fbcfd6e5ba6a2f356
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
