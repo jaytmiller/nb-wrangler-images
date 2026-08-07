@@ -68,6 +68,12 @@ jobs:
 
       - name: Locate primary notebook repo wrangler spec
         run: |
+          # Primary spec from notebook repo
+          export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
+          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
+
+          # name inside Dockerfile
+          echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
           # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
           curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
           chmod +x nb-wrangler
@@ -84,12 +90,6 @@ jobs:
           git clone ${WRANGLER_URL} nb-wrangler-tool
           cd nb-wrangler-tool
           git checkout ${WRANGLER_REF}
-          # Primary spec from notebook repo
-          export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
-          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
-
-          # name inside Dockerfile
-          echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
 
       - name: Bootstrap Wrangler
         run: |
