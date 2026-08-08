@@ -112,12 +112,31 @@ assets:
         destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
       - source: assets/generic/post-start-hook
         destination: /opt/environments/post-start-hook
+      - source: assets/generic/test
+        destination: /opt/environments/test
 
 environment_vars:
   PYTHONPATH: /srv/jupyter:$PYTHONPATH
 
 test_environment_vars:
   CI: "true"
+
+deactivated_dev_overrides:
+  system:
+    primary_repo: jaytmiller/tike_content
+    nb-wrangler:
+      repo: https://github.com/jaytmiller/nb-wrangler.git
+      ref: dev
+    spi:
+      repo: https://github.com/jaytmiller/science-platform-images.git
+      ref: dev
+  repositories:
+    tike_content:
+      url: https://github.com/spacetelescope/tike_content
+      ref: main
+    mast_notebooks:
+      url: https://github.com/spacetelescope/mast_notebooks
+      ref: main
 
 out:
   data:
@@ -1676,19 +1695,3 @@ out:
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
     zipp==4.1.0 ; python_full_version < '3.12'
         # via importlib-metadata
-deactivated_dev_overrides:
-  system:
-    primary_repo: jaytmiller/roman_notebooks
-    nb-wrangler:
-      repo: https://github.com/jaytmiller/nb-wrangler.git
-      ref: dev
-    spi:
-      repo: https://github.com/jaytmiller/science-platform-images.git
-      ref: dev
-  repositories:
-    tike_content:
-      url: https://github.com/spacetelescope/tike_content
-      ref: main
-    mast_notebooks:
-      url: https://github.com/spacetelescope/mast_notebooks
-      ref: main
