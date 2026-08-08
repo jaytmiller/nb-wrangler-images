@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-07T19:08:31.973535'
-  spec_sha256: 8766ebd340c2ae854470530ef0f22687a5adc3f493cf3c08701fd94397b847bb
+  date_updated: '2026-08-08T08:45:05.628959'
+  spec_sha256: 6c3759bc72660f7733027dd33225c192e368fd6c8bdceb76874834d83f5e30f8
 
 # Supported notebooks that will define the environment and by sync'ed to the science platform.
 selected_notebooks:
@@ -100,10 +100,6 @@ assets:
   - repo: https://github.com/spacetelescope/nb-wrangler-images.git
     ref: main
     items:
-      # ----- - source: assets/roman/
-      # -----   destination: /opt/environments
-      # ----- - source: assets/generic/
-      # -----   destination: /opt/environments
       - source: assets/generic/catalog-schema-browser.ipynb
         destination: /opt/environments
       - source: assets/roman/cost-dashboard.ipynb
@@ -128,11 +124,6 @@ test_environment_vars:
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
 dev_overrides:
-  commands:
-    # default is "uv pip".  SPI had to use pip.  pip not picky about pyproject.toml version;  uv crashes
-    pip: pip
-    # choose this over any env var setting but not CLI
-    favor: spec
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
@@ -146,6 +137,11 @@ dev_overrides:
       ref: dev
   common_pip_packages:
     - git+https://github.com/jaytmiller/nb-wrangler.git@dev
+    - bqplot>=0.12.47,<0.13
+    - motorcycle==0.1.2
+    - dotenv
+    - jupyter-collaboration<5
+    - jupyter-server-ydoc<3
 
 # ----------------------------------------------------------------------------------
 # Everything in this section is generated during --curate and used for documentation
