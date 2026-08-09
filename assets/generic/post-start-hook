@@ -16,7 +16,7 @@ source /opt/common-scripts/env-activate base
 # Quota checking is only relevant to cloud deployments,  standalone sessions have no quotas.
 # .............................................................................................
 
-/opt/common-scripts/wrangler-check-quota
+/opt/common-scripts/wrangler-check-efs-quota
 divider
 
 # .............................................................................................
