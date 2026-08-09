@@ -56,7 +56,7 @@ divider
 /opt/common-scripts/wrangler-register-kernel
 divider
 
-/opt/common-scripts/wrangler-install-app-launcher
+/opt/common-scripts/wrangler-install-jupyter-app-launcher
 divider
 
 # Make sure the script does not *return* fail blocking spawn
