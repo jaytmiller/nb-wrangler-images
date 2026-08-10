@@ -186,7 +186,7 @@ jobs:
           docker image ls
           docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
           docker push ${IMAGE_ID}
-          rm -rf $REPOS_DIR
+          rm -rf $NBW_REPOS_DIR
 
       - name: Test imports for native environment (adivsory)
         run: |
@@ -195,7 +195,7 @@ jobs:
 
       - name: Test notebooks inside image (advisory)
         run: |
-          cd $REPOS_DIR/science-platform-images
+          cd $NBW_REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
           mkdir ${HOME}/crds_cache
@@ -208,7 +208,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           ./nb-wrangler --clone-repos ${NBW_OVERRIDES_MODE}
-          cd $REPOS_DIR/science-platform-images
+          cd $NBW_REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
           scripts/image-scan
