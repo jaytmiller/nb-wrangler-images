@@ -184,6 +184,7 @@ jobs:
 
       - name: Test notebooks inside image (advisory)
         run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           cd $NBW_REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
@@ -196,8 +197,7 @@ jobs:
       - name: Scan Image (advisory)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --clone-repos ${NBW_OVERRIDES_MODE}
           cd $NBW_REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
-          scripts/image-scan
+          image-scan
