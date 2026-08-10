@@ -1,7 +1,12 @@
 name: Reinstall (Use spec notebook, code, data locks)
 
-# -- This workflow rebuilds the image using a pinned mission environment in
-# -- in a completed spec.
+# -- This workflow rebuilds an image from an existing completed spec using the
+# -- spec repo and package pins. By default this workflow will use --prod mode
+# -- (ignore overrides) but another robust way to ensure --prod is to disable
+# -- --dev mode by disabling the overrides section of the wrangler spec
+# -- using --spec-disable-spec-overrides which hides the overrides by changing
+# -- the top level keyword to disabled_dev_overrides:.  To reenable dev overrides
+# -- during --dev mode just remove the disabled_ prefix.
 
 on:
   workflow_dispatch:
@@ -59,21 +64,26 @@ jobs:
           git config --global user.email "homer@stsci.edu"
           git config --global user.name "Homer S."
 
-      - name: Set NBW_OVERRIDES_MODE to "--prod"
+      - name: Configure wrangler spec location, overrides mode, and repos directory
         run: |
-          # Lock the spec requirements to dev mode (if available) during curation and
-          # use dev_overrides:
-          export NBW_OVERRIDES_MODE="--prod"
-          echo NBW_OVERRIDES_MODE="--prod" >>$GITHUB_ENV
-
-      - name: Locate primary notebook repo wrangler spec
-        run: |
-          # Primary spec from notebook repo
+          # Primary spec workflow input
           export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
           echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
 
           # name inside Dockerfile
           echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
+
+          # Define where repo clones should be checked out
+          export NBW_REPOS_DIR="/tmp/references"
+          echo NBW_REPOS_DIR=$NBW_REPOS_DIR >>$GIT_ENV
+
+          # Lock the spec requirements to dev mode (if available) during curation and
+          # use dev_overrides:
+          export NBW_OVERRIDES_MODE="--dev"
+          echo NBW_OVERRIDES_MODE="--dev" >>$GITHUB_ENV
+
+      - name: Checkout and configure wrangler for source repo (can be overridden for --dev)
+        run: |
           # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
           curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
           chmod +x nb-wrangler
@@ -161,11 +171,11 @@ jobs:
         run: |
           set -x
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --clone-repos --spi-inject-reqs --spi-image-build --repos-dir /tmp/references ${NBW_OVERRIDES_MODE}
+          ./nb-wrangler --clone-repos --spi-inject-reqs --spi-image-build ${NBW_OVERRIDES_MODE}
           docker image ls
           docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
           docker push ${IMAGE_ID}
-          rm -rf /tmp/references
+          rm -rf $REPOS_DIR
 
       - name: Test imports for native environment (adivsory)
         run: |
@@ -174,7 +184,7 @@ jobs:
 
       - name: Test notebooks inside image (advisory)
         run: |
-          cd /tmp/references/science-platform-images
+          cd $REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
           mkdir ${HOME}/crds_cache
@@ -186,8 +196,8 @@ jobs:
       - name: Scan Image (advisory)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --clone-repos --repos-dir /tmp/references ${NBW_OVERRIDES_MODE}
-          cd /tmp/references/science-platform-images
+          ./nb-wrangler --clone-repos ${NBW_OVERRIDES_MODE}
+          cd $REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
           scripts/image-scan
