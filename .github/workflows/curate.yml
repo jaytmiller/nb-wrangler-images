@@ -72,8 +72,8 @@ jobs:
           # name inside Dockerfile
           echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
 
-          # Define where repo clones should be checked out
-          export NBW_REPOS_DIR="/tmp/references"
+          # Define where repo clones should be checked out, must be relative
+          export NBW_REPOS_DIR="references"
           echo NBW_REPOS_DIR=$NBW_REPOS_DIR >>$GITHUB_ENV
 
           # Lock the spec requirements to dev mode (if available) during curation and
