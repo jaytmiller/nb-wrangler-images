@@ -186,12 +186,12 @@ jobs:
           docker image ls
           docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
           docker push ${IMAGE_ID}
-          rm -rf $NBW_REPOS_DIR
 
       - name: Test imports for native environment (adivsory)
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
             ./nb-wrangler --test-imports --test-copy-shared ../../shared ${NBW_OVERRIDES_MODE}
+            rm -rf $NBW_REPOS_DIR
 
       - name: Test notebooks inside image (advisory)
         run: |
