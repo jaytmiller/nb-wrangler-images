@@ -191,7 +191,6 @@ jobs:
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
             ./nb-wrangler --test-imports --test-copy-shared ../../shared ${NBW_OVERRIDES_MODE}
-            rm -rf $NBW_REPOS_DIR
 
       - name: Test notebooks inside image (advisory)
         run: |
@@ -204,6 +203,7 @@ jobs:
           chmod -R 777 ${HOME}/crds_cache
           chmod -R 777 ${NBW_PANTRY}
           image-test --test-notebooks ${NBW_OVERRIDES_MODE}
+          rm -rf $NBW_REPOS_DIR
 
       - name: Scan Image (advisory)
         run: |
