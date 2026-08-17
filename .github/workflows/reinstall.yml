@@ -183,11 +183,6 @@ jobs:
 
       - name: Test imports for native environment (adivsory)
         run: |
-            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-            ./nb-wrangler --test-imports --test-copy-shared ../../shared ${NBW_OVERRIDES_MODE}
-
-      - name: Test notebooks inside image (advisory)
-        run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           cd $NBW_REPOS_DIR/science-platform-images
           scripts/image-configure ${SPEC_DEPLOYMENT}
@@ -196,6 +191,13 @@ jobs:
           # make dirs globally writable since uid/gid inside Docker may not match outside
           chmod -R 777 ${HOME}/crds_cache
           chmod -R 777 ${NBW_PANTRY}
+          image-test --test-imports ${NBW_OVERRIDES_MODE}
+
+      - name: Test notebooks inside image (advisory)
+        run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          cd $NBW_REPOS_DIR/science-platform-images
+          source setup-env
           image-test --test-notebooks ${NBW_OVERRIDES_MODE}
           rm -rf $NBW_REPOS_DIR
 
