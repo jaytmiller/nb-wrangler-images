@@ -146,6 +146,11 @@ jobs:
           source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
 
+      - name: Reinstall Data
+        run: |
+            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+            ./nb-wrangler --data-reinstall
+
       - name: Log in to GHCR
         run: |
           echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
