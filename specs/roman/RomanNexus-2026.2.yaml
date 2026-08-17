@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-17T13:45:07.959189'
-  spec_sha256: 0a747f4a1be25a45ebb3814e7adfe4fab64a614b2bd3fe54b0991f4e4da2ac8f
+  date_updated: '2026-08-17T14:05:39.193305'
+  spec_sha256: 6c78fb9f2aebb79529d22cff763d80a7a355cf4ebb2a7dcfdc6fea556ea84a07
 selected_notebooks:
   roman_all:
     repo: roman_notebooks
@@ -71,7 +71,7 @@ extra_pip_packages:
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
-  - git+https://github.com/spacetelescope/nb-wrangler.git@0.9.0
+  - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.0
   - bqplot>=0.12.47,<0.13
   - motorcycle==0.1.2
   - dotenv
@@ -147,15 +147,129 @@ dev_overrides:
 # Everything in this section is generated during --curate and used for documentation
 # and --reinstall using locked requirements.
 out:
+  data:
+    spec_inputs:
+      references/roman_notebooks/refdata_dependencies.yaml:
+        install_files:
+          pandeia_data:
+            version: '2026.1'
+            environment_variable: pandeia_refdata
+            install_path: ${HOME}/refdata/
+            data_path: pandeia_data-2026.1-roman
+            data_url:
+              - https://stsci.box.com/shared/static/0qjvuqwkurhx1xd13i63j760cosep9wh.gz
+          pandeia_psf:
+            version: '2026.1'
+            environment_variable: PSF_DIR
+            install_path: ${HOME}/refdata/
+            data_path: pandeia_psfs-2026.1-roman
+            data_url:
+              - https://stsci.box.com/shared/static/5qkyvr5steg2fo2zxbqj2jxcmbmz1c4w.gz
+          stpsf:
+            version: 2.1.0
+            environment_variable: STPSF_PATH
+            install_path: ${HOME}/refdata/
+            data_path: stpsf-data
+            data_url:
+              - https://stsci.box.com/shared/static/kqfolg2bfzqc4mjkgmujo06d3iaymahv.gz
+          stips:
+            version: 2.3.0
+            environment_variable: stips_data
+            install_path: ${HOME}/refdata/
+            data_path: stips_data
+            data_url:
+              - https://stsci.box.com/shared/static/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz
+          synphot:
+            version: 1.6.0
+            environment_variable: PYSYN_CDBS
+            install_path: ${HOME}/refdata/
+            data_path: grp/redcat/trds/
+            data_url:
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_everything_multi_v18_sed.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_pheonix-models_multi_v3_synphot5.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v13_synphot6.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_jwst_multi_etc-models_multi_v1_synphot7.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_other-spectra_multi_v2_sed.tar
+        other_variables:
+          CRDS_SERVER_URL: https://roman-crds.stsci.edu
+          CRDS_CONTEXT: roman-edit
+          CRDS_OBSERVATORY: roman
+          CRDS_PATH: ${HOME}/crds_cache
+    spec_exports:
+      pandeia_refdata: ${HOME}/refdata/pandeia_data-2026.1-roman
+      PSF_DIR: ${HOME}/refdata/pandeia_psfs-2026.1-roman
+      STPSF_PATH: ${HOME}/refdata/stpsf-data
+      stips_data: ${HOME}/refdata/stips_data
+      PYSYN_CDBS: ${HOME}/refdata/grp/redcat/trds/
+      CRDS_SERVER_URL: https://roman-crds.stsci.edu
+      CRDS_CONTEXT: roman-edit
+      CRDS_OBSERVATORY: roman
+      CRDS_PATH: ${HOME}/crds_cache
+    pantry_exports:
+      pandeia_refdata: 
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_data-2026.1-roman
+      PSF_DIR: 
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_psfs-2026.1-roman
+      STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stpsf-data
+      stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stips_data
+      PYSYN_CDBS: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/grp/redcat/trds
+      CRDS_SERVER_URL: https://roman-crds.stsci.edu
+      CRDS_CONTEXT: roman-edit
+      CRDS_OBSERVATORY: roman
+      CRDS_PATH: ${HOME}/crds_cache
+    metadata:
+      roman_notebooks/pandeia_data/0qjvuqwkurhx1xd13i63j760cosep9wh.gz:
+        size: '17365154'
+        sha256: a048cecef53ed29bec2b39981bbb633cc2f0ad1c63c61f6dfebae56bbf91c83d
+      roman_notebooks/pandeia_psf/5qkyvr5steg2fo2zxbqj2jxcmbmz1c4w.gz:
+        size: '548548732'
+        sha256: 6de88ab72c8d4fadafec52aac69705b8ed842ad34d38c3fb3e9866e3f934f4e9
+      roman_notebooks/stpsf/kqfolg2bfzqc4mjkgmujo06d3iaymahv.gz:
+        size: '92294357'
+        sha256: bbdfbe7c5aa7ee7fdb60efed13720ba3e0619c976b77aa0d63941dd59a4b6a98
+      roman_notebooks/stips/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz:
+        size: '153097868'
+        sha256: 15a430e67c7526abb4bd0f56379631ef7cb10a93f72b5d5dbd7919b441422d6a
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_everything_multi_v18_sed.tar:
+        size: '1285222400'
+        sha256: 3f01b858d88960f864cad56a03d2425955ae3951a979378da612af960c5f6b59
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar:
+        size: '90347520'
+        sha256: 66faaaeeb04e855a09c6cb8bc9b748c8fbedf23b782208dba84e10c4f0fd450b
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar:
+        size: '42772480'
+        sha256: 8f7a220bc9480900c372015847057b06a2c218ae8b2dbf8020e6a1dd2990b42c
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar:
+        size: '81684480'
+        sha256: 95ca73356f38a703064c346e286f571b53f78964d5511d1b538ff086f5ce897e
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_pheonix-models_multi_v3_synphot5.tar:
+        size: '1868328960'
+        sha256: 1ffb5e136dc4f846cd95b83843eb89f7a5171f58732705b25f07a99c4d8cf50d
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v13_synphot6.tar:
+        size: '8695121920'
+        sha256: 69b3ba91db2a3290bacbe48ef7b7626905567d89e7e03d11b3cefeadf5f26fd7
+      roman_notebooks/synphot/hlsp_reference-atlases_jwst_multi_etc-models_multi_v1_synphot7.tar:
+        size: '8909717'
+        sha256: 01b2eae81852d56971796a62c82ff7f76256e1fdaabccf2f7f09151b1283640a
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar:
+        size: '34160640'
+        sha256: 3338b1fb400d752c02c06132e0ce804ef8a9751f6ff535b41d022f60b0364d81
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_other-spectra_multi_v2_sed.tar:
+        size: '121835520'
+        sha256: b8901e54c03a185d19cd08e9590a7b959d82901d02abc7a9a3f468c8691db70b
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
       ref: "5dbbb90b3287c2e99a2e823e9452c2d42c9b10e4"
 
 # This is system config that is generally not changed by curators.
-      resolved_ref: main
+      resolved_ref: 2026.2.0
   spi:
-    repo: https://github.com/jaytmiller/science-platform-images.git
+    repo: https://github.com/spacetelescope/science-platform-images.git
     ref: fd6fccbfac571aeb549165311d1dc966ff5b3a82
   test_notebooks:
     - roman_all:
@@ -548,7 +662,7 @@ out:
     - /home/ai/micromamba/temps/common_pip_packages.txt:
         - bqplot>=0.12.47,<0.13
         - dotenv
-        - git+https://github.com/jaytmiller/nb-wrangler.git@dev
+        - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.0
         - jupyter-collaboration<5
         - jupyter-server-ydoc<3
         - motorcycle==0.1.2
@@ -902,18 +1016,17 @@ out:
         - requests_mock
   pip_compiler_output: |
     accessible-pygments==0.0.5
-    aiobotocore==3.7.0
+    aiobotocore==3.9.0
     aiohappyeyeballs==2.7.1
-    aiohttp==3.14.1
+    aiohttp==3.14.3
     aioitertools==0.13.0
     aiosignal==1.4.0
     aiosqlite==0.22.1
     alabaster==1.0.0
-    alembic==1.18.5
+    alembic==1.19.1
     annotated-types==0.8.0
-    anyio==4.14.1
     anywidget==0.11.0
-    argcomplete==3.7.0
+    argcomplete==3.7.2
     asdf==5.3.1
     asdf-astropy==0.11.0
     asdf_coordinates_schemas==0.5.1
@@ -923,38 +1036,37 @@ out:
     asteval==1.0.9
     astrocut==1.2.0
     astropy==7.2.2
-    astropy-iers-data==0.2026.7.6.1.1.20
+    astropy-iers-data==0.2026.8.10.0.32.39
     astropy-sphinx-theme==3.1
-    astropy_healpix==2.0.0
+    astropy_healpix==2.0.1
     astroquery @ git+https://github.com/snbianco/astroquery.git@3343d59dcba09d32606df21ce2de0c1a6cd2480d
-    asttokens==3.0.1
     black==26.5.1
     blinker==1.9.0
-    bokeh==3.9.1
-    boto3==1.43.0
-    botocore==1.43.0
+    bokeh==3.9.2
+    boto3==1.43.56
+    botocore==1.43.56
     bqplot==0.12.47
     bqplot-gl==0.0.0
-    bqplot-image-gl==1.10.1
+    bqplot-image-gl==1.10.2
     bqplot-linlog==0.2.1
     bytecode==0.18.1
     cachebox==5.2.3
-    cachetools==7.1.4
+    cachetools==7.1.7
     casa-formats-io==0.3.0
-    certifi==2026.6.17
     certipy==0.2.3
-    ci_watson==0.11.0
+    ci_watson==0.12.0
     cloudpickle==3.1.2
+    configobj==5.0.9
     contourpy==1.3.3
-    crds==13.1.15
-    cryptography==49.0.0
+    crds==13.2.7
+    cryptography==50.0.0
     cycler==0.12.1
-    dask==2026.7.0
-    ddtrace==4.12.0
+    dask==2026.7.1
+    ddtrace==4.13.1
     deepdiff==9.1.0
     dill==0.4.1
     distlib==0.4.3
-    distributed==2026.7.0
+    distributed==2026.7.1
     docutils==0.22.4
     dotenv==0.9.9
     drizzle==2.2.0
@@ -963,33 +1075,32 @@ out:
     envier==0.6.1
     esutil==0.6.16
     et_xmlfile==2.0.0
-    extinction==0.4.8
+    extinction==0.4.9
     fast-histogram==0.14
-    fastjsonschema==2.21.2
-    filelock==3.29.7
+    filelock==3.32.3
     flake8==7.3.0
     Flask==3.1.3
     fonttools==4.63.0
     freetype-py==2.5.1
     frozenlist==1.8.0
-    fsspec==2026.6.0
+    fsspec==2026.7.0
     future==1.0.0
-    GalSim==2.8.4
+    GalSim==2.8.5
     gitdb==4.0.12
-    GitPython==3.1.57
+    GitPython==3.1.59
     glue-astronomy==0.15.0
     glue-core==1.27.0
     glue-jupyter==0.29.0
-    greenlet==3.5.4
+    greenlet==3.5.5
     gwcs==1.0.3
     h5py==3.16.0
-    healpy==1.20.0b1
+    healpy==1.20.0
     healsparse==1.13.0
     hpgeom==1.5.4
     hsluv==5.0.4
     html5lib==1.1
     humanize==4.16.0
-    ImageIO==2.37.3
+    ImageIO==2.37.4
     imagesize==2.0.0
     iniconfig==2.3.0
     installer==1.0.1
@@ -998,7 +1109,7 @@ out:
     ipyevents==2.0.4
     ipygoldenlayout==0.4.0
     ipympl==0.10.0
-    ipypopout==2.0.1
+    ipypopout==2.1.0
     ipysplitpanes==0.2.0
     ipython-genutils==0.2.0
     ipyvolume==0.6.3
@@ -1009,25 +1120,24 @@ out:
     itsdangerous==2.2.0
     jaraco.classes==3.4.0
     jaraco.context==6.1.2
-    jaraco.functools==4.5.0
+    jaraco.functools==4.6.0
     jdaviz==5.0.3
     jeepney==0.9.0
     jmespath==1.1.0
     joblib==1.5.3
-    jupyter-collaboration==4.4.1
-    jupyter-collaboration-ui==2.4.1
-    jupyter-docprovider==2.4.1
-    jupyter-resource-usage==1.2.1
-    jupyter-server-ydoc==2.4.1
+    jupyter-collaboration==4.4.2
+    jupyter-collaboration-ui==2.4.2
+    jupyter-docprovider==2.4.2
+    jupyter-resource-usage==1.3.0
+    jupyter-server-ydoc==2.4.2
     jupyter-ydoc==3.5.0
     jupyter_app_launcher==0.3.2
     jupyter_bokeh==4.1.0
     jupyter_server_fileid==0.9.3
     jupyter_server_proxy==4.5.0
-    jupyterhub==5.5.0
-    jupyterlab-git-core==0.54.0
-    jupyterlab_git==0.54.0
-    jupyterlab_tour==4.0.1
+    jupyterhub==5.5.1
+    jupyterlab-git-core==0.54.1
+    jupyterlab_git==0.54.1
     jupytext==1.19.5
     keyring==25.7.0
     kiwisolver==1.5.0
@@ -1037,16 +1147,15 @@ out:
     LSSTDESC.Coord==1.3.1
     lxml==6.1.1
     lz4==4.4.5
-    Mako==1.3.12
-    Markdown==3.10.2
+    Mako==1.4.1
+    Markdown==3.10.3
     markdown-it-py==4.2.0
     mast-aladin==0.0.3
     mast-table==0.0.2
-    matplotlib==3.11.0
+    matplotlib==3.11.1
     mccabe==0.7.0
     mdit-py-plugins==0.6.1
     mdurl==0.1.2
-    mistune==3.3.3
     montage-wrapper==0.9.9
     more-itertools==11.1.0
     motorcycle==0.1.2
@@ -1054,11 +1163,11 @@ out:
     msgpack==1.2.1
     multidict==6.7.1
     mypy_extensions==1.1.0
-    nab-index==0.0.11
-    nab-python==0.0.11
-    nab-resolver==0.0.11
-    narwhals==2.23.0
-    nb-wrangler @ git+https://github.com/jaytmiller/nb-wrangler.git@68a6847bd3c935fb3bc074b9b027d262d55bbb15
+    nab-index==0.0.13
+    nab-python==0.0.13
+    nab-resolver==0.0.13
+    narwhals==2.24.0
+    nb-wrangler @ git+https://github.com/spacetelescope/nb-wrangler.git@76e1fcf71cbd619a07f56954fbbe0b06d5a20f89
     nbclassic==1.3.3
     nbdime==4.0.4
     nbgitpuller==1.3.0
@@ -1066,35 +1175,31 @@ out:
     ndcube==2.4.1
     nest-asyncio==1.6.0
     networkx==3.6.1
-    numexpr==2.14.1
-    numpy==2.5.1
+    numexpr==2.14.2
+    numpy==2.5.2
     numpydoc==1.10.0
     oauthlib==3.3.1
     openpyxl==3.1.5
     opentelemetry-api==1.44.0
     orderly-set==5.5.0
     pamela==1.2.0
-    pandas==3.0.3
+    pandas==3.0.5
     pandeia.engine==2026.2
-    pandocfilters==1.5.1
     papermill==2.7.0
     Parsley==1.3
     partd==1.4.2
     pathspec==1.1.1
     photutils==3.0.0
     pillow==12.3.0
-    pipdeptree==4.1.0
-    platformdirs==4.10.0
-    playwright==1.61.0
+    pipdeptree==4.2.1
+    playwright==1.62.0
     pluggy==1.6.0
     poppy==1.1.2
-    prometheus_client==0.25.0
-    prompt_toolkit==3.0.52
     propcache==0.5.2
     psycopg2-binary==2.9.12
     psygnal==0.15.1
-    pyarrow==25.0.0
-    pybind11==3.0.4
+    pyarrow==25.0.1
+    pybind11==3.1.0
     pycodestyle==2.14.0
     pycrdt==0.13.1
     pycrdt-store==0.1.4
@@ -1102,7 +1207,7 @@ out:
     pydantic==2.13.4
     pydantic_core==2.46.4
     pydata-sphinx-theme==0.18.0
-    pydeps==3.0.6
+    pydeps==3.0.7
     pyee==13.0.1
     pyerfa==2.0.1.5
     pyflakes==3.4.0
@@ -1112,7 +1217,8 @@ out:
     pytest==9.1.1
     pytest-doctestplus==1.7.1
     pytest-openfiles==0.6.0
-    python-dotenv==1.2.2
+    pytest-skip-slow==1.1.0
+    python-dotenv==1.2.3
     pythreejs==2.4.2
     pytokens==0.4.1
     pyvo==1.9.1
@@ -1129,28 +1235,27 @@ out:
     romancal==1.0.1
     romanisim==0.14.0
     ruamel.yaml==0.19.1
-    s3fs==2026.6.0
+    s3fs==2026.7.0
     s3path==0.6.5
-    s3transfer==0.17.1
+    s3transfer==0.19.2
     scikit-image==0.26.0
     scipy==1.18.0
     SecretStorage==3.5.0
     semantic-version==2.10.0
-    setuptools==83.0.0
+    setuptools==81.0.0
     shapely==2.1.2
     sidecar==0.8.1
     simpervisor==1.0.0
     skyproj==2.5.0
-    smart_open==8.0.0
+    smart_open==8.0.1
     smmap==5.0.3
     sncosmo==2.13.0
     snowballstemmer==3.1.1
     soc-roman-tools==0.1.0
-    solara==1.60.2
-    solara-server==1.60.2
-    solara-ui==1.60.2
+    solara==1.61.0
+    solara-server==1.61.0
+    solara-ui==1.61.0
     sortedcontainers==2.4.0
-    soupsieve==2.8.4
     specreduce==1.9.0
     spectral-cube==0.6.7
     specutils==2.4.0
@@ -1168,14 +1273,14 @@ out:
     sphinxcontrib-qthelp==2.0.0
     sphinxcontrib-serializinghtml==2.0.0
     sphinxext-opengraph==0.13.0
-    SQLAlchemy==2.0.51
+    SQLAlchemy==2.0.52
     sqlite-anyio==0.2.10
-    starlette==1.3.1
-    stcal==1.19.1
+    starlette==1.6.0
+    stcal==1.20.0
     stdatamodels==6.0.0
     stdlib-list==0.12.0
     stips==2.3.1
-    stpipe==0.11.1
+    stpipe==1.1.0
     stpsf==2.1.0
     stsci-rtd-theme==1.0.1
     stsci.imagestats==1.8.4
@@ -1186,146 +1291,30 @@ out:
     synphot==1.7.0
     tblib==3.2.2
     tenacity==9.1.4
-    tifffile==2026.6.1
-    tinycss2==1.5.1
+    tifffile==2026.8.16
     tomli_w==1.2.0
     toolz==1.1.0
-    tqdm==4.68.4
+    tqdm==4.70.0
     traittypes==0.2.3
     truststore==0.10.4
-    tweakwcs==0.9.0
-    typing-inspection==0.4.2
-    tzdata==2026.2
-    uv==0.12.3
-    uvicorn==0.51.0
+    tweakwcs==0.9.2
+    typing-inspection==0.4.4
+    uv==0.12.5
+    uvicorn==0.52.3
     vispy==0.16.2
     voila==0.5.12
     watchdog==6.0.0
     watchfiles==1.2.0
-    websockets==16.0
+    websockets==17.0.1
     Werkzeug==3.1.8
-    wheel==0.47.0
-    wrapt==2.2.2
-    xarray==2026.4.0
+    wheel==0.48.0
+    wrapt==2.3.0
+    xarray==2026.7.0
     xlrd==2.0.2
     xmltodict==1.0.4
     xyzservices==2026.3.0
     y-py==0.6.2
-    yarl==1.24.2
+    yarl==1.24.5
     ypy-websocket==0.12.4
     yq==4.1.2
     zict==3.0.0
-  data:
-    spec_inputs:
-      references/roman_notebooks/refdata_dependencies.yaml:
-        install_files:
-          pandeia_data:
-            version: '2026.1'
-            environment_variable: pandeia_refdata
-            install_path: ${HOME}/refdata/
-            data_path: pandeia_data-2026.1-roman
-            data_url:
-              - https://stsci.box.com/shared/static/0qjvuqwkurhx1xd13i63j760cosep9wh.gz
-          pandeia_psf:
-            version: '2026.1'
-            environment_variable: PSF_DIR
-            install_path: ${HOME}/refdata/
-            data_path: pandeia_psfs-2026.1-roman
-            data_url:
-              - https://stsci.box.com/shared/static/5qkyvr5steg2fo2zxbqj2jxcmbmz1c4w.gz
-          stpsf:
-            version: 2.1.0
-            environment_variable: STPSF_PATH
-            install_path: ${HOME}/refdata/
-            data_path: stpsf-data
-            data_url:
-              - https://stsci.box.com/shared/static/kqfolg2bfzqc4mjkgmujo06d3iaymahv.gz
-          stips:
-            version: 2.3.0
-            environment_variable: stips_data
-            install_path: ${HOME}/refdata/
-            data_path: stips_data
-            data_url:
-              - https://stsci.box.com/shared/static/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz
-          synphot:
-            version: 1.6.0
-            environment_variable: PYSYN_CDBS
-            install_path: ${HOME}/refdata/
-            data_path: grp/redcat/trds/
-            data_url:
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_everything_multi_v18_sed.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_pheonix-models_multi_v3_synphot5.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v13_synphot6.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_jwst_multi_etc-models_multi_v1_synphot7.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_other-spectra_multi_v2_sed.tar
-        other_variables:
-          CRDS_SERVER_URL: https://roman-crds.stsci.edu
-          CRDS_CONTEXT: roman-edit
-          CRDS_OBSERVATORY: roman
-          CRDS_PATH: ${HOME}/crds_cache
-    spec_exports:
-      pandeia_refdata: ${HOME}/refdata/pandeia_data-2026.1-roman
-      PSF_DIR: ${HOME}/refdata/pandeia_psfs-2026.1-roman
-      STPSF_PATH: ${HOME}/refdata/stpsf-data
-      stips_data: ${HOME}/refdata/stips_data
-      PYSYN_CDBS: ${HOME}/refdata/grp/redcat/trds/
-      CRDS_SERVER_URL: https://roman-crds.stsci.edu
-      CRDS_CONTEXT: roman-edit
-      CRDS_OBSERVATORY: roman
-      CRDS_PATH: ${HOME}/crds_cache
-    pantry_exports:
-      pandeia_refdata: 
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_data-2026.1-roman
-      PSF_DIR: 
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_psfs-2026.1-roman
-      STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stpsf-data
-      stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stips_data
-      PYSYN_CDBS: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/grp/redcat/trds
-      CRDS_SERVER_URL: https://roman-crds.stsci.edu
-      CRDS_CONTEXT: roman-edit
-      CRDS_OBSERVATORY: roman
-      CRDS_PATH: ${HOME}/crds_cache
-    metadata:
-      roman_notebooks/pandeia_data/0qjvuqwkurhx1xd13i63j760cosep9wh.gz:
-        size: '17365154'
-        sha256: a048cecef53ed29bec2b39981bbb633cc2f0ad1c63c61f6dfebae56bbf91c83d
-      roman_notebooks/pandeia_psf/5qkyvr5steg2fo2zxbqj2jxcmbmz1c4w.gz:
-        size: '548548732'
-        sha256: 6de88ab72c8d4fadafec52aac69705b8ed842ad34d38c3fb3e9866e3f934f4e9
-      roman_notebooks/stpsf/kqfolg2bfzqc4mjkgmujo06d3iaymahv.gz:
-        size: '92294357'
-        sha256: bbdfbe7c5aa7ee7fdb60efed13720ba3e0619c976b77aa0d63941dd59a4b6a98
-      roman_notebooks/stips/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz:
-        size: '153097868'
-        sha256: 15a430e67c7526abb4bd0f56379631ef7cb10a93f72b5d5dbd7919b441422d6a
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_everything_multi_v18_sed.tar:
-        size: '1285222400'
-        sha256: 3f01b858d88960f864cad56a03d2425955ae3951a979378da612af960c5f6b59
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar:
-        size: '90347520'
-        sha256: 66faaaeeb04e855a09c6cb8bc9b748c8fbedf23b782208dba84e10c4f0fd450b
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar:
-        size: '42772480'
-        sha256: 8f7a220bc9480900c372015847057b06a2c218ae8b2dbf8020e6a1dd2990b42c
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar:
-        size: '81684480'
-        sha256: 95ca73356f38a703064c346e286f571b53f78964d5511d1b538ff086f5ce897e
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_pheonix-models_multi_v3_synphot5.tar:
-        size: '1868328960'
-        sha256: 1ffb5e136dc4f846cd95b83843eb89f7a5171f58732705b25f07a99c4d8cf50d
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v13_synphot6.tar:
-        size: '8695121920'
-        sha256: 69b3ba91db2a3290bacbe48ef7b7626905567d89e7e03d11b3cefeadf5f26fd7
-      roman_notebooks/synphot/hlsp_reference-atlases_jwst_multi_etc-models_multi_v1_synphot7.tar:
-        size: '8909717'
-        sha256: 01b2eae81852d56971796a62c82ff7f76256e1fdaabccf2f7f09151b1283640a
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar:
-        size: '34160640'
-        sha256: 3338b1fb400d752c02c06132e0ce804ef8a9751f6ff535b41d022f60b0364d81
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_other-spectra_multi_v2_sed.tar:
-        size: '121835520'
-        sha256: b8901e54c03a185d19cd08e9590a7b959d82901d02abc7a9a3f468c8691db70b
