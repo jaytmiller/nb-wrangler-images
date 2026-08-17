@@ -79,8 +79,8 @@ jobs:
 
           # Lock the spec requirements to dev mode (if available) during curation and
           # use dev_overrides:
-          export NBW_OVERRIDES_MODE="--dev"
-          echo NBW_OVERRIDES_MODE="--dev" >>$GITHUB_ENV
+          export NBW_OVERRIDES_MODE="--prod"
+          echo NBW_OVERRIDES_MODE="--prod" >>$GITHUB_ENV
 
       - name: Checkout and configure wrangler for source repo (can be overridden for --dev)
         run: |

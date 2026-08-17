@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-17T14:05:39.193305'
-  spec_sha256: 6c78fb9f2aebb79529d22cff763d80a7a355cf4ebb2a7dcfdc6fea556ea84a07
+  date_updated: '2026-08-17T14:28:18.653123'
+  spec_sha256: dd3cc82201543029fdd9a8dd894be03ca2250d1d718d41e3480a6abf8d04759e
 selected_notebooks:
   roman_all:
     repo: roman_notebooks
@@ -123,29 +123,6 @@ test_environment_vars:
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
-dev_overrides:
-  repositories:
-    roman_notebooks:
-      url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: main  # not 2026.2
-  system:
-    spi:
-      repo: https://github.com/jaytmiller/science-platform-images.git
-      ref: dev
-    nb-wrangler:
-      repo: https://github.com/jaytmiller/nb-wrangler.git
-      ref: dev
-  common_pip_packages:
-    - git+https://github.com/jaytmiller/nb-wrangler.git@dev
-    - bqplot>=0.12.47,<0.13
-    - motorcycle==0.1.2
-    - dotenv
-    - jupyter-collaboration<5
-    - jupyter-server-ydoc<3
-
-# ----------------------------------------------------------------------------------
-# Everything in this section is generated during --curate and used for documentation
-# and --reinstall using locked requirements.
 out:
   data:
     spec_inputs:
@@ -1318,3 +1295,26 @@ out:
     ypy-websocket==0.12.4
     yq==4.1.2
     zict==3.0.0
+deactivated_dev_overrides:
+  repositories:
+    roman_notebooks:
+      url: https://github.com/spacetelescope/roman_notebooks.git
+      ref: main  # not 2026.2
+  system:
+    spi:
+      repo: https://github.com/jaytmiller/science-platform-images.git
+      ref: dev
+    nb-wrangler:
+      repo: https://github.com/jaytmiller/nb-wrangler.git
+      ref: dev
+  common_pip_packages:
+    - git+https://github.com/jaytmiller/nb-wrangler.git@dev
+    - bqplot>=0.12.47,<0.13
+    - motorcycle==0.1.2
+    - dotenv
+    - jupyter-collaboration<5
+    - jupyter-server-ydoc<3
+
+# ----------------------------------------------------------------------------------
+# Everything in this section is generated during --curate and used for documentation
+# and --reinstall using locked requirements.
