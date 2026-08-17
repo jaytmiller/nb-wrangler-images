@@ -181,7 +181,7 @@ jobs:
           docker tag notebook-${SPEC_DEPLOYMENT}:latest   ${IMAGE_ID}
           docker push ${IMAGE_ID}
 
-      - name: Test imports for native environment (adivsory)
+      - name: Test imports inside image (adivsory)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           cd $NBW_REPOS_DIR/science-platform-images
