@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-18T15:14:29.785348'
-  spec_sha256: 6038468c046e22c1c7a48e657b23a4b2a3497e789116652487b01cdfb7f9000c
+  date_updated: '2026-08-18T15:37:52.663199'
+  spec_sha256: 2015950f3a63b7235338baf40f7b0b4466cffd0066275efb30c5560acf1e79a2
 
 selected_notebooks:
   roman_all:
@@ -218,9 +218,9 @@ out:
       CRDS_OBSERVATORY: roman
       CRDS_PATH: ${HOME}/crds_cache
     pantry_exports:
-      pandeia_refdata:
+      pandeia_refdata: 
         ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_data-2026.1-roman
-      PSF_DIR:
+      PSF_DIR: 
         ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_psfs-2026.1-roman
       STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stpsf-data
       stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stips_data
