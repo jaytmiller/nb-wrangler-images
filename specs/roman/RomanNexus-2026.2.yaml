@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-18T17:27:46.150514'
-  spec_sha256: 29cdde15b46b0dee06475261bd5331adb80e0dbca82351e697cc01b2a337734c
+  date_updated: '2026-08-19T13:30:26.814669'
+  spec_sha256: 3b368d54effc7ebf9f546dbe428ef6896d35ba421ff2a4e2af41dc719b9dde0a
 
 selected_notebooks:
   roman_all:
@@ -112,9 +112,11 @@ assets:
       - source: assets/roman/cost-dashboard.ipynb
         destination: /opt/environments
       - source: assets/generic/stop_server_ext.json
-        destination: /etc/jupyter/jupyter_server_config.d/
-      - source: assets/generic/stop_server_ext.json
         destination: /srv/jupyter/
+      - source: assets/generic/stop_server_ext.json
+        destination: /etc/jupyter/jupyter_server_config.d/
+      - source: assets/generic/kernel-ipc.py
+        destination: /etc/jupyter/jupyter_server_config.d/
       - source: assets/generic/jp_app_launcher.yaml
         destination: /opt/environments/jp_app_launcher.yaml
       - source: assets/generic/post-start-hook
