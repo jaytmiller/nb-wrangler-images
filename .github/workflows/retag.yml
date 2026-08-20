@@ -59,7 +59,7 @@ jobs:
 
       - name: Set up workflow env vars
         run: |
-          export IMAGE_ROOT="ghcr.io/spacetelescope/nb-wrangler-images"
+          export IMAGE_ROOT="ghcr.io/${GITHUB_REPOSITORY_OWNER}/nb-wrangler-images"
           echo IMAGE_ROOT=$IMAGE_ROOT >> $GITHUB_ENV
 
       - name: Log in to GHCR
