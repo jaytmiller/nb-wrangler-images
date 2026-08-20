@@ -146,11 +146,6 @@ jobs:
           source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
 
-      - name: Reinstall Data
-        run: |
-            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-            ./nb-wrangler --data-reinstall
-
       - name: Log in to GHCR
         run: |
           echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
@@ -192,6 +187,11 @@ jobs:
           chmod -R 777 ${HOME}/crds_cache
           chmod -R 777 ${NBW_PANTRY}
           image-test --test-imports ${NBW_OVERRIDES_MODE}
+
+      - name: Reinstall Data
+        run: |
+            cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+            ./nb-wrangler --data-reinstall
 
       - name: Test notebooks inside image (advisory)
         run: |
