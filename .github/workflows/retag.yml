@@ -59,12 +59,8 @@ jobs:
 
       - name: Set up workflow env vars
         run: |
-          # Force --prod mode for wrangler
-          export NBW_OVERRIDES_MODE="--prod"
-          echo NBW_OVERRIDES_MODE=${NBW_OVERRIDES_MODE} >> $GITHUB_ENV
-
           export IMAGE_ROOT="ghcr.io/spacetelescope/nb-wrangler-images"
-          echo 'IMAGE_ROOT="ghcr.io/spacetelescope/nb-wrangler-images"' >> $GITHUB_ENV
+          echo IMAGE_ROOT=$IMAGE_ROOT >> $GITHUB_ENV
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
