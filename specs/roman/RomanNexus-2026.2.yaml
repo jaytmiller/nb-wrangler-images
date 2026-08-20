@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-19T14:14:48.796710'
-  spec_sha256: 7ae13ed759613e22c344fdd61afb4449ae0bb56072b2c14728c54576b0567ac8
+  date_updated: '2026-08-20T12:47:28.082765'
+  spec_sha256: fd11f69ca4773cc736ef1eff2ab20909fd87479d391419d17c23ca74dfed11ab
 selected_notebooks:
   roman_all:
     repo: roman_notebooks
@@ -103,19 +103,17 @@ dockerfile_aux_sh: |
 
 # Image-specific files that are downloaded and/or copied to the specified locations in images
 assets:
-  - repo: https://github.com/jaytmiller/nb-wrangler-images.git
-    ref: dev
+  - repo: https://github.com/spacetelescope/nb-wrangler-images.git
+    ref: main
     items:
       - source: assets/generic/catalog-schema-browser.ipynb
         destination: /opt/environments
       - source: assets/roman/cost-dashboard.ipynb
         destination: /opt/environments
       - source: assets/generic/stop_server_ext.json
-        destination: /srv/jupyter/
+        destination: /etc/jupyter/jupyter_server_config.d/
       - source: assets/generic/stop_server_ext.json
-        destination: /etc/jupyter/jupyter_server_config.d/
-      - source: assets/generic/kernel-ipc.py
-        destination: /etc/jupyter/jupyter_server_config.d/
+        destination: /srv/jupyter/
       - source: assets/generic/jp_app_launcher.yaml
         destination: /opt/environments/jp_app_launcher.yaml
       - source: assets/generic/post-start-hook
@@ -129,29 +127,6 @@ environment_vars:
 test_environment_vars:
   CI: "true"
 
-# If defined, these replace defaults while in --dev development mode.
-# --dev mode is the default for --curate and enables these
-# --prod mode is the default for --reinstall and disables these.
-dev_overrides:
-  repositories:
-    roman_notebooks:
-      url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: main  # not 2026.2
-  system:
-    spi:
-      repo: https://github.com/jaytmiller/science-platform-images.git
-      ref: dev
-    nb-wrangler:
-      repo: https://github.com/jaytmiller/nb-wrangler.git
-      ref: dev
-  common_pip_packages:
-    - git+https://github.com/jaytmiller/nb-wrangler.git@dev
-    - motorcycle==0.1.2
-    - dotenv
-    - jupyter-collaboration<5
-    - jupyter-server-ydoc<3
-
-# ----------------------------------------------------------------------------------
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
@@ -1069,7 +1044,7 @@ out:
     cloudpickle==3.1.2
     configobj==5.0.9
     contourpy==1.3.3
-    crds==13.2.7
+    crds==13.2.8
     cryptography==50.0.0
     cycler==0.12.1
     dask==2026.7.1
@@ -1334,3 +1309,26 @@ out:
     ypy-websocket==0.12.4
     yq==4.1.2
     zict==3.0.0
+deactivated_dev_overrides:
+  repositories:
+    roman_notebooks:
+      url: https://github.com/spacetelescope/roman_notebooks.git
+      ref: main  # not 2026.2
+  system:
+    spi:
+      repo: https://github.com/jaytmiller/science-platform-images.git
+      ref: dev
+    nb-wrangler:
+      repo: https://github.com/jaytmiller/nb-wrangler.git
+      ref: dev
+  common_pip_packages:
+    - git+https://github.com/jaytmiller/nb-wrangler.git@dev
+    - motorcycle==0.1.2
+    - dotenv
+    - jupyter-collaboration<5
+    - jupyter-server-ydoc<3
+
+# ----------------------------------------------------------------------------------
+# If defined, these replace defaults while in --dev development mode.
+# --dev mode is the default for --curate and enables these
+# --prod mode is the default for --reinstall and disables these.
