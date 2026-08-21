@@ -179,13 +179,18 @@ jobs:
       - name: Test imports inside image (adivsory)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          source ./nb-wrangler environment
           cd $NBW_REPOS_DIR/science-platform-images
+
+          # make dirs globally writable since uid/gid inside Docker may not match outside
+          mkdir -p ${HOME}/crds_cache
+          chmod -R 777 ${HOME}/crds_cache
+          mkdir -p ${NBW_PANTRY}
+          chmod -R 777 ${NBW_PANTRY}
+
           scripts/image-configure ${SPEC_DEPLOYMENT}
           source setup-env
-          mkdir ${HOME}/crds_cache
-          # make dirs globally writable since uid/gid inside Docker may not match outside
-          chmod -R 777 ${HOME}/crds_cache
-          chmod -R 777 ${NBW_PANTRY}
+
           image-test --test-imports ${NBW_OVERRIDES_MODE}
 
       - name: Reinstall Data
