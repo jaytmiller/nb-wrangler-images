@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-20T12:47:28.082765'
-  spec_sha256: fd11f69ca4773cc736ef1eff2ab20909fd87479d391419d17c23ca74dfed11ab
+  date_updated: '2026-08-24T22:51:32.604262'
+  spec_sha256: 337fe02607612f2195e30b097f061dd0987a0693996238dfff8e23b2a81ffe63
 selected_notebooks:
   roman_all:
     repo: roman_notebooks
@@ -80,6 +80,7 @@ extra_pip_packages:
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
+  - bqplot>=0.12.47,<0.13
   - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.1
   - motorcycle==0.1.2
   - dotenv
@@ -127,6 +128,30 @@ environment_vars:
 test_environment_vars:
   CI: "true"
 
+# If defined, these replace defaults while in --dev development mode.
+# --dev mode is the default for --curate and enables these
+# --prod mode is the default for --reinstall and disables these.
+deactivated_dev_overrides:
+  repositories:
+    roman_notebooks:
+      url: https://github.com/spacetelescope/roman_notebooks.git
+      ref: main  # not 2026.2
+  system:
+    spi:
+      repo: https://github.com/jaytmiller/science-platform-images.git
+      ref: dev
+    nb-wrangler:
+      repo: https://github.com/jaytmiller/nb-wrangler.git
+      ref: dev
+  common_pip_packages:
+    - bqplot>=0.12.47,<0.13
+    - git+https://github.com/jaytmiller/nb-wrangler.git@dev
+    - motorcycle==0.1.2
+    - dotenv
+    - jupyter-collaboration<5
+    - jupyter-server-ydoc<3
+
+# ----------------------------------------------------------------------------------
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
@@ -248,10 +273,10 @@ out:
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: "5dbbb90b3287c2e99a2e823e9452c2d42c9b10e4"
+      ref: "1d0140db6cc2ecc0a4accaf9ce492b8a589fa239"
 
 # This is system config that is generally not changed by curators.
-      resolved_ref: 2026.2.0
+      resolved_ref: 2026.2.1
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: fd6fccbfac571aeb549165311d1dc966ff5b3a82
@@ -453,6 +478,7 @@ out:
       - healsparse
       - ipympl
       - matplotlib
+      - nest_asyncio2
       - numpy
       - pandas
       - skyproj
@@ -528,6 +554,7 @@ out:
       - galsim
       - importlib
       - matplotlib
+      - nest_asyncio2
       - notebook_data_dependencies
       - numpy
       - pysiaf
@@ -644,6 +671,7 @@ out:
       - wheel
   non_mamba_pip_package_files:
     - /home/ai/micromamba/temps/common_pip_packages.txt:
+        - bqplot>=0.12.47,<0.13
         - dotenv
         - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.1
         - jupyter-collaboration<5
@@ -1019,10 +1047,10 @@ out:
     asdf_standard==1.5.0
     asdf_transform_schemas==0.6.0
     asdf_wcs_schemas==0.5.0
-    asteval==1.0.9
+    asteval==1.0.10
     astrocut==1.2.0
     astropy==7.2.2
-    astropy-iers-data==0.2026.8.18.14.22.31
+    astropy-iers-data==0.2026.8.24.0.24.29
     astropy-sphinx-theme==3.1
     astropy_healpix==2.0.1
     astroquery @ git+https://github.com/snbianco/astroquery.git@3343d59dcba09d32606df21ce2de0c1a6cd2480d
@@ -1035,7 +1063,7 @@ out:
     bqplot-gl==0.0.0
     bqplot-image-gl==1.10.2
     bqplot-linlog==0.2.1
-    bytecode==0.18.1
+    bytecode==0.19.0
     cachebox==5.2.3
     cachetools==7.1.7
     casa-formats-io==0.3.0
@@ -1047,12 +1075,12 @@ out:
     crds==13.2.8
     cryptography==50.0.0
     cycler==0.12.1
-    dask==2026.7.1
+    dask==2026.8.0
     ddtrace==4.13.1
     deepdiff==9.1.0
     dill==0.4.1
     distlib==0.4.3
-    distributed==2026.7.1
+    distributed==2026.8.0
     docutils==0.22.4
     dotenv==0.9.9
     drizzle==2.2.0
@@ -1063,7 +1091,7 @@ out:
     et_xmlfile==2.0.0
     extinction==0.4.9
     fast-histogram==0.14
-    filelock==3.32.3
+    filelock==3.32.4
     flake8==7.3.0
     Flask==3.1.3
     fonttools==4.63.0
@@ -1081,13 +1109,13 @@ out:
     gwcs==1.0.3
     h5py==3.16.0
     healpy==1.20.0
-    healsparse==1.13.0
+    healsparse==1.14.0
     hpgeom==1.5.4
     hsluv==5.0.4
     html5lib==1.1
     humanize==4.16.0
     ImageIO==2.37.4
-    imagesize==2.0.0
+    imagesize==2.0.1
     imviz==0.2.12
     iniconfig==2.3.0
     installer==1.0.1
@@ -1155,7 +1183,7 @@ out:
     nab-index==0.0.13
     nab-python==0.0.13
     nab-resolver==0.0.13
-    narwhals==2.24.0
+    narwhals==2.25.0
     nb-wrangler @ git+https://github.com/spacetelescope/nb-wrangler.git@082ec74b5a0c19aaef330338d4ef6ca74a0d5636
     nbclassic==1.3.3
     nbdime==4.0.4
@@ -1201,7 +1229,7 @@ out:
     pyee==13.0.1
     pyerfa==2.0.1.5
     pyflakes==3.4.0
-    pymdown-extensions==11.0.1
+    pymdown-extensions==11.0.2
     pyparsing==3.3.2
     pysiaf==0.28.0
     pytest==9.1.1
@@ -1229,14 +1257,14 @@ out:
     s3path==0.6.5
     s3transfer==0.19.2
     scikit-image==0.26.0
-    scipy==1.18.0
+    scipy==1.18.1
     SecretStorage==3.5.0
     semantic-version==2.10.0
     setuptools==81.0.0
     shapely==2.1.2
     sidecar==0.8.1
     simpervisor==1.0.0
-    skyproj==2.5.0
+    skyproj==2.6.1
     smart_open==8.0.1
     smmap==5.0.3
     sncosmo==2.13.0
@@ -1282,7 +1310,7 @@ out:
     synphot==1.7.0
     tblib==3.2.2
     tenacity==9.1.4
-    tifffile==2026.8.16
+    tifffile==2026.8.23
     tomli_w==1.2.0
     toolz==1.1.0
     tqdm==4.70.0
@@ -1309,26 +1337,3 @@ out:
     ypy-websocket==0.12.4
     yq==4.1.2
     zict==3.0.0
-deactivated_dev_overrides:
-  repositories:
-    roman_notebooks:
-      url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: main  # not 2026.2
-  system:
-    spi:
-      repo: https://github.com/jaytmiller/science-platform-images.git
-      ref: dev
-    nb-wrangler:
-      repo: https://github.com/jaytmiller/nb-wrangler.git
-      ref: dev
-  common_pip_packages:
-    - git+https://github.com/jaytmiller/nb-wrangler.git@dev
-    - motorcycle==0.1.2
-    - dotenv
-    - jupyter-collaboration<5
-    - jupyter-server-ydoc<3
-
-# ----------------------------------------------------------------------------------
-# If defined, these replace defaults while in --dev development mode.
-# --dev mode is the default for --curate and enables these
-# --prod mode is the default for --reinstall and disables these.
