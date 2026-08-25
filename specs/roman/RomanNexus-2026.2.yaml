@@ -2,7 +2,7 @@
 # mission environment's python version and expected availability dates.
 # The deployment name defines which base overall build process is used.
 image_spec_header:
-  image_name: RomanNexus-2026.2
+  image_name: RomanNexus-2026.2.1
   deployment_name: wrangler
   kernel_name: RomanNexus-2026.2
   display_name: Roman Research Nexus 2026.2
@@ -36,8 +36,9 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-08-24T22:51:32.604262'
-  spec_sha256: 337fe02607612f2195e30b097f061dd0987a0693996238dfff8e23b2a81ffe63
+  date_updated: '2026-08-25T16:56:59.247395'
+  spec_sha256: 6fee251d1dd9bddfc6166d2e34f0a7d94bc21e6f36755e7691128ed3ec7a0dee
+
 selected_notebooks:
   roman_all:
     repo: roman_notebooks
@@ -113,7 +114,7 @@ assets:
         destination: /opt/environments
       - source: assets/generic/stop_server_ext.json
         destination: /etc/jupyter/jupyter_server_config.d/
-      - source: assets/generic/stop_server_ext.json
+      - source: assets/generic/stop_server_ext.py
         destination: /srv/jupyter/
       - source: assets/generic/jp_app_launcher.yaml
         destination: /opt/environments/jp_app_launcher.yaml
