@@ -25,8 +25,8 @@ system:  # Ignore unless you're developing for wrangler or care about update dat
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-09-03T13:48:47.834224'
-  spec_sha256: 493dc8662a3ec3c542db6b5634570d8955f8b451247b6b48eaadf583e08aca9d
+  date_updated: '2026-09-03T14:07:03.361857'
+  spec_sha256: 42eda27fb0750ad7338ef41a6ac24b480e567d94899e59186d45258b8ed0ceae
 
 repositories:
   tike_content:
@@ -78,8 +78,8 @@ extra_pip_packages:
   # - git+https://github.com/snbianco/astroquery.git@2026.2  # conflict with browse_roman_observations version
 
 # Packages installed by pip or uv pip in both base and mission environments.
-#  - bqplot-gl==0.0.0
 common_pip_packages:
+  - bqplot-gl==0.0.0
   - bqplot>=0.12.47,<0.13
   - motorcycle==0.1.2
   - dotenv
@@ -104,17 +104,17 @@ dockerfile_aux_sh: |
 
 # Image-specific files that are downloaded and/or copied to the specified locations in images
 assets:
-  - repo: https://github.com/jaytmiller/nb-wrangler-images.git
-    ref: tike-2026.2
+  - repo: https://github.com/spacetelescope/nb-wrangler-images.git
+    ref: main
     items:
+      - source: assets/tike/jp_app_launcher.yaml
+        destination: /opt/environments
       - source: assets/generic/catalog-schema-browser.ipynb
         destination: /opt/environments
       - source: assets/generic/stop_server_ext.py
         destination: /etc/jupyter/jupyter_server_config.d/
       - source: assets/generic/stop_server_ext.json
         destination: /srv/jupyter/
-      - source: assets/tike/jp_app_launcher.yaml
-        destination: $HOME/.local/share/jupyter/jupyter_app_launcher/
       - source: assets/generic/post-start-hook
         destination: /opt/environments/post-start-hook
       - source: assets/generic/test
