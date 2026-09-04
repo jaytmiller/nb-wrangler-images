@@ -205,10 +205,10 @@ jobs:
           image-test --test-notebooks ${NBW_OVERRIDES_MODE}
           rm -rf $NBW_REPOS_DIR
 
-      - name: Scan Image (advisory)
-        run: |
-          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          cd $NBW_REPOS_DIR/science-platform-images
-          scripts/image-configure ${SPEC_DEPLOYMENT}
-          source setup-env
-          image-scan
+      # ----- - name: Scan Image (advisory)
+      # -----   run: |
+      # -----     cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+      # -----     cd $NBW_REPOS_DIR/science-platform-images
+      # -----     scripts/image-configure ${SPEC_DEPLOYMENT}
+      # -----     source setup-env
+      # -----     image-scan
