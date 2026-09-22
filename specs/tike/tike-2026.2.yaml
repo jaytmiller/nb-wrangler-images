@@ -109,9 +109,9 @@ assets:
         destination: /opt/environments
       - source: assets/generic/catalog-schema-browser.ipynb
         destination: /opt/environments
-      - source: assets/generic/stop_server_ext.py
-        destination: /etc/jupyter/jupyter_server_config.d/
       - source: assets/generic/stop_server_ext.json
+        destination: /etc/jupyter/jupyter_server_config.d/
+      - source: assets/generic/stop_server_ext.py
         destination: /srv/jupyter/
       - source: assets/generic/post-start-hook
         destination: /opt/environments/post-start-hook
