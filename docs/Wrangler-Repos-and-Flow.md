@@ -4,21 +4,23 @@ There are these primary entities in the Wrangler System Data Flow
 
 ## Notebook-repos User Platform Content
 
-Provide notebook content, Python package requirements, and associated data and environment variables.
+- Provide notebook content, Python package requirements, and associated data and environment variables.
 
   - https://github.com/spacetelescope/tike_content.git
   - https://github.com/spacetelescioe/roman_notebooks.git
   - https://github.com/spacetelescope/mast_notebooks.git
 
+- qThe original wrangler concept was to derive combined image requirements from selected notebooks that store corresponding per-notebook requirements.txt files.  The environments produced by nb-wrangler are designed to support all selected notebooks in a single environment.
+
 ## Nb-wrangler Tools
 
 https://github.com/spacetelescope/nb-wrangler-git
 
-Consists of the Wrangler tool `nbw` and coming tool `hubenv`.
-`nbw` is used to "curate" wrangler specs defining notebooks, packages, and data based on a selection of notebooks from the notebook repos.
-`hubenv` is used to install persistent wrangler compatible environments,  particularly on the science platforms.  Rather than being focused on notebooks and images,  it starts from the perspective of mamba and pip packages.
+- Consists of the Wrangler tool `nbw` and coming tool `hubenv`.
+- `nbw` is used to "curate" wrangler specs defining notebooks, packages, and data based on a selection of notebooks from the notebook repos.  [example spec][example-spec]
+- `hubenv` is used to install persistent wrangler compatible environments,  particularly on the science platforms.  Rather than being focused on notebooks and images,  it starts from the perspective of mamba and pip packages.
 
-nb-wrangler is also distributed on PyPi and so the `nbw` and `hubenv` tools are pip installable as one bundle: nb-wrangler.
+nb-wrangler is also distributed on PyPi and so the `nbw` and `hubenv` tools are pip installable as one bundle: nb-wrangler.  [PyPy nb-wrangler](https://pypi.org/project/nb-wrangler/)
 
 ## Human curators
 
