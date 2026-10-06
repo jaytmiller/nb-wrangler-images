@@ -45,11 +45,10 @@ nb-wrangler is also distributed on PyPi and so the `nbw` and `hubenv` tools are 
 
 [science-platform-images GitHub](https://github.com/spacetelescope/science-platform-images)
 
-- This repo is the site where the source code for out science platform images has resided prior to Wrangler. The `nbw` commands
+- This repo is the site where the source code for out science platform images has resided prior to Wrangler.
 - It retains much of it's original structure (particularly mission specific deployments and Dockerfiles.) but has a new `wrangler` deployment.
 - Wrangler generated requirements are automatically injected into a clone of this repo to build the associated image.
 - As of August 2026 mission images for Roman, TIKE, and Jwebbinar are built based on the generic `wrangler` deployment with nb-wrangler-images specs and assets responsible for all mission specific customization.
-
 
 [example-spec]: ../specs/roman/RomanNexus-2026.2.1.yaml
 [file-assets]: ../assets
