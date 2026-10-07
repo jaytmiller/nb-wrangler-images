@@ -5,7 +5,7 @@
 
 This diagram illustrates the information flow between the entities involved with specifying, curating, building, hosting, and platform testing of notebook images.
 
-![Wrangler-Repos-And-Flow](./Wrangler-Repos-And-Flow.svg)
+![Wrangler-Repos-And-Flow](docs/Wrangler-Repos-And-Flow.svg)
 
 - Notebook Selection & Curation: Notebook repos feed notebooks to human curators, who select notebooks and pass them to the nbw tool. The nbw tool then extracts notebooks, code, and data requirements back from the notebook repos
 
