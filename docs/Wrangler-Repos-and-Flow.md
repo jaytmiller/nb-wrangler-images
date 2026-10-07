@@ -1,8 +1,26 @@
 # Wrangler System Data Flow
 
-There are these primary entities in the Wrangler System Data Flow
+## Key Information Flows:
 
-## Notebook-repos User Platform Content
+
+This diagram illustrates the information flow between the entities involved with specifying, curating, building, hosting, and platform testing of notebook images.
+
+![Wrangler-Repos-And-Flow](./Wrangler-Repos-And-Flow.svg)
+
+- Notebook Selection & Curation: Notebook repos feed notebooks to human curators, who select notebooks and pass them to the nbw tool. The nbw tool then extracts notebooks, code, and data requirements back from the notebook repos
+
+- Spec Creation: Human curators update specs and run wrangler tools, while nbw curates wrangler specs (defining notebooks, packages, and data) based on the selected notebooks. These specs are committed and used to initiate builds on the nb-wrangler-images repo.
+
+- Tool Distribution: The nb-wrangler bundle (containing nbw and hubenv) is distributed via PyPI, making both tools pip-installable.
+
+- Environment Installation: The hubenv tool installs persistent wrangler-compatible environments on science platforms, starting from the perspective of mamba and pip packages rather than notebooks and images.
+
+
+## Primary Entities:
+
+Below is more detail on each of the primary entities (repos + human) involved with nb-wrangler based image-building:
+
+### Notebook-repos User Platform Content
 
 - Provide notebook content, Python package requirements, and associated data and environment variables.
 
@@ -15,7 +33,7 @@ There are these primary entities in the Wrangler System Data Flow
 - The original wrangler concept was to derive combined image requirements from selected notebooks that define per-notebook requirements.txt files.
 - The environments produced by nb-wrangler are designed to support all selected notebooks in a single environment.
 
-## Nb-wrangler Tools
+### Nb-wrangler Tools
 
 [nb-wrangler GitHub](https://github.com/spacetelescope/nb-wrangler-git)
 
@@ -25,13 +43,13 @@ There are these primary entities in the Wrangler System Data Flow
 
 nb-wrangler is also distributed on PyPi and so the `nbw` and `hubenv` tools are pip installable as one bundle: nb-wrangler.  [PyPy nb-wrangler](https://pypi.org/project/nb-wrangler/)
 
-## Human curators
+### Human curators
 
 - Human curators update specs and run the wrangler tools locally or initiate builds on the nb-wrangler-images repo manually based on committed specs. [example spec][example-spec]
 - The wrangler tools in turn extract notebooks, code, and data requirements from the notebook repos.
 - Human curators are one path by which the wrangler tools and notebooks are consumed and specs and/or images are produced.
 
-## Nb-wrangler-images Content
+### Nb-wrangler-images Content
 
 [nb-wrangler-images GitHub](https://github.com/spacetelescope/nb-wrangler-images)
 
@@ -41,7 +59,7 @@ nb-wrangler is also distributed on PyPi and so the `nbw` and `hubenv` tools are 
 - Nb-wrangler-images is where notebook repos, wrangler tools, science-platform-images, and human inputs all converge to run pipelines and produce the image products on [GHCR][GHCR]
 - It is possible to add common package requirements to the Wrangler spec that affect both base and mission environments in the image.  It is not (currently?) possible to update the on-hub base environment without building a new image.
 
-## Science-Platform-images (SPI)
+### Science-Platform-images (SPI)
 
 [science-platform-images GitHub](https://github.com/spacetelescope/science-platform-images)
 

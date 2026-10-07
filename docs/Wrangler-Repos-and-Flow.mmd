@@ -1,0 +1,50 @@
+flowchart TD
+    %% Entities
+    NotebookRepos["Notebook Repos<br/>(source of notebooks)"]
+    HumanCurators["Human Curators"]
+    NBW["nb-wrangler Tools<br/>(nbw + hubenv)"]
+    Specs["Wrangler Specs<br/>(notebooks, packages, data)"]
+    ImagesRepo["nb-wrangler-images Repo, GitHub Pipelines"]
+    PyPI["PyPI<br/>(nb-wrangler package)"]
+    SciencePlatforms["Science Platforms"]
+    Packages["Mamba/Pip Packages"]
+    GHCR["GHCR Image Hosting"]
+
+    %% Flow: Notebook selection and curation
+    NotebookRepos -- "notebooks" --> HumanCurators
+    HumanCurators -- "select notebooks" --> NBW
+    NBW -- "extracts notebooks, code, data requirements" --> NotebookRepos
+
+    %% Flow: Spec creation and updates
+    HumanCurators -- "update specs" --> Specs
+    NBW -- "curate specs" --> Specs
+    Specs -- "committed specs" --> ImagesRepo
+
+    %% Flow: Builds
+    HumanCurators -- "initiate builds" --> ImagesRepo
+    ImagesRepo -- "build images" --> ImagesRepo
+    ImagesRepo -- "completed images" --> GHCR
+
+    %% GHCR: Image Hosting
+    GHCR -- "automatic image scraping" --> SciencePlatforms
+
+    %% Flow: Tool distribution
+    PyPI -- "distributes nb-wrangler bundle" --> NBW
+
+    %% Flow: Environment installation
+    NBW -- "hubenv installs environments" --> SciencePlatforms
+    Packages --> NBW
+    NBW -- "from mamba/pip packages" --> Packages
+
+    %% Styling
+    classDef entity fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef repo fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+    classDef tool fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef person fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef data fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+
+    class NotebookRepos,ImagesRepo,PyPI,SciencePlatforms repo;
+    class NBW tool;
+    class HumanCurators person;
+    class Specs data;
+    class Packages data;
