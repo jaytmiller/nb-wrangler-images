@@ -31,14 +31,7 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
-  commands:
-    # default is "uv pip".  SPI had to use pip.  pip not picky about pyproject.toml version;  uv crashes
-    pip: pip
-    # choose this over any env var setting but not CLI
-    favor: spec
-  date_updated: '2026-10-19T17:30:32.090627'
-  spec_sha256: 8960cc57c6b491f2c0f9ead81089408312193b9cf194c9b2ef1713211fe0a425
-
+  date_updated: '2026-10-19T17:43:39.811897'
 selected_notebooks:
   jwebbinar_prep_all:
     repo: jwebbinar_prep
@@ -67,20 +60,15 @@ extra_pip_packages:
   - boto3
   - lsstdesc.coord
   - healpy>=1.20.b1
-  - jdaviz>5.0.0 # motorcyle
-  - git+https://github.com/snbianco/astroquery.git@2026.2  #????
+  - jdaviz<5.0.0
+  # - git+https://github.com/snbianco/astroquery.git@2026.2  #????
 
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
-  - bqplot>=0.12.47,<0.13
   - nb-wrangler
-  - motorcycle==0.1.2
   - dotenv
   - jupyter-collaboration<5
   - jupyter-server-ydoc<3
-  - ipyvuetify==3.0.0
-  # - jupyter-vuetify==3.0.0
-
 
 # A text file that will be injected into image builds and executed by Docker.
 dockerfile_aux_sh: |
