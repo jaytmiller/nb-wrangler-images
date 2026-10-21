@@ -145,6 +145,13 @@ jobs:
           source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
 
+      - name: Install apt packages
+        run: |
+          #  (Does not fully support all SPI image apt packages,  just spec'ed)
+          PACKAGES=$(yq  -r '.apt_packages | join(" ")' $NBW_SPEC)
+          apt-get update
+          apt-get install --yes $PACKAGES
+
       - name: Curate Environment
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
