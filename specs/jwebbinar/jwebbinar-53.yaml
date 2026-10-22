@@ -31,9 +31,9 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
-  date_updated: '2026-10-21T16:28:39.438502'
+  date_updated: '2026-10-22T15:18:24.067041'
 
-  spec_sha256: 95508db7452376308983620576c042bead077cf1c1ede5911907ede7cd3a9168
+  spec_sha256: a40c5220afc431a5e679cb1d4d7dcb8340a246c1c59e06598fc44bb52fb8c1c2
 selected_notebooks:
   jwebbinar53:
     repo: jwebbinar_prep
@@ -102,6 +102,20 @@ environment_vars:
 
 test_environment_vars:
   CI: "true"
+
+refdata_dependencies:
+  install_files:
+    opacities:
+      version: 0.3_15_R15000
+      data_url:
+        # - https://zenodo.org/records/14861730/files/opacities_0.3_15_R15000.db.tar.gz
+        - https://stsci.box.com/s/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz
+      install_path: ${HOME}/refdata
+      environment_variable: OPACITIES_PATH
+      data_path: .
+  other_variables: {}
+
+
 out:
   repositories:
     jwebbinar_prep:
@@ -112,7 +126,7 @@ out:
       resolved_ref: main
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
-    ref: 20b6e9f9ee0059325a6d6ac5b36714b333128c5f
+    ref: fd6fccbfac571aeb549165311d1dc966ff5b3a82
   test_notebooks:
     - jwebbinar53:
         - references/jwebbinar_prep/jwebbinar53/01_JWebbinar_OCDb_to_ModelReadyData.ipynb
@@ -166,15 +180,6 @@ out:
       - picaso
       - virga
     references/jwebbinar_prep/jwebbinar53/solutions/03_JWebbinar_OCDb_Hazy_SubNeptune_solution.ipynb:
-      - astropy
-      - inspect
-      - matplotlib
-      - numpy
-      - pandas
-      - pathlib
-      - picaso
-      - virga
-    references/jwebbinar_prep/jwebbinar53/test.ipynb:
       - astropy
       - inspect
       - matplotlib
