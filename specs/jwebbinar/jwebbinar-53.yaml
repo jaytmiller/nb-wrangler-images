@@ -31,9 +31,8 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
-  date_updated: '2026-10-22T15:18:24.067041'
+  date_updated: '2026-10-22T16:35:20.574218'
 
-  spec_sha256: a40c5220afc431a5e679cb1d4d7dcb8340a246c1c59e06598fc44bb52fb8c1c2
 selected_notebooks:
   jwebbinar53:
     repo: jwebbinar_prep
@@ -103,13 +102,14 @@ environment_vars:
 test_environment_vars:
   CI: "true"
 
+# This declares some data dependency inputs here inline, to be curated in the out section with hashes, etc
 refdata_dependencies:
   install_files:
     opacities:
       version: 0.3_15_R15000
       data_url:
         # - https://zenodo.org/records/14861730/files/opacities_0.3_15_R15000.db.tar.gz
-        - https://stsci.box.com/s/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz
+        - https://stsci.box.com/shared/static/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz
       install_path: ${HOME}/refdata
       environment_variable: OPACITIES_PATH
       data_path: .
@@ -126,7 +126,7 @@ out:
       resolved_ref: main
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
-    ref: fd6fccbfac571aeb549165311d1dc966ff5b3a82
+    ref: 20b6e9f9ee0059325a6d6ac5b36714b333128c5f
   test_notebooks:
     - jwebbinar53:
         - references/jwebbinar_prep/jwebbinar53/01_JWebbinar_OCDb_to_ModelReadyData.ipynb
@@ -1812,3 +1812,29 @@ out:
         # via aiohttp
     yq==4.4.5
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
+  data:
+    spec_inputs:
+      references/jwebbinar_prep/refdata_dependencies.yaml:
+        install_files: {}
+        other_variables: {}
+      references/nbw-spec/refdata_dependencies.yaml:
+        install_files:
+          opacities:
+            version: 0.3_15_R15000
+            environment_variable: OPACITIES_PATH
+            install_path: ${HOME}/refdata
+            data_path: .
+            data_url:
+              - https://stsci.box.com/shared/static/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz
+        other_variables:
+          PYTHONPATH: /srv/jupyter:$PYTHONPATH
+    spec_exports:
+      OPACITIES_PATH: ${HOME}/refdata/.
+      PYTHONPATH: /srv/jupyter:$PYTHONPATH
+    pantry_exports:
+      OPACITIES_PATH: /home/ai/.nbw-pantry/shelves/jwebbinar-53/data
+      PYTHONPATH: /srv/jupyter:$PYTHONPATH
+    metadata:
+      nbw-spec/opacities/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz:
+        size: '4777100739'
+        sha256: 079418cba717055f0d74c5b96c9c25f746d0287e0ff92d5cbb5aed746493f0aa
