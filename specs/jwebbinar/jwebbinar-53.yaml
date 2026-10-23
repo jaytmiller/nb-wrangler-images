@@ -5,19 +5,21 @@ image_spec_header:
   image_name: jwebbinar-53
   deployment_name: wrangler
   kernel_name: jwebbinar-53
-  display_name: jwebbinar-53
+  display_name: jwebbinar-53 (PICASO workshop)
   description: |
     Derived from JDaviz test image following final Roman's pre-launch release
   valid_on: '2026-10-19'
   expires_on: '2027-01-19'
-  python_version: '3.13'
+  python_version: '3.11.8'
 
 # These are the git repositories and branch/tag/hash that will be
 # used to define packages, data, and installed notebooks.
 repositories:
   jwebbinar_prep:
-    url: https://github.com/spacetelescope/jwebbinar_prep.git
-    ref: main
+    # url: https://github.com/spacetelescope/jwebbinar_prep.git
+    # ref: main
+    url: https://github.com/jaytmiller/jwebbinar_prep.git
+    ref: jwebbinar-53
 
 # This is system config that is generally not changed by curators.
 system:
@@ -31,8 +33,9 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
-  date_updated: '2026-10-22T16:35:20.574218'
+  date_updated: '2026-10-23T11:47:52.030927'
 
+  spec_sha256: 2210622c81c44689346130fe52d28588fe5e8899b1d515c2f3d5903b765a9e2b
 selected_notebooks:
   jwebbinar53:
     repo: jwebbinar_prep
@@ -111,19 +114,21 @@ refdata_dependencies:
         # - https://zenodo.org/records/14861730/files/opacities_0.3_15_R15000.db.tar.gz
         - https://stsci.box.com/shared/static/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz
       install_path: ${HOME}/refdata
-      environment_variable: OPACITIES_PATH
-      data_path: .
+      environment_variable: SP_OPACITY_FILE
+      data_path: opacities_0.3_15_R15000.db
   other_variables: {}
 
 
 out:
   repositories:
     jwebbinar_prep:
-      url: https://github.com/spacetelescope/jwebbinar_prep.git
-      ref: 276aba0337f0b1e6d250a8444035c2847aaf3f45
+    # url: https://github.com/spacetelescope/jwebbinar_prep.git
+    # ref: main
+      url: https://github.com/jaytmiller/jwebbinar_prep.git
+      ref: 5b6555f17726d607d1ec680c32a045266ff68287
 
 # This is system config that is generally not changed by curators.
-      resolved_ref: main
+      resolved_ref: jwebbinar-53
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: 20b6e9f9ee0059325a6d6ac5b36714b333128c5f
@@ -200,7 +205,7 @@ out:
       - pip-tools
       - setuptools<82.0.0
       - pip
-      - python=3.13
+      - python=3.11.8
       - uv
       - pip
       - ipykernel
@@ -210,7 +215,7 @@ out:
       - wheel
   mamba_package_map:
     base_mamba_deps:
-      - python=3.13
+      - python=3.11.8
     common_mamba_packages: []
     extra_mamba_packages:
       - pip
@@ -331,6 +336,7 @@ out:
         # via
         #   jupyter-server-proxy
         #   jupyterhub
+        #   papermill
     aiosignal==1.4.0
         # via aiohttp
     alabaster==1.0.0
@@ -442,6 +448,8 @@ out:
         #   jupyterlab-server
         #   pydata-sphinx-theme
         #   sphinx
+    backports-tarfile==1.2.0 ; python_full_version < '3.12'
+        # via jaraco-context
     beautifulsoup4==4.15.0
         # via
         #   astroquery
@@ -546,7 +554,11 @@ out:
         # via
         #   ipykernel
         #   ipywidgets
-    contourpy==1.4.0
+    contourpy==1.3.3 ; python_full_version < '3.12'
+        # via
+        #   bokeh
+        #   matplotlib
+    contourpy==1.4.0 ; python_full_version >= '3.12'
         # via
         #   bokeh
         #   matplotlib
@@ -692,6 +704,11 @@ out:
         # via scikit-image
     imagesize==2.0.1
         # via sphinx
+    importlib-metadata==9.1.0 ; python_full_version < '3.12'
+        # via
+        #   asdf
+        #   dask
+        #   keyring
     imviz==0.2.12
         # via -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
     iniconfig==2.3.1
@@ -1111,7 +1128,9 @@ out:
         # via ipykernel
     netcdf4==1.7.5
         # via picaso
-    networkx==3.7
+    networkx==3.6.1 ; python_full_version < '3.12'
+        # via scikit-image
+    networkx==3.7 ; python_full_version >= '3.12'
         # via scikit-image
     notebook==7.6.3
         # via
@@ -1126,7 +1145,63 @@ out:
         # via
         #   miepython
         #   picaso
-    numpy==2.5.4
+    numpy==2.4.6 ; python_full_version < '3.12'
+        # via
+        #   -r references/science-platform-images/deployments/common/common-env/common.pip
+        #   asdf
+        #   asdf-astropy
+        #   astropy
+        #   astroquery
+        #   bokeh
+        #   bqplot
+        #   bqscales
+        #   casa-formats-io
+        #   cftime
+        #   contourpy
+        #   crds
+        #   dask
+        #   echo
+        #   fast-histogram
+        #   glue-core
+        #   gwcs
+        #   h5netcdf
+        #   h5py
+        #   healpy
+        #   imageio
+        #   imviz
+        #   ipydatawidgets
+        #   ipympl
+        #   ipyvolume
+        #   lsstdesc-coord
+        #   matplotlib
+        #   miepython
+        #   mpl-scatter-density
+        #   ndcube
+        #   netcdf4
+        #   numba
+        #   objtoolbox
+        #   pandas
+        #   photutils
+        #   picaso
+        #   pyerfa
+        #   pythreejs
+        #   radio-beam
+        #   regions
+        #   scikit-image
+        #   scipy
+        #   shapely
+        #   solara-ui
+        #   specreduce
+        #   spectral-cube
+        #   specutils
+        #   stdatamodels
+        #   stsynphot
+        #   synphot
+        #   tifffile
+        #   virga-exo
+        #   vispy
+        #   xarray
+    numpy==2.5.4 ; python_full_version >= '3.12'
         # via
         #   -r references/science-platform-images/deployments/common/common-env/common.pip
         #   asdf
@@ -1192,6 +1267,8 @@ out:
         # via glue-core
     opentelemetry-api==1.45.1
         # via ddtrace
+    overrides==7.7.0 ; python_full_version < '3.12'
+        # via jupyter-server
     packaging==26.3
         # via
         #   asdf
@@ -1260,7 +1337,11 @@ out:
         # via
         #   ipython
         #   jupyterlab-git-core
-    photutils==3.1.1
+    photutils==3.0.0 ; python_full_version < '3.12'
+        # via
+        #   jdaviz
+        #   picaso
+    photutils==3.1.1 ; python_full_version >= '3.12'
         # via
         #   jdaviz
         #   picaso
@@ -1349,7 +1430,9 @@ out:
         # via sunpy-sphinx-theme
     pydeps==3.0.9
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
-    pyee==14.0.0
+    pyee==13.0.1 ; python_full_version < '3.12'
+        # via playwright
+    pyee==14.0.0 ; python_full_version >= '3.12'
         # via playwright
     pyerfa==2.0.1.5
         # via astropy
@@ -1452,7 +1535,11 @@ out:
         #   jsonschema
         #   jsonschema-specifications
         #   jupyter-events
-    regions==0.13
+    regions==0.12 ; python_full_version < '3.12'
+        # via
+        #   glue-astronomy
+        #   jdaviz
+    regions==0.13 ; python_full_version >= '3.12'
         # via
         #   glue-astronomy
         #   jdaviz
@@ -1504,7 +1591,22 @@ out:
         # via
         #   glue-jupyter
         #   jdaviz
-    scipy==1.18.1
+    scipy==1.17.1 ; python_full_version < '3.12'
+        # via
+        #   glue-core
+        #   gwcs
+        #   miepython
+        #   ndcube
+        #   photutils
+        #   picaso
+        #   radio-beam
+        #   scikit-image
+        #   specreduce
+        #   specutils
+        #   stsynphot
+        #   synphot
+        #   virga-exo
+    scipy==1.18.1 ; python_full_version >= '3.12'
         # via
         #   glue-core
         #   gwcs
@@ -1574,7 +1676,39 @@ out:
         #   specreduce
     specviz==0.8
         # via -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
-    sphinx==9.2.0
+    sphinx==9.0.4 ; python_full_version < '3.12'
+        # via
+        #   -r references/science-platform-images/deployments/common/common-env/docs.pip
+        #   astropy-sphinx-theme
+        #   nbsphinx
+        #   numpydoc
+        #   picaso
+        #   pydata-sphinx-theme
+        #   sphinx-astropy
+        #   sphinx-automodapi
+        #   sphinx-gallery
+        #   sphinx-rtd-theme
+        #   sphinxcontrib-jquery
+        #   sphinxext-opengraph
+        #   stsci-rtd-theme
+        #   sunpy-sphinx-theme
+    sphinx==9.1.1 ; python_full_version == '3.12.*'
+        # via
+        #   -r references/science-platform-images/deployments/common/common-env/docs.pip
+        #   astropy-sphinx-theme
+        #   nbsphinx
+        #   numpydoc
+        #   picaso
+        #   pydata-sphinx-theme
+        #   sphinx-astropy
+        #   sphinx-automodapi
+        #   sphinx-gallery
+        #   sphinx-rtd-theme
+        #   sphinxcontrib-jquery
+        #   sphinxext-opengraph
+        #   stsci-rtd-theme
+        #   sunpy-sphinx-theme
+    sphinx==9.2.0 ; python_full_version >= '3.13'
         # via
         #   -r references/science-platform-images/deployments/common/common-env/docs.pip
         #   astropy-sphinx-theme
@@ -1650,7 +1784,9 @@ out:
         # via
         #   jupyter-server
         #   jupyter-server-terminals
-    tifffile==2026.10.15
+    tifffile==2026.3.3 ; python_full_version < '3.12'
+        # via scikit-image
+    tifffile==2026.10.15 ; python_full_version >= '3.12'
         # via scikit-image
     tinycss2==1.5.1
         # via bleach
@@ -1726,12 +1862,16 @@ out:
         # via nab-index
     typing-extensions==4.16.0
         # via
+        #   aiohttp
+        #   aiosignal
         #   alembic
         #   anyio
         #   anywidget
         #   asdf
         #   beautifulsoup4
+        #   ipython
         #   jupyter-client
+        #   jupyterlab
         #   nab
         #   nab-index
         #   nab-project
@@ -1741,8 +1881,10 @@ out:
         #   pydantic-core
         #   pyee
         #   reacton
+        #   referencing
         #   sqlalchemy
         #   sqlite-anyio
+        #   starlette
         #   typing-inspection
     typing-inspection==0.4.4
         # via pydantic
@@ -1812,6 +1954,8 @@ out:
         # via aiohttp
     yq==4.4.5
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
+    zipp==4.1.2 ; python_full_version < '3.12'
+        # via importlib-metadata
   data:
     spec_inputs:
       references/jwebbinar_prep/refdata_dependencies.yaml:
@@ -1821,18 +1965,19 @@ out:
         install_files:
           opacities:
             version: 0.3_15_R15000
-            environment_variable: OPACITIES_PATH
+            environment_variable: SP_OPACITY_FILE
             install_path: ${HOME}/refdata
-            data_path: .
+            data_path: opacities_0.3_15_R15000.db
             data_url:
               - https://stsci.box.com/shared/static/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz
         other_variables:
           PYTHONPATH: /srv/jupyter:$PYTHONPATH
     spec_exports:
-      OPACITIES_PATH: ${HOME}/refdata/.
+      SP_OPACITY_FILE: ${HOME}/refdata/opacities_0.3_15_R15000.db
       PYTHONPATH: /srv/jupyter:$PYTHONPATH
     pantry_exports:
-      OPACITIES_PATH: /home/ai/.nbw-pantry/shelves/jwebbinar-53/data
+      SP_OPACITY_FILE: 
+        /home/ai/.nbw-pantry/shelves/jwebbinar-53/data/opacities_0.3_15_R15000.db
       PYTHONPATH: /srv/jupyter:$PYTHONPATH
     metadata:
       nbw-spec/opacities/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz:
