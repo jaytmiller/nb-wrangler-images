@@ -33,9 +33,9 @@ system:
   spi:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
-  date_updated: '2026-10-23T11:47:52.030927'
+  date_updated: '2026-10-23T14:49:20.153520'
 
-  spec_sha256: 2210622c81c44689346130fe52d28588fe5e8899b1d515c2f3d5903b765a9e2b
+  spec_sha256: cbbc5fc929861425d77b6c5100c295bfc63403a9bcccbffed0fb5cca9a5315d1
 selected_notebooks:
   jwebbinar53:
     repo: jwebbinar_prep
@@ -125,7 +125,7 @@ out:
     # url: https://github.com/spacetelescope/jwebbinar_prep.git
     # ref: main
       url: https://github.com/jaytmiller/jwebbinar_prep.git
-      ref: 5b6555f17726d607d1ec680c32a045266ff68287
+      ref: 877ce370df20e1c1745f1191ef75ee14657767fc
 
 # This is system config that is generally not changed by curators.
       resolved_ref: jwebbinar-53
@@ -1977,7 +1977,7 @@ out:
       PYTHONPATH: /srv/jupyter:$PYTHONPATH
     pantry_exports:
       SP_OPACITY_FILE: 
-        /home/ai/.nbw-pantry/shelves/jwebbinar-53/data/opacities_0.3_15_R15000.db
+        ${NBW_PANTRY}/shelves/jwebbinar-53/data/opacities_0.3_15_R15000.db
       PYTHONPATH: /srv/jupyter:$PYTHONPATH
     metadata:
       nbw-spec/opacities/2e7mpm2e52uh89oqaj0tbywv5iv5xdb8.gz:
