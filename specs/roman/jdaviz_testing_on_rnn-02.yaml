@@ -2,12 +2,12 @@
 # mission environment's python version and expected availability dates.
 # The deployment name defines which base overall build process is used.
 image_spec_header:
-  image_name: RomanNexus-2026.2.2
+  image_name: RomanJdavizTesting-2026.2 (formerly RomanNexus-2026.2.2)
   deployment_name: wrangler
-  kernel_name: RomanNexus-2026.2
-  display_name: Roman Research Nexus 2026.2
+  kernel_name: RomanJdavizTesting-2026.2
+  display_name: RomanJdavizTesting-2026.2
   description: |
-    Patched final Roman's pre-launch release
+    JDaviz testing image 2. (formerly RomanNexus-2026.2.2 later officially stolen by a patch image)
   valid_on: '2026-10-02'
   expires_on: '2027-03-01'
   python_version: '3.13'
@@ -225,9 +225,9 @@ out:
       CRDS_OBSERVATORY: roman
       CRDS_PATH: ${HOME}/crds_cache
     pantry_exports:
-      pandeia_refdata: 
+      pandeia_refdata:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_data-2026.1-roman
-      PSF_DIR: 
+      PSF_DIR:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_psfs-2026.1-roman
       STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stpsf-data
       stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stips_data
