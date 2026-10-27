@@ -12,14 +12,6 @@ image_spec_header:
   expires_on: '2027-01-19'
   python_version: '3.11.8'
 
-# These are the git repositories and branch/tag/hash that will be
-# used to define packages, data, and installed notebooks.
-repositories:
-  jwebbinar_prep:
-    # url: https://github.com/spacetelescope/jwebbinar_prep.git
-    # ref: main
-    url: https://github.com/jaytmiller/jwebbinar_prep.git
-    ref: jwebbinar-53
 
 # This is system config that is generally not changed by curators.
 system:
@@ -34,8 +26,16 @@ system:
     repo: https://github.com/spacetelescope/science-platform-images.git
     ref: main
   date_updated: '2026-10-23T14:49:20.153520'
-
   spec_sha256: cbbc5fc929861425d77b6c5100c295bfc63403a9bcccbffed0fb5cca9a5315d1
+
+
+# These are the git repositories and branch/tag/hash that will be
+# used to define packages, data, and installed notebooks.
+repositories:
+  jwebbinar_prep:
+    url: https://github.com/spacetelescope/jwebbinar_prep.git
+    ref: main
+
 selected_notebooks:
   jwebbinar53:
     repo: jwebbinar_prep
@@ -94,7 +94,7 @@ assets:
         destination: /etc/jupyter/jupyter_server_config.d/
       - source: assets/generic/stop_server_ext.py
         destination: /srv/jupyter/
-      - source: assets/generic/post-start-hook
+      - source: assets/jwebbinar/post-start-hook-53
         destination: /opt/environments/post-start-hook
       - source: assets/generic/test
         destination: /opt/environments/test
@@ -1976,7 +1976,7 @@ out:
       SP_OPACITY_FILE: ${HOME}/refdata/opacities_0.3_15_R15000.db
       PYTHONPATH: /srv/jupyter:$PYTHONPATH
     pantry_exports:
-      SP_OPACITY_FILE: 
+      SP_OPACITY_FILE:
         ${NBW_PANTRY}/shelves/jwebbinar-53/data/opacities_0.3_15_R15000.db
       PYTHONPATH: /srv/jupyter:$PYTHONPATH
     metadata:
