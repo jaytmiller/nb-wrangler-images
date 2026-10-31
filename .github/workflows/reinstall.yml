@@ -89,8 +89,7 @@ jobs:
           printf 'Validated spec: %s\n' "$resolved"
 
           # Primary spec workflow input
-          export NBW_SPEC=$GITHUB_WORKSPACE/${resolved}
-          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
+          echo NBW_SPEC=${resolved} >>$GITHUB_ENV
 
       - name: Set up system tools
         run: |
