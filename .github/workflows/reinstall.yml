@@ -12,37 +12,17 @@ on:
   workflow_dispatch:
     inputs:
       spec_file:
-        description: 'The path to the wrangler spec file in the notebook repo'
+        description: 'The path to the wrangler spec file in the notebook repo,  must be under specs/'
         required: false
         type: string
         default: 'specs/roman/nbw-wrangler-spec.yaml'
-      wrangler_owner:
-        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
-        required: false
-        type: string
-        default: spacetelescope
-      wrangler_ref:
-        description: 'The branch/tag/ref of nb-wrangler to use for the tool'
-        required: false
-        type: string
-        default: 'main'
   workflow_call:
     inputs:
       spec_file:
-        description: 'The path to the wrangler spec file in the notebook repo'
+        description: 'The path to the wrangler spec file in the notebook repo, must be under specs/'
         required: false
         type: string
         default: 'specs/roman/nbw-wrangler-spec.yaml'
-      wrangler_owner:
-        description: 'The owner of the GitHub nb-wrangler repo to use for the tool'
-        required: false
-        type: string
-        default: spacetelescope
-      wrangler_ref:
-        description: 'The branch/tag/ref of nb-wrangler to use for the tool'
-        required: false
-        type: string
-        default: 'main'
 
 defaults:
   run:
@@ -59,6 +39,51 @@ jobs:
       - name: Checkout "Notebook Repo"
         uses: actions/checkout@v4
 
+      - name: Limit spec locations to under directory specs/...
+        shell: bash
+        env:
+          SPEC_INPUT: ${{ inputs.spec }}
+        run: |
+          set -euo pipefail
+
+          fail() {
+            printf '%s\n' "::error::Invalid spec path: $1" >&2
+            exit 1
+          }
+
+          # Reject control characters, including newlines.
+          [[ ! "$SPEC_INPUT" =~ [[:cntrl:]] ]] \
+            || fail "control characters are not allowed"
+
+          # Require the documented repository-relative format.
+          [[ "$SPEC_INPUT" == specs/* ]] \
+            || fail "expected a repository-relative path starting with specs/"
+
+          repo_root="$(realpath -e -- "$GITHUB_WORKSPACE")" \
+            || fail "cannot resolve repository root"
+
+          # Do not allow the top-level specs directory itself to be a symlink.
+          [[ -d "$repo_root/specs" && ! -L "$repo_root/specs" ]] \
+            || fail "specs/ must be a real directory"
+
+          specs_root="$repo_root/specs"
+
+          resolved="$(realpath -e -- "$repo_root/$SPEC_INPUT")" \
+            || fail "file does not exist or cannot be resolved"
+
+          # The slash after specs_root enforces a directory boundary.
+          [[ "$resolved" == "$specs_root/"* ]] \
+            || fail "file resolves outside specs/"
+
+          [[ -f "$resolved" ]] \
+            || fail "path must refer to a regular file"
+
+          printf 'Validated spec: %s\n' "$resolved"
+
+          # Primary spec workflow input
+          export NBW_SPEC=$GITHUB_WORKSPACE/${resolved}
+          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
+
       - name: Set up system tools
         run: |
           git config --global user.email "homer@stsci.edu"
@@ -66,10 +91,6 @@ jobs:
 
       - name: Configure wrangler spec location, overrides mode, and repos directory
         run: |
-          # Primary spec workflow input
-          export NBW_SPEC=$GITHUB_WORKSPACE/${{ inputs.spec_file }}
-          echo NBW_SPEC=$NBW_SPEC >>$GITHUB_ENV
-
           # name inside Dockerfile
           echo SPEC_NAME=nbw-wrangler-spec.yaml >>$GITHUB_ENV
 
@@ -84,16 +105,15 @@ jobs:
 
       - name: Checkout and configure wrangler for source repo (can be overridden for --dev)
         run: |
-          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
-          curl https://raw.githubusercontent.com/${{ inputs.wrangler_owner }}/nb-wrangler/refs/heads/main/nb-wrangler  >nb-wrangler
-          chmod +x nb-wrangler
-
-          # Identify the real repo and reference (branch,tag,hash) determining wrangler used for build
-          export WRANGLER_URL=https://github.com/${{ inputs.wrangler_owner }}/nb-wrangler.git
-          ANS=$(./nb-wrangler resolve-ref ${NBW_SPEC} ${{ inputs.wrangler_ref }})
-          export WRANGLER_REF="${ANS}"
+          COMMIT_SHA="62ce6587029d043e6c17fb2d873e16d567f16302"
+          export WRANGLER_URL=https://github.com/spacetelescope/nb-wrangler.git
+          export WRANGLER_REF="${COMMIT_SHA}"
           echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
           echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
+
+          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
+          curl https://raw.githubusercontent.com/spacetelescope/nb-wrangler/${COMMIT_SHA}  >nb-wrangler
+          chmod +x nb-wrangler
 
           # Clone and configure exact wrangler source code,  nominally a prod copy or a (personal?) dev copy
           cd ${GITHUB_WORKSPACE}/..
