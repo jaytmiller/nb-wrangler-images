@@ -144,6 +144,9 @@ jobs:
 
       - name: Set up workflow env vars
         run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          source ./nb-wrangler environment
+
           # Both of owner/repo, e.g. spacetelescope/roman_notebooks
           export IMAGE_REPO=$GITHUB_REPOSITORY
           echo IMAGE_REPO=$IMAGE_REPO >>$GITHUB_ENV
@@ -170,7 +173,6 @@ jobs:
           echo  SPEC_DEPLOYMENT=$SPEC_DEPLOYMENT >> $GITHUB_ENV
 
           # Root location for curated data and environment archives, also needed for notebook tests
-          source ./nb-wrangler environment
           echo NBW_PANTRY=$NBW_PANTRY >>$GITHUB_ENV
 
       - name: Log in to GHCR
