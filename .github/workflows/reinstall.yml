@@ -35,14 +35,14 @@ jobs:
     permissions:
       contents: read
       packages: write       # Allows GITHUB_TOKEN to push to GHCR
+    # env:
+    #   SPEC_INPUT: ${{ inputs.spec_file }}
     steps:
       - name: Checkout "Notebook Repo"
         uses: actions/checkout@v4
 
       - name: Limit spec locations to under directory specs/...
         shell: bash
-        env:
-          SPEC_INPUT: ${{ inputs.spec }}
         run: |
           set -euo pipefail
 
@@ -50,6 +50,10 @@ jobs:
             printf '%s\n' "::error::Invalid spec path: $1" >&2
             exit 1
           }
+
+          export SPEC_INPUT=${{ inputs.spec_file }}
+          echo SPEC_INPUT=$SPEC_INPUT >>$GITHUB_ENV
+          echo SPEC_INPUT: ${SPEC_INPUT}
 
           # Reject control characters, including newlines.
           [[ ! "$SPEC_INPUT" =~ [[:cntrl:]] ]] \
@@ -66,6 +70,10 @@ jobs:
           [[ -d "$repo_root/specs" && ! -L "$repo_root/specs" ]] \
             || fail "specs/ must be a real directory"
 
+          # Reject parent-directory traversal.
+          case "/$SPEC_INPUT/" in
+          */../*) fail "parent-directory traversal is not allowed" ;;
+          esac
           specs_root="$repo_root/specs"
 
           resolved="$(realpath -e -- "$repo_root/$SPEC_INPUT")" \
