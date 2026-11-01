@@ -177,11 +177,16 @@ jobs:
         run: |
           echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Re-install local environment and data (needed for kernel registration)
+      - name: Re-install local environment (supports data setup)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          nbw --env-install
-          nbw --data-reinstall
+          ./nb-wrangler --env-install
+          ./nb-wrangler --env-register
+
+      - name: Re-install local data (supports in-docker notebook testing)
+        run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler --data-reinstall
 
       - name: Generate Dockerfile for spec
         run: |
