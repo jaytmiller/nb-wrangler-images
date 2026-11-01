@@ -190,10 +190,11 @@ jobs:
 
       - name: Generate Dockerfile for spec
         run: |
+          cd $repo_root
+          git checkout -- ${NBW_SPEC}  # make sure it is unmodified going into Docker build
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           mkdir docker-root
           cd docker-root
-          git checkout -- ${NBW_SPEC}  # make sure it is unmodified going into Docker build
           cp ${NBW_SPEC} .
           cat > Dockerfile << EOF
           FROM scratch
