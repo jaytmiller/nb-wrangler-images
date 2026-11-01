@@ -181,7 +181,6 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
           ./nb-wrangler --env-init
-          ./nb-wrangler --env-register
 
       - name: Re-install local data (supports in-docker notebook testing)
         run: |
