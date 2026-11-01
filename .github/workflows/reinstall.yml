@@ -35,8 +35,6 @@ jobs:
     permissions:
       contents: read
       packages: write       # Allows GITHUB_TOKEN to push to GHCR
-    # env:
-    #   SPEC_INPUT: ${{ inputs.spec_file }}
     steps:
       - name: Checkout "Notebook Repo"
         uses: actions/checkout@v4
@@ -182,8 +180,8 @@ jobs:
       - name: Re-install local environment and data (needed for kernel registration)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --reinstall
-          ./nb-wrangler --data-reinstall
+          nbw --env-install
+          nbw --data-reinstall
 
       - name: Generate Dockerfile for spec
         run: |
