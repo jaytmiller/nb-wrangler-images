@@ -178,16 +178,6 @@ jobs:
         run: |
           echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Re-install local environment (supports data setup)
-        run: |
-          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --env-init
-
-      - name: Re-install local data (supports in-docker notebook testing)
-        run: |
-          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --data-reinstall --quiet-downloads
-
       - name: Generate Dockerfile for spec
         run: |
           git checkout -- ${NBW_SPEC}  # make sure it is unmodified going into Docker build
@@ -231,6 +221,16 @@ jobs:
           source setup-env
 
           image-test --test-imports ${NBW_OVERRIDES_MODE}
+
+      - name: Re-install local environment (supports data setup)
+        run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler --env-init
+
+      - name: Re-install local data (supports in-docker notebook testing)
+        run: |
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler --data-reinstall --quiet-downloads
 
       - name: Test notebooks inside image (advisory)
         run: |
