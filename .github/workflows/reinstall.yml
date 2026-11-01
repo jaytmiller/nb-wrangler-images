@@ -110,7 +110,8 @@ jobs:
 
       - name: Checkout and configure wrangler for source repo (can be overridden for --dev)
         run: |
-          COMMIT_SHA="62ce6587029d043e6c17fb2d873e16d567f16302"
+          # COMMIT_SHA="62ce6587029d043e6c17fb2d873e16d567f16302" TODO get the latest before restoring
+          COMMIT_SHA="0.9.x"
           export WRANGLER_URL=https://github.com/spacetelescope/nb-wrangler.git
           export WRANGLER_REF="${COMMIT_SHA}"
           echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
@@ -185,7 +186,7 @@ jobs:
       - name: Re-install local data (supports in-docker notebook testing)
         run: |
           cd $GITHUB_WORKSPACE/../nb-wrangler-tool
-          ./nb-wrangler --data-reinstall
+          ./nb-wrangler --data-reinstall --quiet-downloads
 
       - name: Generate Dockerfile for spec
         run: |
