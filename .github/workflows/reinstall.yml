@@ -110,8 +110,7 @@ jobs:
 
       - name: Checkout and configure wrangler for source repo (can be overridden for --dev)
         run: |
-          # COMMIT_SHA="62ce6587029d043e6c17fb2d873e16d567f16302" TODO get the latest before restoring
-          COMMIT_SHA="0.9.x"
+          COMMIT_SHA="a5d1720b3bdbe9e01ad39f5bdf6adcac050aae00" # 0.9.5
           export WRANGLER_URL=https://github.com/spacetelescope/nb-wrangler.git
           export WRANGLER_REF="${COMMIT_SHA}"
           echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
