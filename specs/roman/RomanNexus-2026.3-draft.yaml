@@ -163,16 +163,18 @@ assets:
   - repo: https://github.com/spacetelescope/nb-wrangler-images.git
     ref: main
     items:
+      - source: assets/roman/jp_app_launcher.yaml
+        destination: /opt/environments
       - source: assets/generic/catalog-schema-browser.ipynb
         destination: /opt/environments
       - source: assets/roman/cost-dashboard.ipynb
+        destination: /opt/environments
+      - source: assets/roman/team-cost-dashboard.ipynb
         destination: /opt/environments
       - source: assets/generic/stop_server_ext.json
         destination: /etc/jupyter/jupyter_server_config.d/
       - source: assets/generic/stop_server_ext.py
         destination: /srv/jupyter/
-      - source: assets/generic/jp_app_launcher.yaml
-        destination: /opt/environments/jp_app_launcher.yaml
       - source: assets/generic/post-start-hook
         destination: /opt/environments
       - source: assets/generic/test
