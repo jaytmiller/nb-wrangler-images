@@ -36,8 +36,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-17T15:10:10.813319'
-  spec_sha256: dff56c8c4e66fe0aeebf66008e1216966e65706b622d1a0e4c1d849e5b94fd85
+  date_updated: '2026-11-17T16:04:13.758076'
+  spec_sha256: bdfb97bf98122b1af89bc21cbc94bd986d17825e12b1d9b2ad04b80a56adbad7
 
 selected_notebooks:
   roman_all:
