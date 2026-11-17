@@ -37,8 +37,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-17T16:36:11.471616'
-  spec_sha256: 3cac389c50657d27a92c4570c967031de369cd60de8b5a9cbf21bbf1bc619e2b
+  date_updated: '2026-11-17T17:08:55.297701'
+  spec_sha256: 73b403ee2fb4ceb9cbb7302f98f7260c8761c765e407dc040422f02cc1f1104d
 
 selected_notebooks:
   roman_all:
@@ -154,10 +154,37 @@ override_pip_versions:
 # - bqplot @ git+https://github.com/bmorris3/bqplot@pandas3
 # - bqplot-gl @ git+https://github.com/bqplot/bqplot-gl@0.1.0a0
 
-# A text file that will be injected into image builds and executed by Docker.
+# A shell script that will be injected into image builds and RUN by Docker as root
 dockerfile_aux_sh: |
   #! /bin/bash
   set -euxo pipefail
+
+  CUDA_VERSION="12-1"
+  UBUNTU_VERSION="ubuntu2204"
+
+  echo "Installing CUDA runtime ${CUDA_VERSION}..."
+
+  # Install prerequisites
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    gnupg
+
+  rm -rf /var/lib/apt/lists/*
+
+  # Download and install NVIDIA repository keyring
+  wget "https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/cuda-keyring_1.1-1_all.deb"
+
+  dpkg -i cuda-keyring_1.1-1_all.deb
+  rm -f cuda-keyring_1.1-1_all.deb
+
+  # Install CUDA runtime
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    cuda-cudart-${CUDA_VERSION}
+
+  rm -rf /var/lib/apt/lists/*
+
+  echo "CUDA runtime installation complete."
 
 # Image-specific files that are downloaded and/or copied to the specified locations in images
 assets:
