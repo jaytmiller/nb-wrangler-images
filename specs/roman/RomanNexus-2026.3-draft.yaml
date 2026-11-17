@@ -17,7 +17,8 @@ image_spec_header:
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
-    ref: "2026.3"
+    # "2026.3"
+    ref: main
 
 # This is system config that is generally not changed by curators.
 system:
@@ -36,8 +37,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-17T16:04:13.758076'
-  spec_sha256: bdfb97bf98122b1af89bc21cbc94bd986d17825e12b1d9b2ad04b80a56adbad7
+  date_updated: '2026-11-17T16:36:11.471616'
+  spec_sha256: 3cac389c50657d27a92c4570c967031de369cd60de8b5a9cbf21bbf1bc619e2b
 
 selected_notebooks:
   roman_all:
@@ -324,7 +325,8 @@ out:
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
-      ref: "f8398ad92a6137a1e7bd5f1dfa1d6cae5ee512f1"
+    # "2026.3"
+      ref: f8398ad92a6137a1e7bd5f1dfa1d6cae5ee512f1
 
 # This is system config that is generally not changed by curators.
       resolved_ref: main
@@ -1328,7 +1330,7 @@ out:
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
-    astroquery @ git+https://github.com/snbianco/astroquery@1969395366c5b5aec92aa636bd27ea502206f1fd
+    astroquery @ git+https://github.com/snbianco/astroquery@f25d4f66cf147002626019843cc1fea1cc8f7ec8
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
@@ -1811,7 +1813,7 @@ out:
         # via keyring
     jaraco-functools==4.6.0
         # via keyring
-    jdaviz @ git+https://github.com/spacetelescope/jdaviz@54b999feae98ff4c67782fc3b4d42cf316553e62
+    jdaviz @ git+https://github.com/spacetelescope/jdaviz@f0a7089d52ccc3940961379f9dfee3845369c6ad
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
