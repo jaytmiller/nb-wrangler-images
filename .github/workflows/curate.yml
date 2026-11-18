@@ -187,7 +187,7 @@ jobs:
         run: |
             cd $GITHUB_WORKSPACE/../nb-wrangler-tool
             ./nb-wrangler --data-reset-curation
-            ./nb-wrangler --data-curate
+            ./nb-wrangler --data-curate --quiet-downloads
 
       - name: Log in to GHCR
         run: |
