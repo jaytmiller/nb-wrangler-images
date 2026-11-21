@@ -1,0 +1,131 @@
+name: Validate changed specs
+
+# -- This is a maintainer-owned PR gate.  It builds and pushes nothing: it
+# -- validates the wrangler spec(s) changed on the pull request (or a single
+# -- spec when manually triggered) against the canonical
+# -- spacetelescope/nb-wrangler tool, so invalid specs are caught before a
+# -- costly curate/reinstall run.
+# --
+# -- Branch protection: add "validate-specs" (the job name below) as a
+# -- required status check on main to gate merges.
+# --
+# -- Security: mirrors curate/reinstall hardening -- the tool source is
+# -- always the canonical repository (no caller-chosen owner/fork), the
+# -- only caller-supplied value is a spec path under specs/ (validated),
+# -- and the job token is scoped to contents:read.
+
+on:
+  pull_request:
+    paths:
+      - 'specs/**'
+  workflow_dispatch:
+    inputs:
+      spec_file:
+        description: 'A spec to validate (manual trigger only; ignored on pull requests)'
+        required: false
+        type: string
+        default: 'specs/roman/RomanNexus-2026.2.1.yaml'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate-changed-specs:
+    name: validate-specs          # <- the check name to add as required on branch protection
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repo (history for base-branch diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine specs to validate
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          MANUAL_SPEC: ${{ inputs.spec_file }}
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/.validate-specs.txt"
+          if [ -n "$MANUAL_SPEC" ] && [ -z "$BASE_REF" ]; then
+            # Manual trigger: validate exactly the requested spec.
+            if [[ "$MANUAL_SPEC" != specs/* ]]; then
+              echo "::error::manual spec_file must be a path under specs/, got: $MANUAL_SPEC" >&2
+              exit 1
+            fi
+            if [ ! -f "$MANUAL_SPEC" ]; then
+              echo "::error::spec file not found in repo: $MANUAL_SPEC" >&2
+              exit 1
+            fi
+            printf '%s\n' "$MANUAL_SPEC" | sort -u > "$OUT"
+          elif [ -n "$BASE_REF" ]; then
+            # PR trigger: specs added/copied/modified/renamed vs the base branch
+            # (deletions are excluded on purpose).
+            git diff --name-only --diff-filter=ACMR "origin/$BASE_REF" HEAD -- specs/ | sort -u > "$OUT"
+          else
+            # No trigger context (e.g., local actionlint); nothing to validate.
+            : > "$OUT"
+          fi
+          if [ ! -s "$OUT" ]; then
+            echo "No changed specs to validate; nothing to do."
+          else
+            echo "Specs to validate:"
+            cat "$OUT"
+          fi
+
+      - name: Fetch nb-wrangler entry point (canonical repo pinned)
+        run: |
+          set -euo pipefail
+          # Pinned exactly like curate/reinstall: no caller-chosen owner or fork.
+          curl -sSLf https://raw.githubusercontent.com/spacetelescope/nb-wrangler/refs/heads/main/nb-wrangler -o nbw
+          chmod +x nbw
+
+      - name: Validate each spec
+        run: |
+          set -euo pipefail
+          # The tool source is always the canonical spacetelescope/nb-wrangler
+          # repo.  Each spec may pin its own tool ref (via resolve-ref, exactly
+          # as curate.yml does); we clone and bootstrap once per unique resolved
+          # ref and validate every spec that resolves to it.
+          TOOL_URL="https://github.com/spacetelescope/nb-wrangler.git"
+          PARENT="$GITHUB_WORKSPACE/.."
+          mkdir -p "$PARENT"
+          SPECS_FILE="$GITHUB_WORKSPACE/.validate-specs.txt"
+
+          mapfile -t SPECS < "$SPECS_FILE"
+          if [ ${#SPECS[@]} -eq 0 ]; then
+            echo "Nothing to validate."
+            exit 0
+          fi
+
+          declare -A BOOTSTRAPPED=()
+          for spec in "${SPECS[@]}"; do
+            abs="$GITHUB_WORKSPACE/$spec"
+            ref="$(./nbw resolve-ref "$abs" main)"
+            if [ -z "$ref" ]; then
+              echo "::error::could not resolve a nb-wrangler ref for spec: $spec" >&2
+              exit 1
+            fi
+            safe="${ref//[^A-Za-z0-9._-]/_}"
+            dir="$PARENT/nbw-tool-$safe"
+            if [ -z "${BOOTSTRAPPED[$safe]:-}" ]; then
+              BOOTSTRAPPED[$safe]=1
+              echo "::notice::Cloning spacetelescope/nb-wrangler @ ${ref} and bootstrapping (once per unique ref)"
+              git -C "$PARENT" clone "$TOOL_URL" "nbw-tool-$safe"
+              ( cd "$dir" && git checkout "$ref" && ./nbw bootstrap )
+            else
+              echo "Reusing $dir for nb-wrangler @ $ref"
+            fi
+            echo "::group::Validating ${spec} (nb-wrangler @ ${ref})"
+            (
+              cd "$dir"
+              source ./nbw environment
+              # Same env conventions as curate/reinstall (relative repos dir).
+              export NBW_REPOS_DIR="references"
+              ./nbw "$abs" --spec-validate
+            )
+            echo "::endgroup::"
+          done
+          echo "All ${#SPECS[@]} spec(s) validated successfully."
