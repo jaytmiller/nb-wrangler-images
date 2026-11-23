@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-23T10:24:48.273598'
-  spec_sha256: 5aab99c35e58b20fcb3a7aceb3ee65dc8d9bd875a6dfb18f396b9d05b581ed69
+  date_updated: '2026-11-23T17:30:19.455381'
+  spec_sha256: 9fdaec3463a4258b952a5c0345c91f63a6fd5916ece8517736734db93b7448e4
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
@@ -146,7 +146,7 @@ extra_pip_packages:  # TODO
 common_pip_packages:
   - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
   - bqplot>=0.12.45,<0.13
-  - ipyvuetify>=3.0.0
+  - ipyvuetify>=3.1.0
   - git+https://github.com/spacetelescope/motorcycle.git
   - dotenv
   - jupyter-collaboration<5
@@ -765,7 +765,7 @@ out:
         - dotenv
         - git+https://github.com/spacetelescope/motorcycle.git
         - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
-        - ipyvuetify>=3.0.0
+        - ipyvuetify>=3.1.0
         - jupyter-collaboration<5
         - jupyter-server-ydoc<3
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt:
@@ -1366,7 +1366,7 @@ out:
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
-    astroquery @ git+https://github.com/snbianco/astroquery@6c56e29e5c7ce00c901ee100412cd9edc06e598f
+    astroquery @ git+https://github.com/snbianco/astroquery@69a91a04a7c0994457034e6b08bd0f3cc7eccdd2
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
@@ -1798,7 +1798,7 @@ out:
         #   ipyvolume
         #   ipyvuetify
         #   solara-ui
-    ipyvuetify==3.0.0
+    ipyvuetify==3.1.1
         # via
         #   -r /home/ai/.nbw-live/temps/common_pip_packages.txt
         #   -r references/science-platform-images/deployments/common/common-env/jupyter.pip
