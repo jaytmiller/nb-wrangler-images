@@ -1,25 +1,22 @@
-# These fields define the image and environment names as well as the
+# =====================================================================================
+# These fields define the image and kernel/environment names as well as the
 # mission environment's python version and expected availability dates.
-# The deployment name defines which base overall build process is used.
+# The deployment name defines which base overall build process is used to
+# map the definitions given in this spec onto a notebook image nominally defined
+# on the GitHub spacetelescope/science-platform-images repo (SPI).
+# =====================================================================================
 image_spec_header:
   image_name: RomanNexus-2026.23-draft
   deployment_name: wrangler
   kernel_name: RomanJdavizTesting-2026.3
-  display_name: RomanJdavizTesting-2026.3-draft
+  display_name: RomanJdavizTesting-2026.3-draft   # TODO
   description: |
-    Draft image for the RomanNexus-2026.3 release
+    Draft image for the RomanNexus-2026.3 release # TODO
   valid_on: '2026-11-17'
   expires_on: '2026-12-15'
   python_version: '3.13'
 
-# These are the git repositories and branch/tag/hash that will be
-# used to define packages, data, and installed notebooks.
-repositories:
-  roman_notebooks:
-    url: https://github.com/spacetelescope/roman_notebooks.git
-    # "2026.3"
-    ref: main
-
+# =====================================================================================
 # This is system config that is generally not changed by curators.
 system:
   spec_version: '2.3'
@@ -37,9 +34,20 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-17T17:08:55.297701'
-  spec_sha256: 73b403ee2fb4ceb9cbb7302f98f7260c8761c765e407dc040422f02cc1f1104d
+  date_updated: '2026-11-23T10:24:48.273598'
+  spec_sha256: 5aab99c35e58b20fcb3a7aceb3ee65dc8d9bd875a6dfb18f396b9d05b581ed69
+repositories:
+  roman_notebooks:
+    url: https://github.com/spacetelescope/roman_notebooks.git
+    # "2026.3"
+    ref: main   # TODO
 
+# =====================================================================================
+# Notebooks selected here implicitly define additional image package requirements as well
+# as packages to import test (--test-imports) and the complete list of notebooks for
+# headless testing (--test-notebooks).  These notebook repos also define associated data
+# and env vars based on root level refdata_dependencies.yaml files.
+# =====================================================================================
 selected_notebooks:
   roman_all:
     repo: roman_notebooks
@@ -57,21 +65,25 @@ selected_notebooks:
   # -----   tests:
   # -----     papermill: 'False'
 
+# =====================================================================================
 apt_packages:
   - libgl1-mesa-dev
   - libglu1-mesa-dev
   - libglfw3-dev
   - libglew-dev
 
+# =====================================================================================
 # Packages installed by mamba in the mission environment only.
 extra_mamba_packages:
   - pip
 
+# =====================================================================================
 # Packages installed by mamba in both base and mission environments.
 common_mamba_packages: []
 
+# =====================================================================================
 # Packages are installed by pip or uv pip in the mission environment only.
-extra_pip_packages:
+extra_pip_packages:  # TODO
   - PyYAML>=6.0
   - asdf>=6.0,<7
   - asdf-astropy>=0.11.0
@@ -90,6 +102,7 @@ extra_pip_packages:
   # - healpy>=1.19.1
   - healsparse>=1.12.2
   - hpgeom>=1.5.4
+  - imageio-ffmpeg
   - ipykernel>=6
   - ipympl>=0.10.0
   - ipython>=8
@@ -102,7 +115,7 @@ extra_pip_packages:
   - matplotlib>=3.9
   - numpy>=2.5.4
   - pandas>=3.0.3
-  - pandeia.engine==2026.2
+  # - pandeia.engine==2026.1
   - photutils>=3.0.0,<4
   - pillow>=11.0
   - psutil>=7.2.2
@@ -126,34 +139,38 @@ extra_pip_packages:
 
   - lsstdesc.coord
   - healpy>=1.20.b1
-  - jdaviz>5.0.0 # motorcyle
+  # - jdaviz>5.0.0 # motorcyle
 
+# =====================================================================================
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
-  - bqplot>=0.12.47,<0.13
   - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
-  - motorcycle==0.1.2
+  - bqplot>=0.12.45,<0.13
+  - ipyvuetify>=3.0.0
+  - git+https://github.com/spacetelescope/motorcycle.git
   - dotenv
   - jupyter-collaboration<5
   - jupyter-server-ydoc<3
-  - ipyvuetify==3.0.0
 
+# =====================================================================================
 # Packages for which overall dependency constaints overridden. May defeat
 # overall constraint resolution since it is overriding these w/o concern
 # for conflicts.
-override_pip_versions:
+override_pip_versions:  # TODO
+  # ---------------------------------------------------------------
+  - jdaviz @ git+https://github.com/spacetelescope/jdaviz@v5.1.0
+  - mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@v0.1.0
+  - mast-table @ git+https://github.com/spacetelescope/mast-table.git@v1.0.0
+
+  # ---------------------------------------------------------------
   - astroquery@git+https://github.com/snbianco/astroquery@mast-beta-release
   - romanisim>=0.16.0,<0.17
   - roman_datamodels>=1.2.0,<1.4
   - rad>=1.2.1,<1.3
   - asdf>=6.0,<7
-  # ---------------------------------------------------------------
-  - jdaviz @ git+https://github.com/spacetelescope/jdaviz@main
-  - git+https://github.com/spacetelescope/mast-aladin.git@main
-  - git+https://github.com/spacetelescope/mast-table.git@main
-# - bqplot @ git+https://github.com/bmorris3/bqplot@pandas3
-# - bqplot-gl @ git+https://github.com/bqplot/bqplot-gl@0.1.0a0
+  - pandeia.engine==2026.1
 
+# =====================================================================================
 # A shell script that will be injected into image builds and RUN by Docker as root
 dockerfile_aux_sh: |
   #! /bin/bash
@@ -186,6 +203,7 @@ dockerfile_aux_sh: |
 
   echo "CUDA runtime installation complete."
 
+# =====================================================================================
 # Image-specific files that are downloaded and/or copied to the specified locations in images
 assets:
   - repo: https://github.com/spacetelescope/nb-wrangler-images.git
@@ -208,16 +226,19 @@ assets:
       - source: assets/generic/test
         destination: /opt/environments
 
+# =====================================================================================
 environment_vars:
   PYTHONPATH: /srv/jupyter:$PYTHONPATH
 
+# =====================================================================================
 test_environment_vars:
   CI: "true"
 
+# =====================================================================================
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
-dev_overrides:
+deactivated_dev_overrides: # TODO
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
@@ -230,7 +251,7 @@ dev_overrides:
       repo: https://github.com/jaytmiller/nb-wrangler.git
       ref: dev
 
-# ----------------------------------------------------------------------------------
+# =====================================================================================
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
@@ -245,21 +266,21 @@ out:
             install_path: ${HOME}/refdata/
             data_path: pandeia_data-2026.1-roman
             data_url:
-              - https://stsci.box.com/shared/static/0qjvuqwkurhx1xd13i63j760cosep9wh.gz
+              - https://stsci.box.com/shared/static/j3rx9dz3e27oxd4o69vnccikwkgglnxe.gz
           pandeia_psf:
             version: '2026.1'
             environment_variable: PSF_DIR
             install_path: ${HOME}/refdata/
             data_path: pandeia_psfs-2026.1-roman
             data_url:
-              - https://stsci.box.com/shared/static/5qkyvr5steg2fo2zxbqj2jxcmbmz1c4w.gz
+              - https://stsci.box.com/shared/static/qiib69fwu0l1lli5u2om7a9abt8xosgz.gz
           stpsf:
-            version: 2.1.0
+            version: 2.3.1
             environment_variable: STPSF_PATH
             install_path: ${HOME}/refdata/
             data_path: stpsf-data
             data_url:
-              - https://stsci.box.com/shared/static/kqfolg2bfzqc4mjkgmujo06d3iaymahv.gz
+              - https://stsci.box.com/shared/static/6bddlzcocmty1fsvfgpxrbo2s836z90j.gz
           stips:
             version: 2.3.0
             environment_variable: stips_data
@@ -273,15 +294,15 @@ out:
             install_path: ${HOME}/refdata/
             data_path: grp/redcat/trds/
             data_url:
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_everything_multi_v18_sed.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_everything_multi_v20_sed.tar
               - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar
               - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar
               - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_pheonix-models_multi_v3_synphot5.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v13_synphot6.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_jwst_multi_etc-models_multi_v1_synphot7.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_phoenix-models_multi_v3_synphot5.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v14_synphot6.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_jwst_multi_etc-models_multi_v2_synphot7.tar
               - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_other-spectra_multi_v2_sed.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_other-spectra_multi_v3_sed.tar
         other_variables:
           CRDS_SERVER_URL: https://roman-crds.stsci.edu
           CRDS_CONTEXT: roman-edit
@@ -299,32 +320,33 @@ out:
       CRDS_PATH: ${HOME}/crds_cache
     pantry_exports:
       pandeia_refdata: 
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_data-2026.1-roman
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_data-2026.1-roman
       PSF_DIR: 
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/pandeia_psfs-2026.1-roman
-      STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stpsf-data
-      stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/stips_data
-      PYSYN_CDBS: ${NBW_PANTRY}/shelves/RomanNexus-2026.2/data/grp/redcat/trds
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_psfs-2026.1-roman
+      STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stpsf-data
+      stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stips_data
+      PYSYN_CDBS: 
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/grp/redcat/trds
       CRDS_SERVER_URL: https://roman-crds.stsci.edu
       CRDS_CONTEXT: roman-edit
       CRDS_OBSERVATORY: roman
       CRDS_PATH: ${HOME}/crds_cache
     metadata:
-      roman_notebooks/pandeia_data/0qjvuqwkurhx1xd13i63j760cosep9wh.gz:
+      roman_notebooks/pandeia_data/j3rx9dz3e27oxd4o69vnccikwkgglnxe.gz:
         size: '17365154'
         sha256: a048cecef53ed29bec2b39981bbb633cc2f0ad1c63c61f6dfebae56bbf91c83d
-      roman_notebooks/pandeia_psf/5qkyvr5steg2fo2zxbqj2jxcmbmz1c4w.gz:
+      roman_notebooks/pandeia_psf/qiib69fwu0l1lli5u2om7a9abt8xosgz.gz:
         size: '548548732'
         sha256: 6de88ab72c8d4fadafec52aac69705b8ed842ad34d38c3fb3e9866e3f934f4e9
-      roman_notebooks/stpsf/kqfolg2bfzqc4mjkgmujo06d3iaymahv.gz:
-        size: '92294357'
-        sha256: bbdfbe7c5aa7ee7fdb60efed13720ba3e0619c976b77aa0d63941dd59a4b6a98
+      roman_notebooks/stpsf/6bddlzcocmty1fsvfgpxrbo2s836z90j.gz:
+        size: '183641655'
+        sha256: c1bcaacea472b424795ae8b202ade2a330328ee01bc2de1f8d0030a4b14e7431
       roman_notebooks/stips/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz:
         size: '153097868'
         sha256: 15a430e67c7526abb4bd0f56379631ef7cb10a93f72b5d5dbd7919b441422d6a
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_everything_multi_v18_sed.tar:
-        size: '1285222400'
-        sha256: 3f01b858d88960f864cad56a03d2425955ae3951a979378da612af960c5f6b59
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_everything_multi_v20_sed.tar:
+        size: '1420943360'
+        sha256: 2fae151348602ca8e4009f52f01bfd1793efc246e6478c8413438c694662ba72
       roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar:
         size: '90347520'
         sha256: 66faaaeeb04e855a09c6cb8bc9b748c8fbedf23b782208dba84e10c4f0fd450b
@@ -334,32 +356,37 @@ out:
       roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar:
         size: '81684480'
         sha256: 95ca73356f38a703064c346e286f571b53f78964d5511d1b538ff086f5ce897e
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_pheonix-models_multi_v3_synphot5.tar:
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_phoenix-models_multi_v3_synphot5.tar:
         size: '1868328960'
         sha256: 1ffb5e136dc4f846cd95b83843eb89f7a5171f58732705b25f07a99c4d8cf50d
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v13_synphot6.tar:
-        size: '8695121920'
-        sha256: 69b3ba91db2a3290bacbe48ef7b7626905567d89e7e03d11b3cefeadf5f26fd7
-      roman_notebooks/synphot/hlsp_reference-atlases_jwst_multi_etc-models_multi_v1_synphot7.tar:
-        size: '8909717'
-        sha256: 01b2eae81852d56971796a62c82ff7f76256e1fdaabccf2f7f09151b1283640a
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v14_synphot6.tar:
+        size: '9032151040'
+        sha256: a1c135b43c376f77ec23833303398a6c8ae95a9ddd83b3fa11dadb0cb3d738f2
+      roman_notebooks/synphot/hlsp_reference-atlases_jwst_multi_etc-models_multi_v2_synphot7.tar:
+        size: '128256000'
+        sha256: 150d17b2fc74d965bd9ba4d0f76a1f352bbbe3d6b4f76d346f2f39ca4d9fbb47
       roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar:
         size: '34160640'
         sha256: 3338b1fb400d752c02c06132e0ce804ef8a9751f6ff535b41d022f60b0364d81
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_other-spectra_multi_v2_sed.tar:
-        size: '121835520'
-        sha256: b8901e54c03a185d19cd08e9590a7b959d82901d02abc7a9a3f468c8691db70b
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_other-spectra_multi_v3_sed.tar:
+        size: '122357760'
+        sha256: 2c6291fea4eb09bf5a2fba703f51dc1ac9240fa2a9bba20c03725ef7280031aa
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
     # "2026.3"
-      ref: f8398ad92a6137a1e7bd5f1dfa1d6cae5ee512f1
+      ref: b940b033f0474b28b9fe63973d72ce01d903683d # TODO
 
-# This is system config that is generally not changed by curators.
+# =====================================================================================
+# Notebooks selected here implicitly define additional image package requirements as well
+# as packages to import test (--test-imports) and the complete list of notebooks for
+# headless testing (--test-notebooks).  These notebook repos also define associated data
+# and env vars based on root level refdata_dependencies.yaml files.
+# =====================================================================================
       resolved_ref: main
   spi:
-    repo: https://github.com/jaytmiller/science-platform-images.git
-    ref: 20b6e9f9ee0059325a6d6ac5b36714b333128c5f
+    repo: https://github.com/spacetelescope/science-platform-images.git
+    ref: 757931108d7ea476c864f1ecb0c15fa0d01962f0
   test_notebooks:
     - roman_all:
         - references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb
@@ -449,7 +476,6 @@ out:
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/crds_reference_files.ipynb:
       - crds
-      - numpy
       - pathlib
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/dark_reffile.ipynb:
@@ -460,10 +486,8 @@ out:
       - numpy
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/distortion_reffile.ipynb:
-      - astropy
       - crds
       - matplotlib
-      - mpl_toolkits
       - numpy
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/flat_reffile.ipynb:
@@ -484,14 +508,9 @@ out:
       - astropy
       - crds
       - matplotlib
-      - mpl_toolkits
-      - numpy
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/photom_reffile.ipynb:
-      - astropy
       - crds
-      - matplotlib
-      - mpl_toolkits
       - numpy
       - pandas
       - roman_datamodels
@@ -499,8 +518,6 @@ out:
       - astropy
       - crds
       - matplotlib
-      - mpl_toolkits
-      - numpy
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/readnoise_reffile.ipynb:
       - astropy
@@ -510,10 +527,8 @@ out:
       - numpy
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/reference_pixel_reffile.ipynb:
-      - astropy
       - crds
       - matplotlib
-      - mpl_toolkits
       - numpy
       - roman_datamodels
     references/roman_notebooks/notebooks/crds_reference_files/saturation_reffile.ipynb:
@@ -557,11 +572,9 @@ out:
       - functools
       - healpy
       - healsparse
-      - ipympl
       - matplotlib
       - nest_asyncio2
       - numpy
-      - pandas
       - skyproj
     references/roman_notebooks/notebooks/grism_spectral_extraction/grism_spectral_extraction.ipynb:
       - asdf
@@ -575,7 +588,6 @@ out:
       - scipy
     references/roman_notebooks/notebooks/ground_test_analysis/wfi_tvac_brightstar.ipynb:
       - asdf
-      - math
       - matplotlib
       - numpy
       - roman_datamodels
@@ -607,7 +619,6 @@ out:
       - s3fs
     references/roman_notebooks/notebooks/pandeia/pandeia.ipynb:
       - astropy
-      - importlib
       - json
       - notebook_data_dependencies
       - numpy
@@ -645,7 +656,6 @@ out:
       - typing
     references/roman_notebooks/notebooks/stips/stips.ipynb:
       - astropy
-      - importlib
       - matplotlib
       - notebook_data_dependencies
       - stips
@@ -751,13 +761,13 @@ out:
       - wheel
   non_mamba_pip_package_files:
     - /home/ai/.nbw-live/temps/common_pip_packages.txt:
-        - bqplot>=0.12.47,<0.13
+        - bqplot>=0.12.45,<0.13
         - dotenv
+        - git+https://github.com/spacetelescope/motorcycle.git
         - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
-        - ipyvuetify==3.0.0
+        - ipyvuetify>=3.0.0
         - jupyter-collaboration<5
         - jupyter-server-ydoc<3
-        - motorcycle==0.1.2
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt:
         - PyYAML>=6.0
         - asdf-astropy>=0.11.0
@@ -777,18 +787,17 @@ out:
         - healpy>=1.20.b1
         - healsparse>=1.12.2
         - hpgeom>=1.5.4
+        - imageio-ffmpeg
         - ipykernel>=6
         - ipympl>=0.10.0
         - ipython>=8
         - ipywidgets>=8.1.0
-        - jdaviz>5.0.0
         - jupyterlab>=4.0
         - lsstdesc.coord
         - lz4>=4.4.5
         - matplotlib>=3.9
         - numpy>=2.5.4
         - pandas>=3.0.3
-        - pandeia.engine==2026.2
         - photutils>=3.0.0,<4
         - pillow>=11.0
         - psutil>=7.2.2
@@ -838,29 +847,29 @@ out:
         - matplotlib>=3.9
         - pyvo>=1.8.1
     - references/roman_notebooks/notebooks/ccs_simulations/requirements.txt:
-        - asdf>=5.3.0,<6
-        - astropy>=7.2.0,<9
+        - asdf>=6.0,<7
+        - astropy>=8.0.2,<9
         - astropy_healpix>=2.0.0
         - healpy>=1.19.1
         - matplotlib>=3.9
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - pandas>=3.0.3
         - pyarrow>=25.0.0
-        - rad>=1.0,<1.1
-        - roman_datamodels>=1.0,<1.1
-        - romancal>=1.0.0
+        - rad>=1.2.1,<1.3
+        - roman_datamodels>=1.2.0,<1.4
+        - romancal>=1.2.0
         - s3fs>=2026.4.0
     - references/roman_notebooks/notebooks/crds_reference_files/requirements.txt:
         - asdf-astropy>=0.11.0
-        - astropy>=7.2.0,<9
-        - crds>=13.1.15
+        - astropy>=8.0.2,<9
+        - crds>=14.0.6
         - gwcs>=1.0.3,<2
         - matplotlib>=3.9
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - pandas>=3.0.3
         - requests>=2.32.5
-        - roman_datamodels>=1.0,<1.1
-        - stpsf>=2.1.0
+        - roman_datamodels>=1.2.0,<1.4
+        - stpsf>=2.3.0
         - stsynphot>=1.5.1
         - synphot>=1.7.0
     - references/roman_notebooks/notebooks/data_discovery_and_access/requirements.txt:
@@ -898,7 +907,7 @@ out:
         - romanisim>=0.14.0,<0.15
         - s3fs>=2026.4.0
     - references/roman_notebooks/notebooks/footprint_visualization/requirements.txt:
-        - astropy>=7.2.0,<9
+        - astropy>=8.0.2,<9
         - dask[complete]
         - healpy>=1.19.1
         - healsparse>=1.12.2
@@ -906,7 +915,7 @@ out:
         - ipympl>=0.10.0
         - jupyterlab>=4.0
         - matplotlib>=3.9
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - pandas>=3.0.3
         - pysiaf>=0.25.0
         - skyproj>=2.2
@@ -924,15 +933,15 @@ out:
         - scipy>=1.17.1
     - references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt:
         - asdf-astropy>=0.11.0
-        - asdf>=5.3.0,<6
-        - astropy>=7.2.0,<9
-        - crds>=13.1.15
+        - asdf>=6.0,<7
+        - astropy>=8.0.2,<9
+        - crds>=14.0.6
         - gwcs>=1.0.3,<2
         - matplotlib>=3.9
-        - rad>=1.0,<1.1
-        - roman_datamodels>=1.0,<1.1
-        - romancal>=1.0.0
-        - romanisim>=0.14.0,<0.15
+        - rad>=1.2.1,<1.3
+        - roman_datamodels>=1.2.0,<1.4
+        - romancal>=1.2.0
+        - romanisim>=0.16.0,<0.17
         - s3fs>=2026.4.0
         - scipy>=1.17.1
     - references/roman_notebooks/notebooks/measuring_galaxy_shapes/requirements.txt:
@@ -969,14 +978,14 @@ out:
     - references/roman_notebooks/notebooks/pandeia/requirements.txt:
         - healpy>=1.19.1
         - matplotlib>=3.9
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - pandas>=3.0.3
         - pandeia.engine==2026.2
         - requests>=2.32.5
         - scipy>=1.17.1
     - references/roman_notebooks/notebooks/rist/requirements.txt:
         - bokeh>=3.9.0
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - pandas>=3.0.3
         - scipy>=1.17.1
         - xarray>=2026.4.0
@@ -1011,8 +1020,8 @@ out:
         - s3fs>=2026.4.0
         - stpsf>=2.1.0
     - references/roman_notebooks/notebooks/stips/requirements.txt:
-        - astropy>=7.2.0,<9
-        - 'esutil>=0.6.16 # --no-cache-dir option recommended on pip install'
+        - astropy>=8.0.2,<9
+        - esutil >= 0.6.17
         - matplotlib>=3.9
         - pandeia.engine==2026.2
         - stips>=2.3.1
@@ -1031,13 +1040,13 @@ out:
         - stsynphot>=1.5.1
         - synphot>=1.7.0
     - references/roman_notebooks/notebooks/target_visibility_tool/requirements.txt:
-        - astropy>=7.2.0,<9
+        - astropy>=8.0.2,<9
         - ipykernel>=6
         - ipympl>=0.10.0
         - ipython>=8
         - ipywidgets>=8.1.0
         - matplotlib>=3.9
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - pandas>=3.0.3
     - references/roman_notebooks/notebooks/time_domain_analysis/requirements.txt:
         - asdf-astropy>=0.11.0
@@ -1357,7 +1366,7 @@ out:
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
-    astroquery @ git+https://github.com/snbianco/astroquery@f25d4f66cf147002626019843cc1fea1cc8f7ec8
+    astroquery @ git+https://github.com/snbianco/astroquery@6c56e29e5c7ce00c901ee100412cd9edc06e598f
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
@@ -1569,7 +1578,7 @@ out:
         # via papermill
     envier==0.6.1
         # via ddtrace
-    esutil==0.6.16
+    esutil==0.6.17
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/stips/requirements.txt
@@ -1715,6 +1724,8 @@ out:
         #   yarl
     imageio==2.38.2
         # via scikit-image
+    imageio-ffmpeg==0.8.1
+        # via -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
     imagesize==2.0.1
         # via sphinx
     importlib-metadata==10.2.0
@@ -1723,7 +1734,7 @@ out:
         # via pytest
     installer==1.1.0
         # via nab-project
-    ipyaladin==0.8.2
+    ipyaladin @ https://github.com/tomdonaldson/ipyaladin/releases/download/0.8.2%2Bmast.2/ipyaladin-0.8.2+mast.2-py3-none-any.whl
         # via mast-aladin
     ipydatawidgets==4.3.5
         # via
@@ -1840,12 +1851,10 @@ out:
         # via keyring
     jaraco-functools==4.6.0
         # via keyring
-    jdaviz @ git+https://github.com/spacetelescope/jdaviz@f0a7089d52ccc3940961379f9dfee3845369c6ad
+    jdaviz @ git+https://github.com/spacetelescope/jdaviz@b77127b9bf5344278360c3bd7dc106863bd6b3ed
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
-        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
-        #   mast-aladin
     jedi==0.20.1
         # via ipython
     jeepney==0.9.0 ; sys_platform == 'linux'
@@ -2057,11 +2066,11 @@ out:
         #   mako
         #   nbconvert
         #   werkzeug
-    mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@fe8f39053a2c7c0cb2fc0c4bae9a90e705845659
+    mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@62f1bdbbfa983802bd1ef6954a3eac60450c3abe
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
-    mast-table @ git+https://github.com/spacetelescope/mast-table.git@5fc86a943930af1329e34e16f36d659185b8bda1
+    mast-table @ git+https://github.com/spacetelescope/mast-table.git@f17bd6641cad99329b12dd3449626768fa2f7810
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
@@ -2121,7 +2130,7 @@ out:
         # via
         #   jaraco-classes
         #   jaraco-functools
-    motorcycle==0.1.2
+    motorcycle @ git+https://github.com/spacetelescope/motorcycle.git@dce12484a142ef78498ea8b599ecdbd4f4a7c99d
         # via -r /home/ai/.nbw-live/temps/common_pip_packages.txt
     mpl-scatter-density==0.8
         # via glue-core
@@ -2366,11 +2375,12 @@ out:
         #   bqplot
         #   dask
         #   glue-core
+        #   mast-aladin
         #   romancal
         #   xarray
-    pandeia-engine==2026.2
+    pandeia-engine==2026.1
         # via
-        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r references/roman_notebooks/notebooks/pandeia/requirements.txt
         #   -r references/roman_notebooks/notebooks/stips/requirements.txt
         #   stips
@@ -2972,7 +2982,7 @@ out:
         #   -r references/roman_notebooks/notebooks/time_domain_analysis/requirements.txt
         #   -r references/roman_notebooks/notebooks/time_domain_simulations/requirements.txt
         #   stips
-    stsci-announce @ git+https://github.com/spacetelescope/stsci-announce.git@7722f1bda1c35d55eb009b47646982a588ef3218
+    stsci-announce @ git+https://github.com/spacetelescope/stsci-announce.git@9e63477db5d3d713021d1c596faa3d6535e7b7c5
         # via -r references/science-platform-images/deployments/common/common-env/jupyter.pip
     stsci-imagestats==1.8.4
         # via stcal
