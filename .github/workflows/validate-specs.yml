@@ -75,57 +75,50 @@ jobs:
             cat "$OUT"
           fi
 
-      - name: Fetch nb-wrangler entry point (canonical repo pinned)
+      - name: Checkout and configure wrangler for source repo (can be overridden for --dev)
         run: |
-          set -euo pipefail
-          # Pinned exactly like curate/reinstall: no caller-chosen owner or fork.
-          curl -sSLf https://raw.githubusercontent.com/spacetelescope/nb-wrangler/refs/heads/main/nb-wrangler -o nbw
-          chmod +x nbw
+          COMMIT_SHA="a5d1720b3bdbe9e01ad39f5bdf6adcac050aae00" # 0.9.5
+          export WRANGLER_URL=https://github.com/spacetelescope/nb-wrangler.git
+          export WRANGLER_REF="${COMMIT_SHA}"
+          echo WRANGLER_URL=$WRANGLER_URL >> $GITHUB_ENV
+          echo WRANGLER_REF=$WRANGLER_REF >> $GITHUB_ENV
+
+          # Use the bootstrap script from master repo to resolve the target repo; used for bootstrap only
+          curl https://raw.githubusercontent.com/spacetelescope/nb-wrangler/${COMMIT_SHA}  >nb-wrangler
+          chmod +x nb-wrangler
+
+          # Clone and configure exact wrangler source code,  nominally a prod copy or a (personal?) dev copy
+          cd ${GITHUB_WORKSPACE}/..
+          git clone ${WRANGLER_URL} nb-wrangler-tool
+          cd nb-wrangler-tool
+          git checkout ${WRANGLER_REF}
+
+      - name: Bootstrap Wrangler
+        run: |
+          # Given the exact version of wrangler source code,  run the full bootstrap to set up a wrangler environment
+          cd $GITHUB_WORKSPACE/../nb-wrangler-tool
+          ./nb-wrangler bootstrap
 
       - name: Validate each spec
         run: |
-          set -euo pipefail
-          # The tool source is always the canonical spacetelescope/nb-wrangler
-          # repo.  Each spec may pin its own tool ref (via resolve-ref, exactly
-          # as curate.yml does); we clone and bootstrap once per unique resolved
-          # ref and validate every spec that resolves to it.
-          TOOL_URL="https://github.com/spacetelescope/nb-wrangler.git"
+          cd ${GITHUB_WORKSPACE}/../nb-wrangler-tool
+          source ./nb-wrangler environment
+
           PARENT="$GITHUB_WORKSPACE/.."
-          mkdir -p "$PARENT"
           SPECS_FILE="$GITHUB_WORKSPACE/.validate-specs.txt"
 
-          mapfile -t SPECS < "$SPECS_FILE"
-          if [ ${#SPECS[@]} -eq 0 ]; then
-            echo "Nothing to validate."
-            exit 0
-          fi
-
-          declare -A BOOTSTRAPPED=()
-          for spec in "${SPECS[@]}"; do
+          for spec in $(cat $SPECS_FILE); do
+            echo # ========================================================"
+            echo "Validating $spec"
+            echo # ========================================================"
             abs="$GITHUB_WORKSPACE/$spec"
-            ref="$(./nbw resolve-ref "$abs" main)"
-            if [ -z "$ref" ]; then
-              echo "::error::could not resolve a nb-wrangler ref for spec: $spec" >&2
-              exit 1
-            fi
-            safe="${ref//[^A-Za-z0-9._-]/_}"
-            dir="$PARENT/nbw-tool-$safe"
-            if [ -z "${BOOTSTRAPPED[$safe]:-}" ]; then
-              BOOTSTRAPPED[$safe]=1
-              echo "::notice::Cloning spacetelescope/nb-wrangler @ ${ref} and bootstrapping (once per unique ref)"
-              git -C "$PARENT" clone "$TOOL_URL" "nbw-tool-$safe"
-              ( cd "$dir" && git checkout "$ref" && ./nbw bootstrap )
+            if nbw --spec-validate $abs; then
+               echo "Spec $spec validated."
             else
-              echo "Reusing $dir for nb-wrangler @ $ref"
+               echo # ========================================================"
+               echo "Spec $spec failed to validate."
+               exit 1
             fi
-            echo "::group::Validating ${spec} (nb-wrangler @ ${ref})"
-            (
-              cd "$dir"
-              source ./nbw environment
-              # Same env conventions as curate/reinstall (relative repos dir).
-              export NBW_REPOS_DIR="references"
-              ./nbw "$abs" --spec-validate
-            )
-            echo "::endgroup::"
           done
+
           echo "All ${#SPECS[@]} spec(s) validated successfully."
