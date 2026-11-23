@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-23T09:57:35.498076'
-  spec_sha256: 035b830f96aba909867461204c99f4cc1b17f1c1d1272d942b51a5cced3a15d4
+  date_updated: '2026-11-23T10:24:48.273598'
+  spec_sha256: 5aab99c35e58b20fcb3a7aceb3ee65dc8d9bd875a6dfb18f396b9d05b581ed69
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
@@ -115,7 +115,7 @@ extra_pip_packages:  # TODO
   - matplotlib>=3.9
   - numpy>=2.5.4
   - pandas>=3.0.3
-  - pandeia.engine==2026.1
+  # - pandeia.engine==2026.1
   - photutils>=3.0.0,<4
   - pillow>=11.0
   - psutil>=7.2.2
@@ -168,6 +168,7 @@ override_pip_versions:  # TODO
   - roman_datamodels>=1.2.0,<1.4
   - rad>=1.2.1,<1.3
   - asdf>=6.0,<7
+  - pandeia.engine==2026.1
 
 # =====================================================================================
 # A shell script that will be injected into image builds and RUN by Docker as root
@@ -237,7 +238,7 @@ test_environment_vars:
 # If defined, these replace defaults while in --dev development mode.
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
-dev_overrides:   # TODO
+deactivated_dev_overrides: # TODO
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
@@ -255,6 +256,121 @@ dev_overrides:   # TODO
 # --dev mode is the default for --curate and enables these
 # --prod mode is the default for --reinstall and disables these.
 out:
+  data:
+    spec_inputs:
+      references/roman_notebooks/refdata_dependencies.yaml:
+        install_files:
+          pandeia_data:
+            version: '2026.1'
+            environment_variable: pandeia_refdata
+            install_path: ${HOME}/refdata/
+            data_path: pandeia_data-2026.1-roman
+            data_url:
+              - https://stsci.box.com/shared/static/j3rx9dz3e27oxd4o69vnccikwkgglnxe.gz
+          pandeia_psf:
+            version: '2026.1'
+            environment_variable: PSF_DIR
+            install_path: ${HOME}/refdata/
+            data_path: pandeia_psfs-2026.1-roman
+            data_url:
+              - https://stsci.box.com/shared/static/qiib69fwu0l1lli5u2om7a9abt8xosgz.gz
+          stpsf:
+            version: 2.3.1
+            environment_variable: STPSF_PATH
+            install_path: ${HOME}/refdata/
+            data_path: stpsf-data
+            data_url:
+              - https://stsci.box.com/shared/static/6bddlzcocmty1fsvfgpxrbo2s836z90j.gz
+          stips:
+            version: 2.3.0
+            environment_variable: stips_data
+            install_path: ${HOME}/refdata/
+            data_path: stips_data
+            data_url:
+              - https://stsci.box.com/shared/static/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz
+          synphot:
+            version: 1.6.0
+            environment_variable: PYSYN_CDBS
+            install_path: ${HOME}/refdata/
+            data_path: grp/redcat/trds/
+            data_url:
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_everything_multi_v20_sed.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_phoenix-models_multi_v3_synphot5.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v14_synphot6.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_jwst_multi_etc-models_multi_v2_synphot7.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar
+              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_other-spectra_multi_v3_sed.tar
+        other_variables:
+          CRDS_SERVER_URL: https://roman-crds.stsci.edu
+          CRDS_CONTEXT: roman-edit
+          CRDS_OBSERVATORY: roman
+          CRDS_PATH: ${HOME}/crds_cache
+    spec_exports:
+      pandeia_refdata: ${HOME}/refdata/pandeia_data-2026.1-roman
+      PSF_DIR: ${HOME}/refdata/pandeia_psfs-2026.1-roman
+      STPSF_PATH: ${HOME}/refdata/stpsf-data
+      stips_data: ${HOME}/refdata/stips_data
+      PYSYN_CDBS: ${HOME}/refdata/grp/redcat/trds/
+      CRDS_SERVER_URL: https://roman-crds.stsci.edu
+      CRDS_CONTEXT: roman-edit
+      CRDS_OBSERVATORY: roman
+      CRDS_PATH: ${HOME}/crds_cache
+    pantry_exports:
+      pandeia_refdata: 
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_data-2026.1-roman
+      PSF_DIR: 
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_psfs-2026.1-roman
+      STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stpsf-data
+      stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stips_data
+      PYSYN_CDBS: 
+        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/grp/redcat/trds
+      CRDS_SERVER_URL: https://roman-crds.stsci.edu
+      CRDS_CONTEXT: roman-edit
+      CRDS_OBSERVATORY: roman
+      CRDS_PATH: ${HOME}/crds_cache
+    metadata:
+      roman_notebooks/pandeia_data/j3rx9dz3e27oxd4o69vnccikwkgglnxe.gz:
+        size: '17365154'
+        sha256: a048cecef53ed29bec2b39981bbb633cc2f0ad1c63c61f6dfebae56bbf91c83d
+      roman_notebooks/pandeia_psf/qiib69fwu0l1lli5u2om7a9abt8xosgz.gz:
+        size: '548548732'
+        sha256: 6de88ab72c8d4fadafec52aac69705b8ed842ad34d38c3fb3e9866e3f934f4e9
+      roman_notebooks/stpsf/6bddlzcocmty1fsvfgpxrbo2s836z90j.gz:
+        size: '183641655'
+        sha256: c1bcaacea472b424795ae8b202ade2a330328ee01bc2de1f8d0030a4b14e7431
+      roman_notebooks/stips/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz:
+        size: '153097868'
+        sha256: 15a430e67c7526abb4bd0f56379631ef7cb10a93f72b5d5dbd7919b441422d6a
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_everything_multi_v20_sed.tar:
+        size: '1420943360'
+        sha256: 2fae151348602ca8e4009f52f01bfd1793efc246e6478c8413438c694662ba72
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar:
+        size: '90347520'
+        sha256: 66faaaeeb04e855a09c6cb8bc9b748c8fbedf23b782208dba84e10c4f0fd450b
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar:
+        size: '42772480'
+        sha256: 8f7a220bc9480900c372015847057b06a2c218ae8b2dbf8020e6a1dd2990b42c
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar:
+        size: '81684480'
+        sha256: 95ca73356f38a703064c346e286f571b53f78964d5511d1b538ff086f5ce897e
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_phoenix-models_multi_v3_synphot5.tar:
+        size: '1868328960'
+        sha256: 1ffb5e136dc4f846cd95b83843eb89f7a5171f58732705b25f07a99c4d8cf50d
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v14_synphot6.tar:
+        size: '9032151040'
+        sha256: a1c135b43c376f77ec23833303398a6c8ae95a9ddd83b3fa11dadb0cb3d738f2
+      roman_notebooks/synphot/hlsp_reference-atlases_jwst_multi_etc-models_multi_v2_synphot7.tar:
+        size: '128256000'
+        sha256: 150d17b2fc74d965bd9ba4d0f76a1f352bbbe3d6b4f76d346f2f39ca4d9fbb47
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar:
+        size: '34160640'
+        sha256: 3338b1fb400d752c02c06132e0ce804ef8a9751f6ff535b41d022f60b0364d81
+      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_other-spectra_multi_v3_sed.tar:
+        size: '122357760'
+        sha256: 2c6291fea4eb09bf5a2fba703f51dc1ac9240fa2a9bba20c03725ef7280031aa
   repositories:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
@@ -269,7 +385,7 @@ out:
 # =====================================================================================
       resolved_ref: main
   spi:
-    repo: https://github.com/jaytmiller/science-platform-images.git
+    repo: https://github.com/spacetelescope/science-platform-images.git
     ref: 757931108d7ea476c864f1ecb0c15fa0d01962f0
   test_notebooks:
     - roman_all:
@@ -671,6 +787,7 @@ out:
         - healpy>=1.20.b1
         - healsparse>=1.12.2
         - hpgeom>=1.5.4
+        - imageio-ffmpeg
         - ipykernel>=6
         - ipympl>=0.10.0
         - ipython>=8
@@ -681,7 +798,6 @@ out:
         - matplotlib>=3.9
         - numpy>=2.5.4
         - pandas>=3.0.3
-        - pandeia.engine==2026.2
         - photutils>=3.0.0,<4
         - pillow>=11.0
         - psutil>=7.2.2
@@ -878,7 +994,7 @@ out:
         - asdf>=5.3.0,<6
         - astrocut>=1.5.1
         - astropy>=7.2.0,<9
-        - astroquery @
+        - astroquery @ 
           git+https://github.com/snbianco/astroquery.git@mast-beta-release
         - lz4>=4.4.5
         - matplotlib>=3.9
@@ -1250,7 +1366,7 @@ out:
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
-    astroquery @ git+https://github.com/snbianco/astroquery@f25d4f66cf147002626019843cc1fea1cc8f7ec8
+    astroquery @ git+https://github.com/snbianco/astroquery@6c56e29e5c7ce00c901ee100412cd9edc06e598f
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
@@ -1608,6 +1724,8 @@ out:
         #   yarl
     imageio==2.38.2
         # via scikit-image
+    imageio-ffmpeg==0.8.1
+        # via -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
     imagesize==2.0.1
         # via sphinx
     importlib-metadata==10.2.0
@@ -2260,9 +2378,9 @@ out:
         #   mast-aladin
         #   romancal
         #   xarray
-    pandeia-engine==2026.2
+    pandeia-engine==2026.1
         # via
-        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r references/roman_notebooks/notebooks/pandeia/requirements.txt
         #   -r references/roman_notebooks/notebooks/stips/requirements.txt
         #   stips
@@ -3070,118 +3188,3 @@ out:
         # via distributed
     zipp==4.1.2
         # via importlib-metadata
-  data:
-    spec_inputs:
-      references/roman_notebooks/refdata_dependencies.yaml:
-        install_files:
-          pandeia_data:
-            version: '2026.1'
-            environment_variable: pandeia_refdata
-            install_path: ${HOME}/refdata/
-            data_path: pandeia_data-2026.1-roman
-            data_url:
-              - https://stsci.box.com/shared/static/j3rx9dz3e27oxd4o69vnccikwkgglnxe.gz
-          pandeia_psf:
-            version: '2026.1'
-            environment_variable: PSF_DIR
-            install_path: ${HOME}/refdata/
-            data_path: pandeia_psfs-2026.1-roman
-            data_url:
-              - https://stsci.box.com/shared/static/qiib69fwu0l1lli5u2om7a9abt8xosgz.gz
-          stpsf:
-            version: 2.3.1
-            environment_variable: STPSF_PATH
-            install_path: ${HOME}/refdata/
-            data_path: stpsf-data
-            data_url:
-              - https://stsci.box.com/shared/static/6bddlzcocmty1fsvfgpxrbo2s836z90j.gz
-          stips:
-            version: 2.3.0
-            environment_variable: stips_data
-            install_path: ${HOME}/refdata/
-            data_path: stips_data
-            data_url:
-              - https://stsci.box.com/shared/static/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz
-          synphot:
-            version: 1.6.0
-            environment_variable: PYSYN_CDBS
-            install_path: ${HOME}/refdata/
-            data_path: grp/redcat/trds/
-            data_url:
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_everything_multi_v20_sed.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_phoenix-models_multi_v3_synphot5.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v14_synphot6.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_jwst_multi_etc-models_multi_v2_synphot7.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar
-              - https://archive.stsci.edu/hlsps/reference-atlases/hlsp_reference-atlases_hst_multi_other-spectra_multi_v3_sed.tar
-        other_variables:
-          CRDS_SERVER_URL: https://roman-crds.stsci.edu
-          CRDS_CONTEXT: roman-edit
-          CRDS_OBSERVATORY: roman
-          CRDS_PATH: ${HOME}/crds_cache
-    spec_exports:
-      pandeia_refdata: ${HOME}/refdata/pandeia_data-2026.1-roman
-      PSF_DIR: ${HOME}/refdata/pandeia_psfs-2026.1-roman
-      STPSF_PATH: ${HOME}/refdata/stpsf-data
-      stips_data: ${HOME}/refdata/stips_data
-      PYSYN_CDBS: ${HOME}/refdata/grp/redcat/trds/
-      CRDS_SERVER_URL: https://roman-crds.stsci.edu
-      CRDS_CONTEXT: roman-edit
-      CRDS_OBSERVATORY: roman
-      CRDS_PATH: ${HOME}/crds_cache
-    pantry_exports:
-      pandeia_refdata:
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_data-2026.1-roman
-      PSF_DIR:
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_psfs-2026.1-roman
-      STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stpsf-data
-      stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stips_data
-      PYSYN_CDBS:
-        ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/grp/redcat/trds
-      CRDS_SERVER_URL: https://roman-crds.stsci.edu
-      CRDS_CONTEXT: roman-edit
-      CRDS_OBSERVATORY: roman
-      CRDS_PATH: ${HOME}/crds_cache
-    metadata:
-      roman_notebooks/pandeia_data/j3rx9dz3e27oxd4o69vnccikwkgglnxe.gz:
-        size: '17365154'
-        sha256: a048cecef53ed29bec2b39981bbb633cc2f0ad1c63c61f6dfebae56bbf91c83d
-      roman_notebooks/pandeia_psf/qiib69fwu0l1lli5u2om7a9abt8xosgz.gz:
-        size: '548548732'
-        sha256: 6de88ab72c8d4fadafec52aac69705b8ed842ad34d38c3fb3e9866e3f934f4e9
-      roman_notebooks/stpsf/6bddlzcocmty1fsvfgpxrbo2s836z90j.gz:
-        size: '183641655'
-        sha256: c1bcaacea472b424795ae8b202ade2a330328ee01bc2de1f8d0030a4b14e7431
-      roman_notebooks/stips/761vz7zav7pux03fg0hhqq7z2uw8nmqw.tgz:
-        size: '153097868'
-        sha256: 15a430e67c7526abb4bd0f56379631ef7cb10a93f72b5d5dbd7919b441422d6a
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_everything_multi_v20_sed.tar:
-        size: '1420943360'
-        sha256: 2fae151348602ca8e4009f52f01bfd1793efc246e6478c8413438c694662ba72
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_star-galaxy-models_multi_v3_synphot2.tar:
-        size: '90347520'
-        sha256: 66faaaeeb04e855a09c6cb8bc9b748c8fbedf23b782208dba84e10c4f0fd450b
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_castelli-kurucz-2004-atlas_multi_v2_synphot3.tar:
-        size: '42772480'
-        sha256: 8f7a220bc9480900c372015847057b06a2c218ae8b2dbf8020e6a1dd2990b42c
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_kurucz-1993-atlas_multi_v2_synphot4.tar:
-        size: '81684480'
-        sha256: 95ca73356f38a703064c346e286f571b53f78964d5511d1b538ff086f5ce897e
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_phoenix-models_multi_v3_synphot5.tar:
-        size: '1868328960'
-        sha256: 1ffb5e136dc4f846cd95b83843eb89f7a5171f58732705b25f07a99c4d8cf50d
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_calibration-spectra_multi_v14_synphot6.tar:
-        size: '9032151040'
-        sha256: a1c135b43c376f77ec23833303398a6c8ae95a9ddd83b3fa11dadb0cb3d738f2
-      roman_notebooks/synphot/hlsp_reference-atlases_jwst_multi_etc-models_multi_v2_synphot7.tar:
-        size: '128256000'
-        sha256: 150d17b2fc74d965bd9ba4d0f76a1f352bbbe3d6b4f76d346f2f39ca4d9fbb47
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_modewave_multi_v1_synphot8.tar:
-        size: '34160640'
-        sha256: 3338b1fb400d752c02c06132e0ce804ef8a9751f6ff535b41d022f60b0364d81
-      roman_notebooks/synphot/hlsp_reference-atlases_hst_multi_other-spectra_multi_v3_sed.tar:
-        size: '122357760'
-        sha256: 2c6291fea4eb09bf5a2fba703f51dc1ac9240fa2a9bba20c03725ef7280031aa
