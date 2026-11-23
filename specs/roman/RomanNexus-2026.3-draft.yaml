@@ -102,6 +102,7 @@ extra_pip_packages:  # TODO
   # - healpy>=1.19.1
   - healsparse>=1.12.2
   - hpgeom>=1.5.4
+  - imageio-ffmpeg
   - ipykernel>=6
   - ipympl>=0.10.0
   - ipython>=8
@@ -114,7 +115,7 @@ extra_pip_packages:  # TODO
   - matplotlib>=3.9
   - numpy>=2.5.4
   - pandas>=3.0.3
-  - pandeia.engine==2026.2
+  - pandeia.engine==2026.1
   - photutils>=3.0.0,<4
   - pillow>=11.0
   - psutil>=7.2.2
@@ -877,7 +878,7 @@ out:
         - asdf>=5.3.0,<6
         - astrocut>=1.5.1
         - astropy>=7.2.0,<9
-        - astroquery @ 
+        - astroquery @
           git+https://github.com/snbianco/astroquery.git@mast-beta-release
         - lz4>=4.4.5
         - matplotlib>=3.9
@@ -3132,13 +3133,13 @@ out:
       CRDS_OBSERVATORY: roman
       CRDS_PATH: ${HOME}/crds_cache
     pantry_exports:
-      pandeia_refdata: 
+      pandeia_refdata:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_data-2026.1-roman
-      PSF_DIR: 
+      PSF_DIR:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_psfs-2026.1-roman
       STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stpsf-data
       stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stips_data
-      PYSYN_CDBS: 
+      PYSYN_CDBS:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/grp/redcat/trds
       CRDS_SERVER_URL: https://roman-crds.stsci.edu
       CRDS_CONTEXT: roman-edit
