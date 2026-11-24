@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-24T13:46:52.692872'
-  spec_sha256: f65841d71c7554ff589b7ddde3074f69ef71897ff66e8526a89605ecd2b2bd41
+  date_updated: '2026-11-24T14:08:15.881986'
+  spec_sha256: 77bbd0b0da4c643da54e0d3e51840233701c76078798a6ff5583c53d3a86746a
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
@@ -140,14 +140,13 @@ extra_pip_packages:  # TODO
   - lsstdesc.coord
   - healpy>=1.20.b1
 
-  - jdaviz==5.1.0
-
 # =====================================================================================
 # Packages installed by pip or uv pip in both base and mission environments.
 common_pip_packages:
+  - jdaviz==5.1.0
+  - bqplot>=0.12.45,<0.13
   - bqplot-gl==0.0.0
   - ipyvuetify==3.1.1
-  - bqplot>=0.12.45,<0.13
   - git+https://github.com/spacetelescope/motorcycle.git
   - dotenv
   - jupyter-collaboration<5
@@ -166,7 +165,7 @@ override_pip_versions:  # TODO
   - mast-table==1.0.1
 
   # ---------------------------------------------------------------
-  - astroquery@git+https://github.com/snbianco/astroquery@mast-beta-release
+  - astroquery@git+https://github.com/snbianco/astroquery.git@2026.3
   - romanisim>=0.16.0,<0.17
   - roman_datamodels>=1.2.0,<1.4
   - rad>=1.2.1,<1.3
@@ -769,6 +768,7 @@ out:
         - git+https://github.com/spacetelescope/motorcycle.git
         - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
         - ipyvuetify==3.1.1
+        - jdaviz==5.1.0
         - jupyter-collaboration<5
         - jupyter-server-ydoc<3
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt:
@@ -795,7 +795,6 @@ out:
         - ipympl>=0.10.0
         - ipython>=8
         - ipywidgets>=8.1.0
-        - jdaviz==5.1.0
         - jupyterlab>=4.0
         - lsstdesc.coord
         - lz4>=4.4.5
@@ -1388,7 +1387,7 @@ out:
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
-    astroquery @ git+https://github.com/snbianco/astroquery@0b3e741261407306eba58f32ee4101b21c41df8d
+    astroquery @ git+https://github.com/snbianco/astroquery.git@69a91a04a7c0994457034e6b08bd0f3cc7eccdd2
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
@@ -1884,7 +1883,7 @@ out:
         # via keyring
     jdaviz==5.1.0
         # via
-        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   -r /home/ai/.nbw-live/temps/common_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
     jedi==0.20.1
         # via ipython
