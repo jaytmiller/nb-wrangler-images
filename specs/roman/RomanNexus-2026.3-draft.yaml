@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-23T17:30:19.455381'
-  spec_sha256: 9fdaec3463a4258b952a5c0345c91f63a6fd5916ece8517736734db93b7448e4
+  date_updated: '2026-11-24T11:57:29.912155'
+  spec_sha256: 2a2e43e57456d666c769d8601d89748b4f7339fa0e8eda64624e461eb0010344
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
@@ -146,7 +146,7 @@ extra_pip_packages:  # TODO
 common_pip_packages:
   - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
   - bqplot>=0.12.45,<0.13
-  - ipyvuetify>=3.1.0
+  - ipyvuetify==3.0.0
   - git+https://github.com/spacetelescope/motorcycle.git
   - dotenv
   - jupyter-collaboration<5
@@ -375,7 +375,7 @@ out:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
     # "2026.3"
-      ref: b940b033f0474b28b9fe63973d72ce01d903683d # TODO
+      ref: 3930855b1ad0f2ce82023c528168773d9a23e62e # TODO
 
 # =====================================================================================
 # Notebooks selected here implicitly define additional image package requirements as well
@@ -413,6 +413,7 @@ out:
         - references/roman_notebooks/notebooks/footprint_visualization/footprint_visualization.ipynb
         - references/roman_notebooks/notebooks/grism_spectral_extraction/grism_spectral_extraction.ipynb
         - references/roman_notebooks/notebooks/ground_test_analysis/wfi_tvac_brightstar.ipynb
+        - references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/guiding_diagnostics_dashboard.ipynb
         - references/roman_notebooks/notebooks/measuring_galaxy_shapes/measuring_galaxy_shapes.ipynb
         - references/roman_notebooks/notebooks/mosaic_pipeline/mosaic_pipeline.ipynb
         - references/roman_notebooks/notebooks/pandeia/pandeia.ipynb
@@ -428,10 +429,8 @@ out:
         - references/roman_notebooks/notebooks/working_with_asdf/working_with_asdf.ipynb
   nb_to_imports:
     references/roman_notebooks/notebooks/aperture_photometry/aperture_photometry.ipynb:
-      - asdf
       - astropy
       - crds
-      - importlib
       - matplotlib
       - notebook_data_dependencies
       - numpy
@@ -594,6 +593,9 @@ out:
       - romancal
       - s3fs
       - scipy
+    references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/guiding_diagnostics_dashboard.ipynb:
+      - bokeh
+      - guiding_tool
     references/roman_notebooks/notebooks/measuring_galaxy_shapes/measuring_galaxy_shapes.ipynb:
       - asdf
       - astropy
@@ -652,7 +654,6 @@ out:
       - roman_datamodels
       - romanisim
       - s3fs
-      - stpsf
       - typing
     references/roman_notebooks/notebooks/stips/stips.ipynb:
       - astropy
@@ -668,7 +669,6 @@ out:
       - stpsf
     references/roman_notebooks/notebooks/synphot/synphot.ipynb:
       - astropy
-      - importlib
       - matplotlib
       - notebook_data_dependencies
       - numpy
@@ -683,7 +683,6 @@ out:
       - PIL
       - asdf
       - astropy
-      - importlib
       - matplotlib
       - notebook_data_dependencies
       - numpy
@@ -765,7 +764,7 @@ out:
         - dotenv
         - git+https://github.com/spacetelescope/motorcycle.git
         - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
-        - ipyvuetify>=3.1.0
+        - ipyvuetify==3.0.0
         - jupyter-collaboration<5
         - jupyter-server-ydoc<3
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt:
@@ -820,18 +819,18 @@ out:
         - xarray>=2026.4.0
     - references/roman_notebooks/notebooks/aperture_photometry/requirements.txt:
         - asdf-astropy>=0.11.0
-        - asdf>=5.3.0,<6
-        - astropy>=7.2.0,<9
-        - crds>=13.1.15
+        - asdf>=6.0,<7
+        - astropy>=8.0.2,<9
+        - crds>=14.0.6
         - gwcs>=1.0.3,<2
         - matplotlib>=3.9
         - photutils>=3.0.0,<4
-        - rad>=1.0,<1.1
-        - roman_datamodels>=1.0,<1.1
-        - romancal>=1.0.0
-        - romanisim>=0.14.0,<0.15
+        - rad>=1.2.1,<1.3
+        - roman_datamodels>=1.2.0,<1.4
+        - romancal>=1.2.0
+        - romanisim>=0.16.0,<0.17
         - s3fs>=2026.4.0
-        - stpsf>=2.1.0
+        - stpsf>=2.3.0
     - references/roman_notebooks/notebooks/background_visualization_tool/requirements.txt:
         - PyYAML>=6.0
         - bokeh>=3.9.0
@@ -944,6 +943,21 @@ out:
         - romanisim>=0.16.0,<0.17
         - s3fs>=2026.4.0
         - scipy>=1.17.1
+    - references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt:
+        - Pillow>=10.1
+        - asdf
+        - astropy
+        - astroquery @ git+https://github.com/snbianco/astroquery.git@2026.3
+        - bokeh
+        - crds
+        - imageio-ffmpeg
+        - ipython
+        - ipywidgets
+        - numpy
+        - pandas
+        - pyerfa
+        - python-dotenv
+        - roman_datamodels==1.2.0
     - references/roman_notebooks/notebooks/measuring_galaxy_shapes/requirements.txt:
         - asdf-astropy>=0.11.0
         - asdf>=5.3.0,<6
@@ -1226,6 +1240,7 @@ out:
         #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/measuring_galaxy_shapes/requirements.txt
         #   -r references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/roman_cutouts/requirements.txt
@@ -1306,6 +1321,7 @@ out:
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/measuring_galaxy_shapes/requirements.txt
         #   -r references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/roman_cutouts/requirements.txt
@@ -1366,12 +1382,13 @@ out:
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
-    astroquery @ git+https://github.com/snbianco/astroquery@69a91a04a7c0994457034e6b08bd0f3cc7eccdd2
+    astroquery @ git+https://github.com/snbianco/astroquery@59a8f02ba359a8815ebb2068eb9a6d7e6ae42a5e
         # via
         #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/catalog_database_access/requirements.txt
         #   -r references/roman_notebooks/notebooks/data_discovery_and_access/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/roman_cutouts/requirements.txt
         #   -r references/roman_notebooks/notebooks/romanisim/requirements.txt
         #   jdaviz
@@ -1410,6 +1427,7 @@ out:
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/background_visualization_tool/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/rist/requirements.txt
         #   dask
         #   jupyter-bokeh
@@ -1512,6 +1530,7 @@ out:
         #   -r references/roman_notebooks/notebooks/crds_reference_files/requirements.txt
         #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/romanisim/requirements.txt
         #   -r references/roman_notebooks/notebooks/time_domain_simulations/requirements.txt
@@ -1725,7 +1744,9 @@ out:
     imageio==2.38.2
         # via scikit-image
     imageio-ffmpeg==0.8.1
-        # via -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        # via
+        #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
     imagesize==2.0.1
         # via sphinx
     importlib-metadata==10.2.0
@@ -1776,6 +1797,7 @@ out:
     ipython==9.18.1
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/target_visibility_tool/requirements.txt
         #   -r references/science-platform-images/deployments/common/common-env/common.pip
         #   glue-core
@@ -1798,7 +1820,7 @@ out:
         #   ipyvolume
         #   ipyvuetify
         #   solara-ui
-    ipyvuetify==3.1.1
+    ipyvuetify==3.0.0
         # via
         #   -r /home/ai/.nbw-live/temps/common_pip_packages.txt
         #   -r references/science-platform-images/deployments/common/common-env/jupyter.pip
@@ -1816,6 +1838,7 @@ out:
     ipywidgets==8.1.9
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/target_visibility_tool/requirements.txt
         #   -r references/science-platform-images/deployments/common/common-env/jupyter.pip
         #   anywidget
@@ -2234,6 +2257,7 @@ out:
         #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/measuring_galaxy_shapes/requirements.txt
         #   -r references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/pandeia/requirements.txt
@@ -2369,6 +2393,7 @@ out:
         #   -r references/roman_notebooks/notebooks/ccs_simulations/requirements.txt
         #   -r references/roman_notebooks/notebooks/crds_reference_files/requirements.txt
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/pandeia/requirements.txt
         #   -r references/roman_notebooks/notebooks/rist/requirements.txt
         #   -r references/roman_notebooks/notebooks/target_visibility_tool/requirements.txt
@@ -2420,6 +2445,7 @@ out:
     pillow==13.0.0
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/time_domain_analysis/requirements.txt
         #   astrocut
         #   bokeh
@@ -2516,7 +2542,9 @@ out:
     pydeps==3.0.9
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
     pyerfa==2.0.1.5
-        # via astropy
+        # via
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
+        #   astropy
     pyflakes==4.1.0
         # via flake8
     pygments==2.21.0
@@ -2575,7 +2603,9 @@ out:
         #   matplotlib
         #   pandas
     python-dotenv==1.2.4
-        # via dotenv
+        # via
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
+        #   dotenv
     python-json-logger==4.2.0
         # via jupyter-events
     pythreejs==2.4.2
@@ -2712,6 +2742,7 @@ out:
         #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt
+        #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
         #   -r references/roman_notebooks/notebooks/measuring_galaxy_shapes/requirements.txt
         #   -r references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/roman_cutouts/requirements.txt
