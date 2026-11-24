@@ -6,7 +6,7 @@
 # on the GitHub spacetelescope/science-platform-images repo (SPI).
 # =====================================================================================
 image_spec_header:
-  image_name: RomanNexus-2026.23
+  image_name: RomanNexus-2026.3
   deployment_name: wrangler
   kernel_name: RomanNexus-2026.3
   display_name: RomanNexus-2026.3
