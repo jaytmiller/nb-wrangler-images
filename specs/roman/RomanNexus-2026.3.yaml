@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-24T14:08:15.881986'
-  spec_sha256: 77bbd0b0da4c643da54e0d3e51840233701c76078798a6ff5583c53d3a86746a
+  date_updated: '2026-11-24T17:09:45.792373'
+  spec_sha256: 1a0bfad8db01799bdb72858d945f5c54ade9f24760f6896486b263d8a02c6f41
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
@@ -319,13 +319,13 @@ out:
       CRDS_OBSERVATORY: roman
       CRDS_PATH: ${HOME}/crds_cache
     pantry_exports:
-      pandeia_refdata:
+      pandeia_refdata: 
         ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_data-2026.1-roman
-      PSF_DIR:
+      PSF_DIR: 
         ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/pandeia_psfs-2026.1-roman
       STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stpsf-data
       stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/stips_data
-      PYSYN_CDBS:
+      PYSYN_CDBS: 
         ${NBW_PANTRY}/shelves/RomanNexus-2026.23-draft/data/grp/redcat/trds
       CRDS_SERVER_URL: https://roman-crds.stsci.edu
       CRDS_CONTEXT: roman-edit
@@ -375,7 +375,7 @@ out:
     roman_notebooks:
       url: https://github.com/spacetelescope/roman_notebooks.git
     # "2026.3"
-      ref: 3930855b1ad0f2ce82023c528168773d9a23e62e # TODO
+      ref: d01f4deba274fc7a3e2ff89dafc69795000d0ee2 # TODO
 
 # =====================================================================================
 # Notebooks selected here implicitly define additional image package requirements as well
@@ -556,11 +556,10 @@ out:
       - roman_datamodels
       - s3fs
     references/roman_notebooks/notebooks/exposure_pipeline/exposure_pipeline.ipynb:
+      - IPython
       - astropy
+      - astroquery
       - crds
-      - matplotlib
-      - mpl_toolkits
-      - numpy
       - roman_datamodels
       - romancal
       - s3fs
@@ -613,8 +612,6 @@ out:
       - synphot
     references/roman_notebooks/notebooks/mosaic_pipeline/mosaic_pipeline.ipynb:
       - astropy
-      - glob
-      - json
       - matplotlib
       - roman_datamodels
       - romancal
@@ -718,9 +715,9 @@ out:
       - pprint
       - roman_datamodels
       - s3fs
-  kernel_name: RomanJdavizTesting-2026.3
+  kernel_name: RomanNexus-2026.3
   mamba_spec: |
-    name: RomanJdavizTesting-2026.3
+    name: RomanNexus-2026.3
     channels:
       - conda-forge
     dependencies:
@@ -884,29 +881,25 @@ out:
         - s3fs>=2026.4.0
     - references/roman_notebooks/notebooks/data_visualization/requirements.txt:
         - asdf-astropy>=0.11.0
-        - astropy>=7.2.0,<9
+        - astropy>=8.0.2,<9
         - gwcs>=1.0.3,<2
-        - jdaviz>=5.0
-        - mast-aladin==0.0.3
-        - mast-table==0.0.2
+        - jdaviz[roman]>=5.1
+        - mast-aladin @ git+https://github.com/spacetelescope/mast-aladin@v0.1.0
+        - mast-table==1.0.1
         - matplotlib>=3.9
-        - numpy>=2.4.4
-        - rad>=1.0,<1.1
-        - roman_datamodels>=1.0,<1.1
+        - numpy>=2.5.4
+        - rad>=1.2.1,<1.3
+        - roman_datamodels>=1.2.0,<1.4
         - s3fs>=2026.4.0
     - references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt:
         - asdf-astropy>=0.11.0
-        - asdf>=5.3.0,<6
-        - astropy>=7.2.0,<9
-        - crds>=13.1.15
+        - astropy>=8.0.2,<9
+        - crds>=14.0.6
         - gwcs>=1.0.3,<2
-        - matplotlib>=3.9
-        - numpy>=2.4.4
-        - photutils>=3.0.0,<4
-        - rad>=1.0,<1.1
-        - roman_datamodels>=1.0,<1.1
-        - romancal>=1.0.0
-        - romanisim>=0.14.0,<0.15
+        - rad>=1.2.1,<1.3
+        - roman_datamodels>=1.2.0,<1.4
+        - romancal>=1.2.0
+        - romanisim>=0.16.0,<0.17
         - s3fs>=2026.4.0
     - references/roman_notebooks/notebooks/footprint_visualization/requirements.txt:
         - astropy>=8.0.2,<9
@@ -979,19 +972,19 @@ out:
         - synphot>=1.7.0
     - references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt:
         - asdf-astropy>=0.11.0
-        - asdf>=5.3.0,<6
-        - astropy>=7.2.0,<9
-        - crds>=13.1.15
+        - asdf>=6.0,<7
+        - astropy>=8.0.2,<9
+        - crds>=14.0.6
         - gwcs>=1.0.3,<2
         - matplotlib>=3.9
-        - numpy>=2.4.4
+        - numpy>=2.5.4
         - photutils>=3.0.0,<4
-        - rad>=1.0,<1.1
-        - roman_datamodels>=1.0,<1.1
-        - romancal>=1.0.0
-        - romanisim>=0.14.0,<0.15
+        - rad>=1.2.1,<1.3
+        - roman_datamodels>=1.2.0,<1.4
+        - romancal>=1.2.0
+        - romanisim>=0.16.0,<0.17
         - s3fs>=2026.4.0
-        - stpsf>=2.1.0
+        - stpsf>=2.3.0
     - references/roman_notebooks/notebooks/pandeia/requirements.txt:
         - healpy>=1.19.1
         - matplotlib>=3.9
@@ -1011,7 +1004,7 @@ out:
         - asdf>=5.3.0,<6
         - astrocut>=1.5.1
         - astropy>=7.2.0,<9
-        - astroquery @
+        - astroquery @ 
           git+https://github.com/snbianco/astroquery.git@mast-beta-release
         - lz4>=4.4.5
         - matplotlib>=3.9
@@ -1225,7 +1218,7 @@ out:
         #   ipyaladin
     appnope==1.0.0 ; sys_platform == 'darwin'
         # via ipykernel
-    argcomplete==3.7.2
+    argcomplete==3.8.0
         # via yq
     argon2-cffi==25.1.0
         # via jupyter-server
@@ -1235,12 +1228,11 @@ out:
         # via isoduration
     asdf==6.0.0
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
         #   -r references/roman_notebooks/notebooks/ccs_simulations/requirements.txt
         #   -r references/roman_notebooks/notebooks/data_discovery_and_access/requirements.txt
-        #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt
         #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
@@ -1311,7 +1303,7 @@ out:
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/roman_cutouts/requirements.txt
         #   -r references/roman_notebooks/notebooks/time_domain_simulations/requirements.txt
-    astropy==8.0.2
+    astropy==8.0.3
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
@@ -1381,13 +1373,13 @@ out:
         #   romancal
         #   romanisim
         #   stcal
-    astropy-iers-data==0.2026.11.16.0.37.44
+    astropy-iers-data==0.2026.11.23.0.35.53
         # via astropy
     astropy-sphinx-theme==3.3.1
         # via sphinx-astropy
     astroquery @ git+https://github.com/snbianco/astroquery.git@69a91a04a7c0994457034e6b08bd0f3cc7eccdd2
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/catalog_database_access/requirements.txt
         #   -r references/roman_notebooks/notebooks/data_discovery_and_access/requirements.txt
@@ -1409,7 +1401,7 @@ out:
         #   asdf
         #   jsonschema
         #   referencing
-    babel==2.18.0
+    babel==2.19.0
         # via
         #   jupyterlab-server
         #   pydata-sphinx-theme
@@ -1471,13 +1463,13 @@ out:
         #   pip-tools
     bytecode==0.19.2
         # via ddtrace
-    cachetools==8.0.0
+    cachetools==8.0.2
         # via
         #   astrocut
         #   solara-ui
     casa-formats-io==0.3.1
         # via spectral-cube
-    certifi==2026.10.23
+    certifi==2026.11.20
         # via
         #   httpcore
         #   httpx
@@ -1490,7 +1482,7 @@ out:
         #   cryptography
         #   pycares
         #   pyzmq
-    charset-normalizer==3.5.2
+    charset-normalizer==3.5.3
         # via requests
     ci-watson==0.13.1
         # via -r references/science-platform-images/deployments/common/common-env/testing.pip
@@ -1505,7 +1497,7 @@ out:
         #   rich-click
         #   solara-server
         #   uvicorn
-    cloudpickle==3.1.2
+    cloudpickle==3.1.3
         # via
         #   dask
         #   distributed
@@ -1528,7 +1520,7 @@ out:
         # via stpipe
     contourpy==1.4.0
         # via matplotlib
-    crds==14.0.6
+    crds==14.0.7
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
@@ -1550,7 +1542,7 @@ out:
         #   secretstorage
     cycler==0.12.1
         # via matplotlib
-    dask==2026.8.0
+    dask==2026.11.0
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
@@ -1558,7 +1550,7 @@ out:
         #   casa-formats-io
         #   distributed
         #   spectral-cube
-    ddtrace==4.17.1
+    ddtrace==4.17.2
         # via
         #   -r references/science-platform-images/deployments/common/common-env/common.pip
         #   nb-wrangler
@@ -1576,7 +1568,7 @@ out:
         # via glue-core
     distlib==0.4.4
         # via -r references/science-platform-images/deployments/common/common-env/testing.pip
-    distributed==2026.8.0
+    distributed==2026.11.0
         # via dask
     docutils==0.22.4
         # via
@@ -1620,7 +1612,7 @@ out:
         #   mpl-scatter-density
     fastjsonschema==2.22.3
         # via nbformat
-    filelock==4.2.11
+    filelock==4.3.1
         # via
         #   crds
         #   solara-server
@@ -1799,7 +1791,7 @@ out:
         #   mast-table
     ipysplitpanes==0.1.0
         # via -r references/science-platform-images/deployments/common/common-env/jupyter.pip
-    ipython==9.18.1
+    ipython==9.19.1
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
@@ -2044,7 +2036,7 @@ out:
         # via
         #   -r references/science-platform-images/deployments/common/common-env/jupyter.pip
         #   ipywidgets
-    jupytext==1.19.6
+    jupytext==1.19.7
         # via -r references/science-platform-images/deployments/common/common-env/jupyter.pip
     keyring==25.7.0
         # via astroquery
@@ -2096,11 +2088,11 @@ out:
         #   werkzeug
     mast-aladin @ git+https://github.com/spacetelescope/mast-aladin.git@62f1bdbbfa983802bd1ef6954a3eac60450c3abe
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
     mast-table==1.0.1
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
         #   mast-aladin
     matplotlib==3.11.2
@@ -2111,7 +2103,6 @@ out:
         #   -r references/roman_notebooks/notebooks/ccs_simulations/requirements.txt
         #   -r references/roman_notebooks/notebooks/crds_reference_files/requirements.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
-        #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/ground_test_analysis/requirements.txt
@@ -2171,28 +2162,28 @@ out:
         #   yarl
     mypy-extensions==1.2.0
         # via black
-    nab==0.0.30
+    nab==0.0.31
         # via pipdeptree
-    nab-index==0.0.30
+    nab-index==0.0.31
         # via
         #   nab
         #   nab-project
         #   pipdeptree
-    nab-markersets==0.0.30
+    nab-markersets==0.0.31
         # via
         #   nab
         #   nab-project
         #   nab-provider
-    nab-project==0.0.30
+    nab-project==0.0.31
         # via
         #   nab
         #   pipdeptree
-    nab-provider==0.0.30
+    nab-provider==0.0.31
         # via
         #   nab
         #   nab-index
         #   nab-project
-    nab-resolver==0.0.30
+    nab-resolver==0.0.31
         # via
         #   nab
         #   nab-index
@@ -2259,7 +2250,6 @@ out:
         #   -r references/roman_notebooks/notebooks/ccs_simulations/requirements.txt
         #   -r references/roman_notebooks/notebooks/crds_reference_files/requirements.txt
         #   -r references/roman_notebooks/notebooks/data_visualization/requirements.txt
-        #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/guiding_diagnostics_dashboard/requirements.txt
@@ -2350,7 +2340,7 @@ out:
         #   pysiaf
     opentelemetry-api==1.45.2
         # via ddtrace
-    packaging==26.3
+    packaging==26.4
         # via
         #   asdf
         #   asdf-astropy
@@ -2373,8 +2363,11 @@ out:
         #   jupytext
         #   lazy-loader
         #   matplotlib
+        #   nab
         #   nab-index
+        #   nab-markersets
         #   nab-project
+        #   nab-provider
         #   nbconvert
         #   pytest
         #   pytest-doctestplus
@@ -2410,7 +2403,7 @@ out:
         #   xarray
     pandeia-engine==2026.1
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/pandeia/requirements.txt
         #   -r references/roman_notebooks/notebooks/stips/requirements.txt
@@ -2438,7 +2431,6 @@ out:
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
-        #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/grism_spectral_extraction/requirements.txt
         #   -r references/roman_notebooks/notebooks/mosaic_pipeline/requirements.txt
         #   -r references/roman_notebooks/notebooks/time_domain_analysis/requirements.txt
@@ -2468,9 +2460,9 @@ out:
         # via pip-tools
     pip-tools==7.7.0
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
-    pipdeptree==4.2.14
+    pipdeptree==4.2.16
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
-    platformdirs==4.14.6
+    platformdirs==4.14.8
         # via
         #   black
         #   jupyter-core
@@ -2478,7 +2470,7 @@ out:
         # via -r references/science-platform-images/deployments/common/common-env/common.pip
     pluggy==1.7.0
         # via pytest
-    poppy==1.2.0
+    poppy==1.2.1
         # via
         #   stips
         #   stpsf
@@ -2539,9 +2531,9 @@ out:
         # via pycrdt-websocket
     pycrdt-websocket==0.16.2
         # via jupyter-server-ydoc
-    pydantic==2.14.3
+    pydantic==2.14.4
         # via jupyterhub
-    pydantic-core==2.50.4
+    pydantic-core==2.50.5
         # via pydantic
     pydata-sphinx-theme==0.24.0
         # via sunpy-sphinx-theme
@@ -2566,7 +2558,7 @@ out:
         #   rich
         #   solara-ui
         #   sphinx
-    pymdown-extensions==13.1
+    pymdown-extensions==13.1.2
         # via solara-ui
     pyparsing==3.3.3
         # via matplotlib
@@ -2631,7 +2623,7 @@ out:
         #   jupyter-server
         #   jupyter-server-terminals
         #   terminado
-    pyyaml==6.0.3
+    pyyaml==6.0.4
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/background_visualization_tool/requirements.txt
@@ -2661,7 +2653,7 @@ out:
         #   jupyter-server
     rad==1.2.1
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
         #   -r references/roman_notebooks/notebooks/ccs_simulations/requirements.txt
@@ -2738,7 +2730,7 @@ out:
         # via solara-server
     roman-datamodels==1.2.0
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
         #   -r references/roman_notebooks/notebooks/ccs_simulations/requirements.txt
@@ -2756,6 +2748,7 @@ out:
         #   -r references/roman_notebooks/notebooks/time_domain_analysis/requirements.txt
         #   -r references/roman_notebooks/notebooks/time_domain_simulations/requirements.txt
         #   -r references/roman_notebooks/notebooks/working_with_asdf/requirements.txt
+        #   jdaviz
         #   mast-aladin
         #   romancal
         #   romanisim
@@ -2777,7 +2770,7 @@ out:
         #   -r references/roman_notebooks/notebooks/working_with_asdf/requirements.txt
     romanisim==0.16.0
         # via
-        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.23-draft-override-pip.txt
+        #   --override /home/ai/.nbw-live/temps/RomanNexus-2026.3-override-pip.txt
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/aperture_photometry/requirements.txt
         #   -r references/roman_notebooks/notebooks/exposure_pipeline/requirements.txt
@@ -2890,11 +2883,11 @@ out:
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/footprint_visualization/requirements.txt
-    smart-open==9.0.4
+    smart-open==10.0.0
         # via s3path
     smmap==5.0.3
         # via gitdb
-    sncosmo==2.13.1
+    sncosmo==2.13.2
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/time_domain_analysis/requirements.txt
@@ -2917,7 +2910,7 @@ out:
         #   solara-server
     sortedcontainers==2.4.0
         # via distributed
-    soupsieve==4.1.1
+    soupsieve==4.1.3
         # via beautifulsoup4
     specreduce==1.9.0
         # via
@@ -3027,7 +3020,7 @@ out:
         # via -r references/science-platform-images/deployments/common/common-env/docs.pip
     stsci-stimage==0.3.2
         # via tweakwcs
-    stsynphot==1.6.0
+    stsynphot==1.7.0
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/crds_reference_files/requirements.txt
@@ -3039,7 +3032,7 @@ out:
         #   stips
     sunpy-sphinx-theme==2.5.0
         # via astropy-sphinx-theme
-    synphot==1.8.0
+    synphot==1.9.0
         # via
         #   -r /home/ai/.nbw-live/temps/extra_pip_packages.txt
         #   -r references/roman_notebooks/notebooks/crds_reference_files/requirements.txt
@@ -3065,7 +3058,7 @@ out:
         # via
         #   nab
         #   nab-project
-    tomlkit==0.15.2
+    tomlkit==0.15.3
         # via
         #   jupyter-packaging
         #   yq
@@ -3166,7 +3159,7 @@ out:
         #   botocore
         #   nab-index
         #   requests
-    uv==0.13.9
+    uv==0.13.10
         # via nb-wrangler
     uvicorn==0.54.0
         # via solara-server
@@ -3174,11 +3167,11 @@ out:
         # via jdaviz
     voila==0.5.13
         # via -r references/science-platform-images/deployments/common/common-env/jupyter.pip
-    watchdog==7.1.0
+    watchdog==7.1.1
         # via solara-server
     watchfiles==1.3.0
         # via solara-server
-    wcwidth==0.9.4
+    wcwidth==0.9.5
         # via prompt-toolkit
     webcolors==25.10.0
         # via jsonschema
