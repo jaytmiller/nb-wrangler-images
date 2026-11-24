@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-24T11:57:29.912155'
-  spec_sha256: 2a2e43e57456d666c769d8601d89748b4f7339fa0e8eda64624e461eb0010344
+  date_updated: '2026-11-24T12:50:28.242128'
+  spec_sha256: 98a9f4fafb775b3427af9fb55d3f6241d531174a716855f8aab707a9fb8e1e27
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
@@ -146,6 +146,7 @@ extra_pip_packages:  # TODO
 common_pip_packages:
   - git+https://github.com/spacetelescope/nb-wrangler.git@v0.9.5
   - bqplot>=0.12.45,<0.13
+  - bqplot-gl==0.0.0
   - ipyvuetify==3.0.0
   - git+https://github.com/spacetelescope/motorcycle.git
   - dotenv
@@ -760,6 +761,7 @@ out:
       - wheel
   non_mamba_pip_package_files:
     - /home/ai/.nbw-live/temps/common_pip_packages.txt:
+        - bqplot-gl==0.0.0
         - bqplot>=0.12.45,<0.13
         - dotenv
         - git+https://github.com/spacetelescope/motorcycle.git
@@ -1453,7 +1455,9 @@ out:
         #   ipyvolume
         #   jdaviz
     bqplot-gl==0.0.0
-        # via glue-jupyter
+        # via
+        #   -r /home/ai/.nbw-live/temps/common_pip_packages.txt
+        #   glue-jupyter
     bqplot-image-gl==1.10.2
         # via
         #   -r references/science-platform-images/deployments/common/common-env/jupyter.pip
