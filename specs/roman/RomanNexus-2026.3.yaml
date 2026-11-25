@@ -34,13 +34,18 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-25T09:21:43.825743'
-  spec_sha256: 9f52772b6c270acae1d43c858314f8f67c82dcae12587f51d55d1ab5b5c7256e
+  date_updated: '2026-11-25T11:36:16.077147'
+  spec_sha256: c5d54502feffad2008cba0bf7641f8f747857c9d2793dad7332799db40863c38
+
+
+# =====================================================================================
+# Define the repositories form which notebooks covered by this spec/environment will
+# be downloaded.  Then select specific notebooks in selected_notebooks:
+# =====================================================================================
 repositories:
   roman_notebooks:
     url: https://github.com/spacetelescope/roman_notebooks.git
-    # "2026.3"
-    ref: main   # TODO
+    ref: '2026.3'
 
 # =====================================================================================
 # Notebooks selected here implicitly define additional image package requirements as well
@@ -676,7 +681,7 @@ out:
         - jupyterlab>=4.0
         - lsstdesc.coord
         - lz4>=4.4.5
-        - mast-aladin @ 
+        - mast-aladin @
           git+https://github.com/spacetelescope/mast-aladin.git@v0.1.0
         - matplotlib>=3.9
         - numpy>=2.5.4
@@ -889,7 +894,7 @@ out:
         - asdf>=5.3.0,<6
         - astrocut>=1.5.1
         - astropy>=7.2.0,<9
-        - astroquery @ 
+        - astroquery @
           git+https://github.com/snbianco/astroquery.git@mast-beta-release
         - lz4>=4.4.5
         - matplotlib>=3.9
@@ -3167,9 +3172,9 @@ out:
       CRDS_OBSERVATORY: roman
       CRDS_PATH: ${HOME}/crds_cache
     pantry_exports:
-      pandeia_refdata: 
+      pandeia_refdata:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.3/data/pandeia_data-2026.1-roman
-      PSF_DIR: 
+      PSF_DIR:
         ${NBW_PANTRY}/shelves/RomanNexus-2026.3/data/pandeia_psfs-2026.1-roman
       STPSF_PATH: ${NBW_PANTRY}/shelves/RomanNexus-2026.3/data/stpsf-data
       stips_data: ${NBW_PANTRY}/shelves/RomanNexus-2026.3/data/stips_data
