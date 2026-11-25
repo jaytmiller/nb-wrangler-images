@@ -34,8 +34,8 @@ system:
     pip: pip
     # choose this over any env var setting but not CLI
     favor: spec
-  date_updated: '2026-11-25T12:11:53.896903'
-  spec_sha256: 3cc86848f16280722d30e0d1a6442494ef832864f09cd65b7bb1e3d781b05dc6
+  date_updated: '2026-11-25T12:15:59.005289'
+  spec_sha256: bdb6c4ae822d578799c4e576c6a28da0b39a62ed1d7c9a707850b4d674c1bc46
 
 
 # =====================================================================================
@@ -89,59 +89,59 @@ common_mamba_packages: []
 # =====================================================================================
 # Packages are installed by pip or uv pip in the mission environment only.
 extra_pip_packages:
-  - PyYAML>=6.0
-  - asdf>=6.0,<7
-  - asdf-astropy>=0.11.0
-  - astrocut>=1.5.0
-  - astropy>=8.0.2,<9
-  - astropy_healpix>=2.0.0
-  - astroquery@git+https://github.com/snbianco/astroquery.git@2026.3
-  - bokeh>=3.9.0
-  - boto3>=1.43.0
-  - crds>=14.0.6
-  - dask[complete]
-  - duckdb<2.0.0
-  - esutil>=0.6.16 #--no-cache-diroptionrecommendedonpipinstall>=in1file(s)
-  - galsim>=2.8.4
-  - gwcs>=1.0.3,<2
-  - healpy>=1.19.1
-  - healsparse>=1.12.2
-  - hpgeom>=1.5.4
-  - imageio-ffmpeg
-  - ipykernel>=6
-  - ipympl>=0.10.0
-  - ipython>=8
-  - ipywidgets>=8.1.0
-  # - jdaviz[roman]
-  - jupyterlab>=4.0
-  - lz4>=4.4.5
-  - mast-aladin @ git+https://github.com/spacetelescope/mast-aladin@v0.1.0
-  - matplotlib>=3.9
-  - numpy>=2.5.4
-  - pandas>=3.0.3
-  - pandeia.engine==2026.1
-  - photutils>=3.0.0,<4
-  - pillow>=11.0
   - psutil>=7.2.2
-  - pyarrow>=25.0.0
-  - pysiaf>=0.25.0
-  - pyvo>=1.8.1
-  - rad>=1.2.1,<1.3
-  - requests>=2.32.5
-  - roman_datamodels>=1.2.0,<1.4
-  - romancal>=1.2.0
-  - romanisim>=0.16.0,<0.17
-  - s3fs>=2026.4.0
-  - scipy>=1.17.1
-  - skyproj>=2.2
-  - sncosmo>=2.12.1
-  - stips>=2.3.1
-  - stpsf>=2.3.1
-  - stsynphot>=1.5.1
-  - synphot>=1.7.0
-  - xarray>=2026.4.0
-
+  - duckdb<2.0.0
   - lsstdesc.coord
+
+  # ----- - PyYAML>=6.0
+  # ----- - asdf>=6.0,<7
+  # ----- - asdf-astropy>=0.11.0
+  # ----- - astrocut>=1.5.0
+  # ----- - astropy>=8.0.2,<9
+  # ----- - astropy_healpix>=2.0.0
+  # ----- - astroquery@git+https://github.com/snbianco/astroquery.git@2026.3
+  # ----- - bokeh>=3.9.0
+  # ----- - boto3>=1.43.0
+  # ----- - crds>=14.0.6
+  # ----- - dask[complete]
+  # ----- - esutil>=0.6.16 #--no-cache-diroptionrecommendedonpipinstall>=in1file(s)
+  # ----- - galsim>=2.8.4
+  # ----- - gwcs>=1.0.3,<2
+  # ----- - healpy>=1.19.1
+  # ----- - healsparse>=1.12.2
+  # ----- - hpgeom>=1.5.4
+  # ----- - imageio-ffmpeg
+  # ----- - ipykernel>=6
+  # ----- - ipympl>=0.10.0
+  # ----- - ipython>=8
+  # ----- - ipywidgets>=8.1.0
+  # ----- # - jdaviz[roman]
+  # ----- - jupyterlab>=4.0
+  # ----- - lz4>=4.4.5
+  # ----- - mast-aladin @ git+https://github.com/spacetelescope/mast-aladin@v0.1.0
+  # ----- - matplotlib>=3.9
+  # ----- - numpy>=2.5.4
+  # ----- - pandas>=3.0.3
+  # ----- - pandeia.engine==2026.1
+  # ----- - photutils>=3.0.0,<4
+  # ----- - pillow>=11.0
+  # ----- - pyarrow>=25.0.0
+  # ----- - pysiaf>=0.25.0
+  # ----- - pyvo>=1.8.1
+  # ----- - rad>=1.2.1,<1.3
+  # ----- - requests>=2.32.5
+  # ----- - roman_datamodels>=1.2.0,<1.4
+  # ----- - romancal>=1.2.0
+  # ----- - romanisim>=0.16.0,<0.17
+  # ----- - s3fs>=2026.4.0
+  # ----- - scipy>=1.17.1
+  # ----- - skyproj>=2.2
+  # ----- - sncosmo>=2.12.1
+  # ----- - stips>=2.3.1
+  # ----- - stpsf>=2.3.1
+  # ----- - stsynphot>=1.5.1
+  # ----- - synphot>=1.7.0
+  # ----- - xarray>=2026.4.0
 
 # =====================================================================================
 # Packages installed by pip or uv pip in both base and mission environments.
@@ -768,57 +768,9 @@ out:
         - jupyter-collaboration<5
         - jupyter-server-ydoc<3
     - /home/ai/.nbw-live/temps/extra_pip_packages.txt:
-        - PyYAML>=6.0
-        - asdf-astropy>=0.11.0
-        - asdf>=6.0,<7
-        - astrocut>=1.5.0
-        - astropy>=8.0.2,<9
-        - astropy_healpix>=2.0.0
-        - astroquery@git+https://github.com/snbianco/astroquery.git@2026.3
-        - bokeh>=3.9.0
-        - boto3>=1.43.0
-        - crds>=14.0.6
-        - dask[complete]
         - duckdb<2.0.0
-        - esutil>=0.6.16
-        - galsim>=2.8.4
-        - gwcs>=1.0.3,<2
-        - healpy>=1.19.1
-        - healsparse>=1.12.2
-        - hpgeom>=1.5.4
-        - imageio-ffmpeg
-        - ipykernel>=6
-        - ipympl>=0.10.0
-        - ipython>=8
-        - ipywidgets>=8.1.0
-        - jupyterlab>=4.0
         - lsstdesc.coord
-        - lz4>=4.4.5
-        - mast-aladin @ git+https://github.com/spacetelescope/mast-aladin@v0.1.0
-        - matplotlib>=3.9
-        - numpy>=2.5.4
-        - pandas>=3.0.3
-        - pandeia.engine==2026.1
-        - photutils>=3.0.0,<4
-        - pillow>=11.0
         - psutil>=7.2.2
-        - pyarrow>=25.0.0
-        - pysiaf>=0.25.0
-        - pyvo>=1.8.1
-        - rad>=1.2.1,<1.3
-        - requests>=2.32.5
-        - roman_datamodels>=1.2.0,<1.4
-        - romancal>=1.2.0
-        - romanisim>=0.16.0,<0.17
-        - s3fs>=2026.4.0
-        - scipy>=1.17.1
-        - skyproj>=2.2
-        - sncosmo>=2.12.1
-        - stips>=2.3.1
-        - stpsf>=2.3.1
-        - stsynphot>=1.5.1
-        - synphot>=1.7.0
-        - xarray>=2026.4.0
     - references/roman_notebooks/notebooks/aperture_photometry/requirements.txt:
         - asdf-astropy>=0.11.0
         - asdf>=6.0,<7
