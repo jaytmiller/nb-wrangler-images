@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph Sources["Source Repositories"]
+        SPI[science-platform-images]
+        NBR[notebooks-repo]
+    end
+
+    subgraph Local["Local Curator Workflow — never pushed to GHCR"]
+        USER((User))
+        SPEC1[wrangler spec]
+        WRANGLER[nb-wrangler<br/>resolves package constraints]
+        SPEC2[wrangler spec<br/>+ package & data locks]
+        LDOCKER[Docker build - local]
+        LTEST[local end-to-end image test<br/>verifies spec & image correctness]
+    end
+
+    IMG_REPO[(nb-wrangler-images<br/>on GitHub)]
+    HANDOFF{{tooling + spec handed off<br/>to GitHub Actions}}
+
+    SPI -->|common image package requirements| SPEC1
+    NBR -->|notebooks, per-notebook requirements.txt,<br/>refdata_dependencies.yaml| SPEC1
+    USER -->|adds inline package, data, environment,<br/>image requirements| SPEC1
+
+    SPEC1 -.->|optional: user runs nb-wrangler locally| WRANGLER
+    WRANGLER -.->|resulting package & data locks<br/>added back to the spec| SPEC2
+
+    USER -.->|optional: build test image locally| LDOCKER
+    LDOCKER -.->|local image for local e2e testing only| LTEST
+
+    SPEC2 -->|user adds spec & tooling| IMG_REPO
+    IMG_REPO --> HANDOFF

@@ -1,0 +1,27 @@
+flowchart LR
+    subgraph IN["Inputs"]
+        SPI[science-platform-images]
+        NBR[notebooks-repo]
+        USER(User: inline requirements)
+    end
+
+    D1[["Diagram 1 - Local Wrangling
+    Define Wrangler Spec
+    Optionally lock and test spec
+    Optionally build and/or test image"]]
+
+    HB[(nb-wrangler-images<br/>spec committed to GitHub)]
+
+    D2[["DIAGRAM 2 — CI Pipeline
+    Curation or Reinstallation Actions build image
+    Push to GHCR
+"]]
+
+    OUT[Notebook/code images<br/>live on TEST platform]
+
+    SPI --> D1
+    NBR --> D1
+    USER --> D1
+    D1 ==>|tooling + spec| HB
+    HB ==> D2
+    D2 ==> OUT

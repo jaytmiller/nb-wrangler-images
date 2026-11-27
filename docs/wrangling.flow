@@ -1,0 +1,16 @@
+science-platform-images feeds common image package requirements into nb-wrangler
+notebooks-repo feeds notebooks, per-notebook requirements.txt, refdata_dependencies.yaml into nb-wrangler
+User adds inline package, data, environment, and image requirements into wrangler spec
+Optionally User runs nb-wrangler to resolve package constraints and add package and data locks locally
+Optionally user builds test image locally to verify spec and image correctness
+User adds to nb-wrangler-images on GitHub
+nb-wrangler-images flows tooling + spec into GitHub Actions
+Curation Action runs nb-wrangler to generate code + data locks before building image
+Reinstallation Action feeds unaltered spec into Docker to build pre-locked image
+GitHub Actions both flow tooling + spec into Docker to generate notebook/code + spec images
+First, Action pushes images to GHCR container registry
+Second, Action runs advisory tests on image imports and notebooks
+Jupyter Hub TEST spawner discovers and pulls images from GHCR container registry
+Curator or pipeline tests image on platform
+Tested image is delivered to ECR
+Tested image is promoted to PROD

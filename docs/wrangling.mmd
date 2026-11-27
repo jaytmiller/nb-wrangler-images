@@ -1,0 +1,53 @@
+flowchart TD
+    subgraph Sources["Source Repositories"]
+        SPI[science-platform-images]
+        NBR[notebooks-repo<br/>notebooks, per-notebook requirements.txt,<br/>refdata_dependencies.yaml]
+    end
+
+    subgraph Local["Local Curator Workflow — never pushed to GHCR"]
+        USER((User))
+        SPEC[wrangler spec]
+        WRANGLER[nb-wrangler<br/>resolves package constraints]
+        LDOCKER[Docker build - local]
+        LTEST[local end-to-end image test<br/>verifies spec & image correctness]
+    end
+
+    subgraph Actions["GitHub Actions"]
+        IMG_REPO[(nb-wrangler-images<br/>on GitHub)]
+        CURATION[Curation Action<br/>runs nb-wrangler to generate<br/>code + data locks before build]
+        REINSTALL[Reinstallation Action<br/>builds pre-locked image<br/>from unaltered spec]
+        ADVISE[advisory tests on image<br/>imports & notebooks]
+    end
+
+    DOCKER[Docker build - pipeline]
+
+    subgraph Registries["Registries & Environments"]
+        GHCR[(GHCR container registry)]
+        ECR[(Amazon ECR)]
+        PROD[PROD]
+    end
+
+    JH[JupyterHub TEST spawner]
+    TEST[Curator or pipeline<br/>tests image on platform]
+
+    SPI -->|common image package requirements| WRANGLER
+    NBR -->|notebooks, per-notebook requirements.txt,<br/>refdata_dependencies.yaml| WRANGLER
+
+    USER -->|adds inline package, data, environment,<br/>image requirements| SPEC
+    USER -.->|optional: run locally to resolve constraints<br/>& add package/data locks| WRANGLER
+    WRANGLER -.->|package & data locks added locally| SPEC
+    USER -.->|optional: build test image locally| LDOCKER
+    LDOCKER -.->|local image for local e2e testing only| LTEST
+
+    USER -->|adds spec & tooling| IMG_REPO
+    IMG_REPO -->|tooling + spec| CURATION
+    IMG_REPO -->|tooling + spec| REINSTALL
+    CURATION -->|locked spec| DOCKER
+    REINSTALL -->|unaltered spec| DOCKER
+    DOCKER -->|"1st: Action pushes notebook/code + spec images"| GHCR
+    DOCKER -->|"2nd: Action tests built image"| ADVISE
+
+    GHCR -->|spawner discovers & pulls| JH
+    JH --> TEST
+    TEST -->|tested image delivered| ECR
+    ECR -->|promoted| PROD

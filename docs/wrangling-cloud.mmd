@@ -1,0 +1,31 @@
+flowchart TD
+    HANDOFF{{tooling + spec handed off<br/>to GitHub Actions}}
+
+    subgraph Actions["GitHub Actions"]
+        CURATION[Curation Action<br/>runs nb-wrangler to generate<br/>code + data locks before build]
+        REINSTALL[Reinstallation Action<br/>builds pre-locked image<br/>from unaltered spec]
+        ADVISE[advisory tests on image<br/>imports & notebooks]
+    end
+
+    DOCKER[Docker build - pipeline]
+
+    subgraph Registries["Registries & Environments"]
+        GHCR[(GHCR container registry)]
+        ECR[(Amazon ECR)]
+        PROD[PROD]
+    end
+
+    JH[JupyterHub TEST spawner]
+    TEST[Curator or pipeline<br/>tests image on platform]
+
+    HANDOFF -->|tooling + spec| CURATION
+    HANDOFF -->|tooling + spec| REINSTALL
+    CURATION -->|locked spec| DOCKER
+    REINSTALL -->|unaltered spec| DOCKER
+    DOCKER -->|"Build Action pushes notebook/code + spec images"| GHCR
+    DOCKER -->|"Build Action tests built image (advisory)"| ADVISE
+
+    GHCR -->|spawner discovers & pulls| JH
+    JH --> TEST
+    TEST -->|tested image delivered| ECR
+    ECR -->|promoted| PROD
